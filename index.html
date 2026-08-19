@@ -93,7 +93,9 @@
                 
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">2026案件管控面板</h3>
-                    <button class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition">+ 新增案件</button>
+                    <button onclick="openAddCaseModal()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1">
+                        <i class="fa-solid fa-plus"></i> 新增案件
+                    </button>
                 </div>
 
                 <div class="space-y-6">
@@ -104,7 +106,7 @@
                                 <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
                                 <h4 class="font-bold text-emerald-900 text-sm">已簽約</h4>
                             </div>
-                            <span class="text-xs font-semibold px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">2 件</span>
+                            <span id="count-signed" class="text-xs font-semibold px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">2 件</span>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs text-slate-600 table-fixed">
@@ -117,7 +119,7 @@
                                         <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-slate-100">
+                                <tbody id="tbody-signed" class="divide-y divide-slate-100">
                                     <tr class="hover:bg-slate-50">
                                         <td class="p-3 font-medium text-slate-800 truncate">睿立科技股份有限公司</td>
                                         <td class="p-3 truncate">特定工廠改善計畫</td>
@@ -143,7 +145,7 @@
                                 <span class="w-3 h-3 rounded-full bg-sky-500"></span>
                                 <h4 class="font-bold text-sky-900 text-sm">案件評估</h4>
                             </div>
-                            <span class="text-xs font-semibold px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">2 件</span>
+                            <span id="count-eval" class="text-xs font-semibold px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">2 件</span>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs text-slate-600 table-fixed">
@@ -156,7 +158,7 @@
                                         <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-slate-100">
+                                <tbody id="tbody-eval" class="divide-y divide-slate-100">
                                     <tr class="hover:bg-slate-50">
                                         <td class="p-3 font-medium text-slate-800 truncate">鹿港金屬加工廠</td>
                                         <td class="p-3 truncate">土地變更審查</td>
@@ -182,7 +184,7 @@
                                 <span class="w-3 h-3 rounded-full bg-slate-500"></span>
                                 <h4 class="font-bold text-slate-800 text-sm">已結案</h4>
                             </div>
-                            <span class="text-xs font-semibold px-2 py-0.5 bg-slate-200 text-slate-700 rounded-full">1 件</span>
+                            <span id="count-closed" class="text-xs font-semibold px-2 py-0.5 bg-slate-200 text-slate-700 rounded-full">1 件</span>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs text-slate-600 table-fixed">
@@ -195,7 +197,7 @@
                                         <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-slate-100">
+                                <tbody id="tbody-closed" class="divide-y divide-slate-100">
                                     <tr class="hover:bg-slate-50">
                                         <td class="p-3 font-medium text-slate-800 truncate">員林塑膠企業社</td>
                                         <td class="p-3 truncate">特定工廠登記執照取得</td>
@@ -214,7 +216,7 @@
                                 <span class="w-3 h-3 rounded-full bg-rose-500"></span>
                                 <h4 class="font-bold text-rose-900 text-sm">廢件區</h4>
                             </div>
-                            <span class="text-xs font-semibold px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full">1 件</span>
+                            <span id="count-trash" class="text-xs font-semibold px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full">1 件</span>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs text-slate-600 table-fixed">
@@ -227,7 +229,7 @@
                                         <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-slate-100">
+                                <tbody id="tbody-trash" class="divide-y divide-slate-100">
                                     <tr class="hover:bg-slate-50">
                                         <td class="p-3 font-medium text-slate-800 truncate">福興織帶廠</td>
                                         <td class="p-3 truncate">農地變更規劃</td>
@@ -325,6 +327,114 @@
         </div>
     </main>
 
+    <div id="add-case-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-sky-600"></div>
+                    <h3 class="font-bold text-slate-800 text-base">建立新案件</h3>
+                </div>
+                <button onclick="closeAddCaseModal()" class="text-slate-400 hover:text-slate-600 p-1 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form id="add-case-form" onsubmit="handleCreateCase(event)" class="p-6 space-y-4 overflow-y-auto flex-1">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 客戶名稱 <span class="text-rose-500">*</span></label>
+                        <input type="text" id="input-client-name" required placeholder="請輸入客戶名稱" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 工作進度</label>
+                        <select id="select-work-progress" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
+                            <option value="潛在客戶">潛在客戶</option>
+                            <option value="現勘">現勘</option>
+                            <option value="報價">報價</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 服務項目</label>
+                        <select id="select-service-item" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
+                            <option value="地政士">地政士</option>
+                            <option value="特定工廠登記">特定工廠登記</option>
+                            <option value="一般工廠登記/變更">一般工廠登記/變更</option>
+                            <option value="土地變更">土地變更</option>
+                            <option value="補照">補照</option>
+                            <option value="容許">容許</option>
+                            <option value="不動產買賣">不動產買賣</option>
+                            <option value="不動產租賃">不動產租賃</option>
+                            <option value="ESG轉型">ESG轉型</option>
+                            <option value="債務處理">債務處理</option>
+                            <option value="太陽能">太陽能</option>
+                            <option value="工程">工程</option>
+                            <option value="財務會計">財務會計</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 服務細項</label>
+                        <input type="text" id="input-service-detail" placeholder="請輸入服務細項說明" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 地址</label>
+                        <input type="text" id="input-address" placeholder="請輸入地址" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 地段地號</label>
+                        <input type="text" id="input-land-number" placeholder="例：彰化市大肚段123地號" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 案件說明</label>
+                    <textarea id="input-case-description" rows="2" placeholder="請輸入詳細案件說明..." oninput="autoExpandTextarea(this)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 resize-none overflow-hidden leading-relaxed"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 業務即時說明</label>
+                    <textarea id="input-sales-note" rows="2" placeholder="請輸入業務最新進度說明..." oninput="autoExpandTextarea(this)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 resize-none overflow-hidden leading-relaxed"></textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 報價金額 (NT$)</label>
+                        <input type="number" id="input-quote-amount" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 簽約金額 (NT$)</label>
+                        <input type="number" id="input-contract-amount" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 介紹人</label>
+                        <input type="text" id="input-referrer" placeholder="請輸入介紹人姓名" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span></label>
+                    <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500">
+                        <option value="已簽約">已簽約</option>
+                        <option value="案件評估" selected>案件評估</option>
+                        <option value="已結案">已結案</option>
+                        <option value="廢件區">廢件區</option>
+                    </select>
+                </div>
+
+                <div class="pt-4 border-t border-slate-100 flex justify-end gap-3">
+                    <button type="button" onclick="closeAddCaseModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg text-xs font-medium hover:bg-slate-50 transition">取消</button>
+                    <button type="submit" class="px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition shadow-sm">確認儲存並拋轉</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -348,6 +458,87 @@
                 'real-estate-table': '不動產案件資料表'
             };
             document.getElementById('page-title').textContent = titles[tabId];
+        }
+
+        function openAddCaseModal() {
+            document.getElementById('add-case-modal').classList.remove('hidden');
+        }
+
+        function closeAddCaseModal() {
+            document.getElementById('add-case-modal').classList.add('hidden');
+            document.getElementById('add-case-form').reset();
+            
+            document.querySelectorAll('#add-case-modal textarea').forEach(ta => {
+                ta.style.height = 'auto';
+            });
+        }
+
+        function autoExpandTextarea(element) {
+            element.style.height = 'auto';
+            element.style.height = element.scrollHeight + 'px';
+        }
+
+        function updateCategoryCounts() {
+            const categories = [
+                { id: 'signed', tbody: 'tbody-signed', badge: 'count-signed' },
+                { id: 'eval', tbody: 'tbody-eval', badge: 'count-eval' },
+                { id: 'closed', tbody: 'tbody-closed', badge: 'count-closed' },
+                { id: 'trash', tbody: 'tbody-trash', badge: 'count-trash' }
+            ];
+
+            categories.forEach(cat => {
+                const count = document.getElementById(cat.tbody).children.length;
+                document.getElementById(cat.badge).textContent = `${count} 件`;
+            });
+        }
+
+        function handleCreateCase(event) {
+            event.preventDefault();
+
+            const clientName = document.getElementById('input-client-name').value;
+            const serviceItem = document.getElementById('select-service-item').value;
+            const quoteAmountVal = document.getElementById('input-quote-amount').value;
+            const quoteAmount = quoteAmountVal ? `NT$ ${parseInt(quoteAmountVal).toLocaleString()}` : 'NT$ 0';
+            const salesNote = document.getElementById('input-sales-note').value || '尚未提供即時說明。';
+            const status = document.getElementById('select-case-status').value;
+
+            let targetTbodyId = '';
+            let badgeClass = '';
+
+            switch(status) {
+                case '已簽約':
+                    targetTbodyId = 'tbody-signed';
+                    badgeClass = 'bg-emerald-100 text-emerald-700';
+                    break;
+                case '案件評估':
+                    targetTbodyId = 'tbody-eval';
+                    badgeClass = 'bg-sky-100 text-sky-700';
+                    break;
+                case '已結案':
+                    targetTbodyId = 'tbody-closed';
+                    badgeClass = 'bg-slate-200 text-slate-700';
+                    break;
+                case '廢件區':
+                    targetTbodyId = 'tbody-trash';
+                    badgeClass = 'bg-rose-100 text-rose-700';
+                    break;
+            }
+
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-slate-50';
+            tr.innerHTML = `
+                <td class="p-3 font-medium text-slate-800 truncate">${clientName}</td>
+                <td class="p-3 truncate">${serviceItem}</td>
+                <td class="p-3"><span class="px-2 py-0.5 ${badgeClass} rounded-full">${status}</span></td>
+                <td class="p-3 font-mono text-slate-700">${quoteAmount}</td>
+                <td class="p-3 text-slate-500 truncate">${salesNote}</td>
+            `;
+
+            document.getElementById(targetTbodyId).appendChild(tr);
+
+            updateCategoryCounts();
+            closeAddCaseModal();
+            alert(`新增成功！案件已拋轉至【${status}】區。`);
         }
     </script>
 </body>
