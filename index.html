@@ -86,6 +86,9 @@
             </div>
             
             <div class="flex items-center gap-3">
+                <button onclick="clearAllData()" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md text-xs font-medium flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-trash-can"></i> 清空本地資料
+                </button>
                 <button onclick="loadCasesFromStorage(); alert('已刷新最新資料！');" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-md text-xs font-medium flex items-center gap-1.5 transition">
                     <i class="fa-solid fa-rotate"></i> 重新整理
                 </button>
@@ -184,16 +187,7 @@
                             <span id="count-eval" class="text-xs font-semibold px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">0 件</span>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs text-slate-600 table-fixed">
-                                <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
-                                    <tr>
-                                        <th class="p-3 font-semibold w-[24%]">客戶名稱</th>
-                                        <th class="p-3 font-semibold w-[18%]">服務項目</th>
-                                        <th class="p-3 font-semibold w-[15%]">案件狀態</th>
-                                        <th class="p-3 font-semibold w-[15%]">報價金額</th>
-                                        <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
-                                    </tr>
-                                </thead>
+                            <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
                                 <tbody id="tbody-eval" class="divide-y divide-slate-100"></tbody>
                             </table>
                         </div>
@@ -208,16 +202,7 @@
                             <span id="count-signed" class="text-xs font-semibold px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">0 件</span>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs text-slate-600 table-fixed">
-                                <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
-                                    <tr>
-                                        <th class="p-3 font-semibold w-[24%]">客戶名稱</th>
-                                        <th class="p-3 font-semibold w-[18%]">服務項目</th>
-                                        <th class="p-3 font-semibold w-[15%]">案件狀態</th>
-                                        <th class="p-3 font-semibold w-[15%]">報價金額</th>
-                                        <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
-                                    </tr>
-                                </thead>
+                            <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
                                 <tbody id="tbody-signed" class="divide-y divide-slate-100"></tbody>
                             </table>
                         </div>
@@ -233,16 +218,7 @@
                             <span id="count-last-year" class="text-xs font-semibold px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full">0 件</span>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs text-slate-600 table-fixed">
-                                <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
-                                    <tr>
-                                        <th class="p-3 font-semibold w-[24%]">客戶名稱</th>
-                                        <th class="p-3 font-semibold w-[18%]">服務項目</th>
-                                        <th class="p-3 font-semibold w-[15%]">案件狀態</th>
-                                        <th class="p-3 font-semibold w-[15%]">報價金額</th>
-                                        <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
-                                    </tr>
-                                </thead>
+                            <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
                                 <tbody id="tbody-last-year" class="divide-y divide-slate-100"></tbody>
                             </table>
                         </div>
@@ -257,16 +233,7 @@
                             <span id="count-closed" class="text-xs font-semibold px-2 py-0.5 bg-slate-200 text-slate-700 rounded-full">0 件</span>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs text-slate-600 table-fixed">
-                                <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
-                                    <tr>
-                                        <th class="p-3 font-semibold w-[24%]">客戶名稱</th>
-                                        <th class="p-3 font-semibold w-[18%]">服務項目</th>
-                                        <th class="p-3 font-semibold w-[15%]">案件狀態</th>
-                                        <th class="p-3 font-semibold w-[15%]">報價金額</th>
-                                        <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
-                                    </tr>
-                                </thead>
+                            <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
                                 <tbody id="tbody-closed" class="divide-y divide-slate-100"></tbody>
                             </table>
                         </div>
@@ -281,16 +248,7 @@
                             <span id="count-trash" class="text-xs font-semibold px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full">0 件</span>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs text-slate-600 table-fixed">
-                                <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
-                                    <tr>
-                                        <th class="p-3 font-semibold w-[24%]">客戶名稱</th>
-                                        <th class="p-3 font-semibold w-[18%]">服務項目</th>
-                                        <th class="p-3 font-semibold w-[15%]">案件狀態</th>
-                                        <th class="p-3 font-semibold w-[15%]">報價金額</th>
-                                        <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
-                                    </tr>
-                                </thead>
+                            <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
                                 <tbody id="tbody-trash" class="divide-y divide-slate-100"></tbody>
                             </table>
                         </div>
@@ -585,140 +543,31 @@
         let casesData = [];
         let deleteHistoryStack = [];
 
-        const initialMockCases = [
-            {
-                id: 'case_1711935000000',
-                status: '案件評估',
-                createdAt: '2026-04-01T09:30',
-                clientName: '鹿港金屬加工廠',
-                workProgress: '現勘',
-                serviceItem: '土地變更',
-                serviceDetail: '土地變更審查',
-                address: '彰化縣鹿港鎮頂番路250號',
-                landNumber: '鹿港頂番段 0899-0000 地號',
-                caseDesc: '農地違規工廠欲申請變更為特定目的事業用地。',
-                salesNote: '業主補件中，待取得完整地籍圖冊。',
-                quoteAmount: 500000,
-                caseSource: '製造業',
-                contractAmount: 0,
-                referrer: '林地政士'
-            },
-            {
-                id: 'case_1711935100000',
-                status: '案件評估',
-                createdAt: '2026-04-05T14:15',
-                clientName: '彰濱工業區B廠',
-                workProgress: '報價',
-                serviceItem: '不動產買賣',
-                serviceDetail: '資產活化諮詢',
-                address: '彰化縣鹿港鎮彰濱工業區鹿工路12號',
-                landNumber: '彰濱段 0035-0000 地號',
-                caseDesc: '閒置廠房處分與資產活化方案規劃。',
-                salesNote: '已提供初版簡報，等待董事會決議。',
-                quoteAmount: 280000,
-                caseSource: '同業',
-                contractAmount: 0,
-                referrer: '張總經理'
-            },
-            {
-                id: 'case_1709251200000',
-                status: '已簽約',
-                createdAt: '2026-03-01T11:00',
-                clientName: '睿立科技股份有限公司',
-                workProgress: '準備簽約',
-                serviceItem: '特定工廠登記',
-                serviceDetail: '特定工廠改善計畫',
-                address: '彰化縣和美鎮彰美路六段100號',
-                landNumber: '和美段 0452-0000 地號',
-                caseDesc: '已完成第一階段書面審查，準備進行消防及水利設施補正。',
-                salesNote: '已收定金，現正進行現場測量與圖資套繪。',
-                quoteAmount: 350000,
-                caseSource: '工廠健檢',
-                contractAmount: 350000,
-                referrer: '陳經理',
-                pay1Amount: 100000, pay1Date: '2026-03-01',
-                pay2Amount: 100000, pay2Date: '2026-04-15',
-                pay3Amount: 100000, pay3Date: '2026-06-01',
-                pay4Amount: 50000,  pay4Date: '2026-07-30'
-            },
-            {
-                id: 'case_1707553200000',
-                status: '已簽約',
-                createdAt: '2026-02-10T16:20',
-                clientName: '和美工業廠房',
-                workProgress: '準備簽約',
-                serviceItem: '太陽能',
-                serviceDetail: '太陽能屋頂自建',
-                address: '彰化縣和美鎮工區路88號',
-                landNumber: '和美工段 0112-0000 地號',
-                caseDesc: '屋頂結構評估安全，規劃建置 300KW 屋頂型太陽能系統。',
-                salesNote: '台電審查已通過，預計下月開工動土。',
-                quoteAmount: 1200000,
-                caseSource: 'BNI',
-                contractAmount: 1200000,
-                referrer: '黃會長',
-                pay1Amount: 300000, pay1Date: '2026-02-10',
-                pay2Amount: 400000, pay2Date: '2026-04-01',
-                pay3Amount: 300000, pay3Date: '2026-05-20',
-                pay4Amount: 200000, pay4Date: '2026-06-30'
-            },
-            {
-                id: 'case_1700012800000',
-                status: '去年度簽約未結案件',
-                createdAt: '2025-11-15T10:00',
-                clientName: '大城紡織廠',
-                workProgress: '準備簽約',
-                serviceItem: '特定工廠登記',
-                serviceDetail: '特定工廠登記輔導',
-                address: '彰化縣大城鄉東西路12號',
-                landNumber: '大城段 0158-0000 地號',
-                caseDesc: '2025年11月簽約案件，跨年度持續辦理中。',
-                salesNote: '二期改善施工中，等待環保局複查。',
-                quoteAmount: 680000,
-                caseSource: '老客戶',
-                contractAmount: 680000,
-                referrer: '王建築師'
-            },
-            {
-                id: 'case_1705736700000',
-                status: '已結案',
-                createdAt: '2026-01-20T13:45',
-                clientName: '員林塑膠企業社',
-                workProgress: '準備簽約',
-                serviceItem: '特定工廠登記',
-                serviceDetail: '特定工廠登記執照取得',
-                address: '彰化縣員林市員鹿路55號',
-                landNumber: '員林段 0310-0000 地號',
-                caseDesc: '輔導取得特定工廠登記執照全程辦理。',
-                salesNote: '執照順利核發，已完成結案交付。',
-                quoteAmount: 420000,
-                caseSource: '專業技師',
-                contractAmount: 420000,
-                referrer: '黃會計師'
-            },
-            {
-                id: 'case_1706778000000',
-                status: '廢件區',
-                createdAt: '2026-02-01T09:00',
-                clientName: '福興織帶廠',
-                workProgress: '現勘',
-                serviceItem: '土地變更',
-                serviceDetail: '農地變更規劃',
-                address: '彰化縣福興鄉員鹿路二段300號',
-                landNumber: '福興段 0621-0000 地號',
-                caseDesc: '評估農地變更特定目的事業用地可行性。',
-                salesNote: '土地條件不符現行法規，終止評估。',
-                quoteAmount: 0,
-                caseSource: '製造業',
-                contractAmount: 0,
-                referrer: '自開發'
-            }
-        ];
+        // 預設案件資料已清空為全空陣列
+        const initialMockCases = [];
 
         document.addEventListener('DOMContentLoaded', () => {
+            initTableHeaders();
             initStorage();
             loadCasesFromStorage();
         });
+
+        function initTableHeaders() {
+            const headerHTML = `
+                <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
+                    <tr>
+                        <th class="p-3 font-semibold w-[24%]">客戶名稱</th>
+                        <th class="p-3 font-semibold w-[18%]">服務項目</th>
+                        <th class="p-3 font-semibold w-[15%]">案件狀態</th>
+                        <th class="p-3 font-semibold w-[15%]">報價金額</th>
+                        <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
+                    </tr>
+                </thead>
+            `;
+            document.querySelectorAll('.case-table').forEach(table => {
+                table.insertAdjacentHTML('afterbegin', headerHTML);
+            });
+        }
 
         function initStorage() {
             if (!localStorage.getItem(STORAGE_KEY)) {
@@ -743,6 +592,15 @@
 
             casesData.forEach(c => renderCaseRow(c));
             updateDashboard();
+        }
+
+        function clearAllData() {
+            if (confirm('確定要清空瀏覽器中的所有案件紀錄嗎？此操作無法恢復。')) {
+                localStorage.removeItem(STORAGE_KEY);
+                casesData = [];
+                loadCasesFromStorage();
+                alert('已成功清空所有案件！');
+            }
         }
 
         function renderCaseRow(c) {
