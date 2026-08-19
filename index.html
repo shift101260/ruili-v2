@@ -91,14 +91,12 @@
         <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
             <section id="tab-cases-2026" class="tab-content space-y-6">
                 
-                <!-- 新增：戰情室模組 -->
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
                     <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
                         <i class="fa-solid fa-chart-line text-sky-600 text-sm"></i>
-                        <h3 class="font-bold text-slate-800 text-sm">戰情室控台</h3>
+                        <h3 class="font-bold text-slate-800 text-sm">戰情室控台 (2026年度)</h3>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <!-- 左格：總案件數 -->
                         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
                             <div>
                                 <p class="text-xs font-semibold text-slate-500 mb-1">總案件數</p>
@@ -109,7 +107,6 @@
                             </div>
                         </div>
 
-                        <!-- 中格：簽約金額 -->
                         <div class="p-4 bg-emerald-50/60 rounded-xl border border-emerald-100 flex items-center justify-between">
                             <div>
                                 <p class="text-xs font-semibold text-emerald-800 mb-1">簽約金額</p>
@@ -120,7 +117,6 @@
                             </div>
                         </div>
 
-                        <!-- 右格：簽約率 -->
                         <div class="p-4 bg-sky-50/60 rounded-xl border border-sky-100 flex items-center justify-between">
                             <div>
                                 <p class="text-xs font-semibold text-sky-800 mb-1">簽約率</p>
@@ -135,13 +131,92 @@
 
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">2026案件管控面板</h3>
-                    <button onclick="openAddCaseModal()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                        <i class="fa-solid fa-plus"></i> 新增案件
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button onclick="openAddCaseModal()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-plus"></i> 新增案件
+                        </button>
+                        <button onclick="deleteSelectedCases()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-minus"></i> 刪除案件
+                        </button>
+                        <button onclick="restoreDeletedCases()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-rotate-left"></i> 誤刪恢復
+                        </button>
+                    </div>
                 </div>
 
                 <div class="space-y-6">
                     
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-sky-50 border-b border-sky-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-sky-500"></span>
+                                <h4 class="font-bold text-sky-900 text-sm">案件評估</h4>
+                            </div>
+                            <span id="count-eval" class="text-xs font-semibold px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">2 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-slate-600 table-fixed">
+                                <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
+                                    <tr>
+                                        <th class="p-3 font-semibold w-[24%]">客戶名稱</th>
+                                        <th class="p-3 font-semibold w-[18%]">服務項目</th>
+                                        <th class="p-3 font-semibold w-[15%]">案件狀態</th>
+                                        <th class="p-3 font-semibold w-[15%]">報價金額</th>
+                                        <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-eval" class="divide-y divide-slate-100">
+                                    <tr class="hover:bg-slate-50 transition cursor-pointer" 
+                                        onclick="openEditCaseModal(this)"
+                                        data-client-name="鹿港金屬加工廠"
+                                        data-work-progress="現勘"
+                                        data-service-item="土地變更"
+                                        data-service-detail="土地變更審查"
+                                        data-address="彰化縣鹿港鎮頂番路250號"
+                                        data-land-number="鹿港頂番段 0899-0000 地號"
+                                        data-case-desc="農地違規工廠欲申請變更為特定目的事業用地。"
+                                        data-sales-note="業主補件中，待取得完整地籍圖冊。"
+                                        data-quote-amount="500000"
+                                        data-contract-amount="0"
+                                        data-referrer="林地政士"
+                                        data-status="案件評估">
+                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">
+                                            <input type="checkbox" onclick="event.stopPropagation()" class="case-checkbox mr-2 rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer align-middle">
+                                            <span class="align-middle">鹿港金屬加工廠</span>
+                                        </td>
+                                        <td class="p-3 truncate">土地變更審查</td>
+                                        <td class="p-3"><span class="px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">案件評估</span></td>
+                                        <td class="p-3 font-mono text-slate-700">NT$ 500,000</td>
+                                        <td class="p-3 text-slate-500 truncate">業主補件中，待取得完整地籍圖冊。</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-50 transition cursor-pointer" 
+                                        onclick="openEditCaseModal(this)"
+                                        data-client-name="彰濱工業區B廠"
+                                        data-work-progress="報價"
+                                        data-service-item="不動產買賣"
+                                        data-service-detail="資產活化諮詢"
+                                        data-address="彰化縣鹿港鎮彰濱工業區鹿工路12號"
+                                        data-land-number="彰濱段 0035-0000 地號"
+                                        data-case-desc="閒置廠房處分與資產活化方案規劃。"
+                                        data-sales-note="已提供初版簡報，等待董事會決議。"
+                                        data-quote-amount="280000"
+                                        data-contract-amount="0"
+                                        data-referrer="張總經理"
+                                        data-status="案件評估">
+                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">
+                                            <input type="checkbox" onclick="event.stopPropagation()" class="case-checkbox mr-2 rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer align-middle">
+                                            <span class="align-middle">彰濱工業區B廠</span>
+                                        </td>
+                                        <td class="p-3 truncate">資產活化諮詢</td>
+                                        <td class="p-3"><span class="px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">案件評估</span></td>
+                                        <td class="p-3 font-mono text-slate-700">NT$ 280,000</td>
+                                        <td class="p-3 text-slate-500 truncate">已提供初版簡報，等待董事會決議。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="p-4 bg-emerald-50 border-b border-emerald-100 flex justify-between items-center">
                             <div class="flex items-center gap-2">
@@ -154,8 +229,8 @@
                             <table class="w-full text-left text-xs text-slate-600 table-fixed">
                                 <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
                                     <tr>
-                                        <th class="p-3 font-semibold w-[22%]">客戶名稱</th>
-                                        <th class="p-3 font-semibold w-[20%]">服務項目</th>
+                                        <th class="p-3 font-semibold w-[24%]">客戶名稱</th>
+                                        <th class="p-3 font-semibold w-[18%]">服務項目</th>
                                         <th class="p-3 font-semibold w-[15%]">案件狀態</th>
                                         <th class="p-3 font-semibold w-[15%]">報價金額</th>
                                         <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
@@ -180,7 +255,10 @@
                                         data-pay3-amount="100000" data-pay3-date="2026-06-01"
                                         data-pay4-amount="50000"  data-pay4-date="2026-07-30"
                                         data-status="已簽約">
-                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">睿立科技股份有限公司</td>
+                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">
+                                            <input type="checkbox" onclick="event.stopPropagation()" class="case-checkbox mr-2 rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer align-middle">
+                                            <span class="align-middle">睿立科技股份有限公司</span>
+                                        </td>
                                         <td class="p-3 truncate">特定工廠改善計畫</td>
                                         <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">已簽約</span></td>
                                         <td class="p-3 font-mono text-slate-700">NT$ 350,000</td>
@@ -204,7 +282,10 @@
                                         data-pay3-amount="300000" data-pay3-date="2026-05-20"
                                         data-pay4-amount="200000" data-pay4-date="2026-06-30"
                                         data-status="已簽約">
-                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">和美工業廠房</td>
+                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">
+                                            <input type="checkbox" onclick="event.stopPropagation()" class="case-checkbox mr-2 rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer align-middle">
+                                            <span class="align-middle">和美工業廠房</span>
+                                        </td>
                                         <td class="p-3 truncate">太陽能屋頂自建</td>
                                         <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">已簽約</span></td>
                                         <td class="p-3 font-mono text-slate-700">NT$ 1,200,000</td>
@@ -216,64 +297,48 @@
                     </div>
 
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div class="p-4 bg-sky-50 border-b border-sky-100 flex justify-between items-center">
+                        <div class="p-4 bg-purple-50 border-b border-purple-100 flex justify-between items-center">
                             <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-sky-500"></span>
-                                <h4 class="font-bold text-sky-900 text-sm">案件評估</h4>
+                                <span class="w-3 h-3 rounded-full bg-purple-500"></span>
+                                <h4 class="font-bold text-purple-900 text-sm">去年度簽約未結案件</h4>
+                                <span class="text-[11px] text-purple-600 bg-purple-100/60 px-2 py-0.5 rounded font-normal">不計入2026統計數據</span>
                             </div>
-                            <span id="count-eval" class="text-xs font-semibold px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">2 件</span>
+                            <span id="count-last-year" class="text-xs font-semibold px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full">1 件</span>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left text-xs text-slate-600 table-fixed">
                                 <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
                                     <tr>
-                                        <th class="p-3 font-semibold w-[22%]">客戶名稱</th>
-                                        <th class="p-3 font-semibold w-[20%]">服務項目</th>
+                                        <th class="p-3 font-semibold w-[24%]">客戶名稱</th>
+                                        <th class="p-3 font-semibold w-[18%]">服務項目</th>
                                         <th class="p-3 font-semibold w-[15%]">案件狀態</th>
                                         <th class="p-3 font-semibold w-[15%]">報價金額</th>
                                         <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tbody-eval" class="divide-y divide-slate-100">
+                                <tbody id="tbody-last-year" class="divide-y divide-slate-100">
                                     <tr class="hover:bg-slate-50 transition cursor-pointer" 
                                         onclick="openEditCaseModal(this)"
-                                        data-client-name="鹿港金屬加工廠"
-                                        data-work-progress="現勘"
-                                        data-service-item="土地變更"
-                                        data-service-detail="土地變更審查"
-                                        data-address="彰化縣鹿港鎮頂番路250號"
-                                        data-land-number="鹿港頂番段 0899-0000 地號"
-                                        data-case-desc="農地違規工廠欲申請變更為特定目的事業用地。"
-                                        data-sales-note="業主補件中，待取得完整地籍圖冊。"
-                                        data-quote-amount="500000"
-                                        data-contract-amount="0"
-                                        data-referrer="林地政士"
-                                        data-status="案件評估">
-                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">鹿港金屬加工廠</td>
-                                        <td class="p-3 truncate">土地變更審查</td>
-                                        <td class="p-3"><span class="px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">案件評估</span></td>
-                                        <td class="p-3 font-mono text-slate-700">NT$ 500,000</td>
-                                        <td class="p-3 text-slate-500 truncate">業主補件中，待取得完整地籍圖冊。</td>
-                                    </tr>
-                                    <tr class="hover:bg-slate-50 transition cursor-pointer" 
-                                        onclick="openEditCaseModal(this)"
-                                        data-client-name="彰濱工業區B廠"
-                                        data-work-progress="報價"
-                                        data-service-item="不動產買賣"
-                                        data-service-detail="資產活化諮詢"
-                                        data-address="彰化縣鹿港鎮彰濱工業區鹿工路12號"
-                                        data-land-number="彰濱段 0035-0000 地號"
-                                        data-case-desc="閒置廠房處分與資產活化方案規劃。"
-                                        data-sales-note="已提供初版簡報，等待董事會決議。"
-                                        data-quote-amount="280000"
-                                        data-contract-amount="0"
-                                        data-referrer="張總經理"
-                                        data-status="案件評估">
-                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">彰濱工業區B廠</td>
-                                        <td class="p-3 truncate">資產活化諮詢</td>
-                                        <td class="p-3"><span class="px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">案件評估</span></td>
-                                        <td class="p-3 font-mono text-slate-700">NT$ 280,000</td>
-                                        <td class="p-3 text-slate-500 truncate">已提供初版簡報，等待董事會決議。</td>
+                                        data-client-name="大城紡織廠"
+                                        data-work-progress="準備簽約"
+                                        data-service-item="特定工廠登記"
+                                        data-service-detail="特定工廠登記輔導"
+                                        data-address="彰化縣大城鄉東西路12號"
+                                        data-land-number="大城段 0158-0000 地號"
+                                        data-case-desc="2025年11月簽約案件，跨年度持續辦理中。"
+                                        data-sales-note="二期改善施工中，等待環保局複查。"
+                                        data-quote-amount="680000"
+                                        data-contract-amount="680000"
+                                        data-referrer="王建築師"
+                                        data-status="去年度簽約未結案件">
+                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">
+                                            <input type="checkbox" onclick="event.stopPropagation()" class="case-checkbox mr-2 rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer align-middle">
+                                            <span class="align-middle">大城紡織廠</span>
+                                        </td>
+                                        <td class="p-3 truncate">特定工廠登記輔導</td>
+                                        <td class="p-3"><span class="px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full">去年度簽約未結案件</span></td>
+                                        <td class="p-3 font-mono text-slate-700">NT$ 680,000</td>
+                                        <td class="p-3 text-slate-500 truncate">二期改善施工中，等待環保局複查。</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -292,8 +357,8 @@
                             <table class="w-full text-left text-xs text-slate-600 table-fixed">
                                 <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
                                     <tr>
-                                        <th class="p-3 font-semibold w-[22%]">客戶名稱</th>
-                                        <th class="p-3 font-semibold w-[20%]">服務項目</th>
+                                        <th class="p-3 font-semibold w-[24%]">客戶名稱</th>
+                                        <th class="p-3 font-semibold w-[18%]">服務項目</th>
                                         <th class="p-3 font-semibold w-[15%]">案件狀態</th>
                                         <th class="p-3 font-semibold w-[15%]">報價金額</th>
                                         <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
@@ -314,7 +379,10 @@
                                         data-contract-amount="420000"
                                         data-referrer="黃會計師"
                                         data-status="已結案">
-                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">員林塑膠企業社</td>
+                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">
+                                            <input type="checkbox" onclick="event.stopPropagation()" class="case-checkbox mr-2 rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer align-middle">
+                                            <span class="align-middle">員林塑膠企業社</span>
+                                        </td>
                                         <td class="p-3 truncate">特定工廠登記執照取得</td>
                                         <td class="p-3"><span class="px-2 py-0.5 bg-slate-200 text-slate-700 rounded-full">已結案</span></td>
                                         <td class="p-3 font-mono text-slate-700">NT$ 420,000</td>
@@ -337,8 +405,8 @@
                             <table class="w-full text-left text-xs text-slate-600 table-fixed">
                                 <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
                                     <tr>
-                                        <th class="p-3 font-semibold w-[22%]">客戶名稱</th>
-                                        <th class="p-3 font-semibold w-[20%]">服務項目</th>
+                                        <th class="p-3 font-semibold w-[24%]">客戶名稱</th>
+                                        <th class="p-3 font-semibold w-[18%]">服務項目</th>
                                         <th class="p-3 font-semibold w-[15%]">案件狀態</th>
                                         <th class="p-3 font-semibold w-[15%]">報價金額</th>
                                         <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
@@ -359,7 +427,10 @@
                                         data-contract-amount="0"
                                         data-referrer="自開發"
                                         data-status="廢件區">
-                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">福興織帶廠</td>
+                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">
+                                            <input type="checkbox" onclick="event.stopPropagation()" class="case-checkbox mr-2 rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer align-middle">
+                                            <span class="align-middle">福興織帶廠</span>
+                                        </td>
                                         <td class="p-3 truncate">農地變更規劃</td>
                                         <td class="p-3"><span class="px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full">廢件區</span></td>
                                         <td class="p-3 font-mono text-slate-700">NT$ 0</td>
@@ -468,12 +539,12 @@
             </div>
 
             <form id="add-case-form" onsubmit="handleSaveCase(event)" class="p-6 space-y-4 overflow-y-auto flex-1">
-                <!-- 調整：案件狀態移至最上方 -->
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span></label>
                     <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500">
-                        <option value="已簽約">已簽約</option>
                         <option value="案件評估" selected>案件評估</option>
+                        <option value="已簽約">已簽約</option>
+                        <option value="去年度簽約未結案件">去年度簽約未結案件</option>
                         <option value="已結案">已結案</option>
                         <option value="廢件區">廢件區</option>
                     </select>
@@ -559,12 +630,11 @@
                     </div>
                 </div>
 
-                <!-- 付款期程模組 -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                     <label class="block text-xs font-bold text-slate-800">◎ 付款期程</label>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div class="grid grid-cols-2 gap-2 bg-white p-2.5 rounded-lg border border-slate-200">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200 space-y-2">
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">第一期款 (NT$)</label>
                                 <input type="number" id="input-pay1-amount" placeholder="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
@@ -575,7 +645,7 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-2 bg-white p-2.5 rounded-lg border border-slate-200">
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200 space-y-2">
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">第二期款 (NT$)</label>
                                 <input type="number" id="input-pay2-amount" placeholder="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
@@ -586,7 +656,7 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-2 bg-white p-2.5 rounded-lg border border-slate-200">
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200 space-y-2">
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">第三期款 (NT$)</label>
                                 <input type="number" id="input-pay3-amount" placeholder="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
@@ -597,7 +667,7 @@
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-2 bg-white p-2.5 rounded-lg border border-slate-200">
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200 space-y-2">
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">第四期款 (NT$)</label>
                                 <input type="number" id="input-pay4-amount" placeholder="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
@@ -620,8 +690,8 @@
 
     <script>
         let currentEditingRow = null;
+        let deleteHistoryStack = [];
 
-        // 初始化統計戰情室數據
         document.addEventListener('DOMContentLoaded', () => {
             updateDashboard();
         });
@@ -682,7 +752,6 @@
             document.getElementById('input-contract-amount').value = dataset.contractAmount || 0;
             document.getElementById('input-referrer').value = dataset.referrer || '';
             
-            // 載入付款期程資料
             document.getElementById('input-pay1-amount').value = dataset.pay1Amount || '';
             document.getElementById('input-pay1-date').value = dataset.pay1Date || '';
             document.getElementById('input-pay2-amount').value = dataset.pay2Amount || '';
@@ -710,24 +779,23 @@
             element.style.height = element.scrollHeight + 'px';
         }
 
-        // 更新區域件數與戰情室數據
         function updateDashboard() {
-            const signedCount = document.getElementById('tbody-signed').children.length;
             const evalCount = document.getElementById('tbody-eval').children.length;
+            const signedCount = document.getElementById('tbody-signed').children.length;
+            const lastYearCount = document.getElementById('tbody-last-year').children.length;
             const closedCount = document.getElementById('tbody-closed').children.length;
             const trashCount = document.getElementById('tbody-trash').children.length;
 
-            // 各看板右上方 Badge
-            document.getElementById('count-signed').textContent = `${signedCount} 件`;
             document.getElementById('count-eval').textContent = `${evalCount} 件`;
+            document.getElementById('count-signed').textContent = `${signedCount} 件`;
+            document.getElementById('count-last-year').textContent = `${lastYearCount} 件`;
             document.getElementById('count-closed').textContent = `${closedCount} 件`;
             document.getElementById('count-trash').textContent = `${trashCount} 件`;
 
-            // 1. 總案件數（加總已簽約、案件評估、已結案、廢件區）
-            const totalCases = signedCount + evalCount + closedCount + trashCount;
-            document.getElementById('stat-total-cases').textContent = `${totalCases} 件`;
+            // 去年度案件不計入 2026 總案件數、簽約金額與簽約率
+            const totalCases2026 = evalCount + signedCount + closedCount + trashCount;
+            document.getElementById('stat-total-cases').textContent = `${totalCases2026} 件`;
 
-            // 2. 簽約金額（自動加總『已簽約』裡的『簽約金額』）
             let totalSignedAmount = 0;
             const signedRows = document.querySelectorAll('#tbody-signed tr');
             signedRows.forEach(row => {
@@ -736,13 +804,86 @@
             });
             document.getElementById('stat-signed-amount').textContent = `NT$ ${totalSignedAmount.toLocaleString()}`;
 
-            // 3. 簽約率（『案件評估』案件數拋轉到『已簽約』百分比）
             const evalAndSignedTotal = evalCount + signedCount;
             let conversionRate = 0;
             if (evalAndSignedTotal > 0) {
                 conversionRate = (signedCount / evalAndSignedTotal) * 100;
             }
             document.getElementById('stat-conversion-rate').textContent = `${conversionRate.toFixed(1)}%`;
+        }
+
+        function deleteSelectedCases() {
+            const checkedBoxes = document.querySelectorAll('.case-checkbox:checked');
+            if (checkedBoxes.length === 0) {
+                alert('請先勾選欲刪除的案件！');
+                return;
+            }
+
+            if (!confirm(`確定要將選取的 ${checkedBoxes.length} 筆案件移至廢件區嗎？`)) {
+                return;
+            }
+
+            const currentBatch = [];
+            const trashTbody = document.getElementById('tbody-trash');
+
+            checkedBoxes.forEach(chk => {
+                const tr = chk.closest('tr');
+                if (tr && tr.dataset.status !== '廢件區') {
+                    const prevStatus = tr.dataset.status;
+                    const prevTbody = tr.parentElement;
+
+                    currentBatch.push({
+                        element: tr,
+                        prevStatus: prevStatus,
+                        prevTbody: prevTbody
+                    });
+
+                    tr.dataset.status = '廢件區';
+                    const statusTd = tr.children[2];
+                    if (statusTd) {
+                        statusTd.innerHTML = `<span class="px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full">廢件區</span>`;
+                    }
+
+                    chk.checked = false;
+                    trashTbody.appendChild(tr);
+                }
+            });
+
+            if (currentBatch.length > 0) {
+                deleteHistoryStack.push(currentBatch);
+                updateDashboard();
+                alert(`已將 ${currentBatch.length} 筆案件移至廢件區。`);
+            }
+        }
+
+        function restoreDeletedCases() {
+            if (deleteHistoryStack.length === 0) {
+                alert('目前沒有可恢復的刪除紀錄！');
+                return;
+            }
+
+            const lastBatch = deleteHistoryStack.pop();
+            lastBatch.forEach(item => {
+                const tr = item.element;
+                const status = item.prevStatus;
+                tr.dataset.status = status;
+
+                let badgeClass = 'bg-sky-100 text-sky-700';
+                if (status === '已簽約') badgeClass = 'bg-emerald-100 text-emerald-700';
+                else if (status === '去年度簽約未結案件') badgeClass = 'bg-purple-100 text-purple-700';
+                else if (status === '已結案') badgeClass = 'bg-slate-200 text-slate-700';
+                else if (status === '廢件區') badgeClass = 'bg-rose-100 text-rose-700';
+
+                const statusTd = tr.children[2];
+                if (statusTd) {
+                    statusTd.innerHTML = `<span class="px-2 py-0.5 ${badgeClass} rounded-full">${status}</span>`;
+                }
+
+                item.prevTbody.appendChild(tr);
+            });
+
+            updateDashboard();
+            alert(`已成功恢復 ${lastBatch.length} 筆案件至原狀態區！`);
         }
 
         function handleSaveCase(event) {
@@ -761,7 +902,6 @@
             const contractAmountVal = document.getElementById('input-contract-amount').value || '0';
             const referrer = document.getElementById('input-referrer').value;
             
-            // 取得付款期程欄位值
             const pay1Amount = document.getElementById('input-pay1-amount').value;
             const pay1Date = document.getElementById('input-pay1-date').value;
             const pay2Amount = document.getElementById('input-pay2-amount').value;
@@ -778,13 +918,17 @@
             let badgeClass = '';
 
             switch(status) {
+                case '案件評估':
+                    targetTbodyId = 'tbody-eval';
+                    badgeClass = 'bg-sky-100 text-sky-700';
+                    break;
                 case '已簽約':
                     targetTbodyId = 'tbody-signed';
                     badgeClass = 'bg-emerald-100 text-emerald-700';
                     break;
-                case '案件評估':
-                    targetTbodyId = 'tbody-eval';
-                    badgeClass = 'bg-sky-100 text-sky-700';
+                case '去年度簽約未結案件':
+                    targetTbodyId = 'tbody-last-year';
+                    badgeClass = 'bg-purple-100 text-purple-700';
                     break;
                 case '已結案':
                     targetTbodyId = 'tbody-closed';
@@ -817,7 +961,6 @@
             tr.dataset.contractAmount = contractAmountVal;
             tr.dataset.referrer = referrer;
             
-            // 寫入付款期程至 dataset
             tr.dataset.pay1Amount = pay1Amount;
             tr.dataset.pay1Date = pay1Date;
             tr.dataset.pay2Amount = pay2Amount;
@@ -828,7 +971,10 @@
             tr.dataset.pay4Date = pay4Date;
 
             tr.innerHTML = `
-                <td class="p-3 font-semibold text-sky-600 hover:underline truncate">${clientName}</td>
+                <td class="p-3 font-semibold text-sky-600 hover:underline truncate">
+                    <input type="checkbox" onclick="event.stopPropagation()" class="case-checkbox mr-2 rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer align-middle">
+                    <span class="align-middle">${clientName}</span>
+                </td>
                 <td class="p-3 truncate">${displayService}</td>
                 <td class="p-3"><span class="px-2 py-0.5 ${badgeClass} rounded-full">${status}</span></td>
                 <td class="p-3 font-mono text-slate-700">${quoteFormatted}</td>
