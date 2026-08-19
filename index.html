@@ -91,11 +91,12 @@
         <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
             <section id="tab-cases-2026" class="tab-content space-y-6">
                 
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                     <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
                         <i class="fa-solid fa-chart-line text-sky-600 text-sm"></i>
-                        <h3 class="font-bold text-slate-800 text-sm">戰情室</h3>
+                        <h3 class="font-bold text-slate-800 text-sm">戰情室控台 (2026年度)</h3>
                     </div>
+                    
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
                             <div>
@@ -127,10 +128,34 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2">
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                                <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-chart-bar text-sky-600"></i> 服務項目營收佔比 (已簽約)
+                                </span>
+                                <span class="text-[11px] text-slate-400">即時計算</span>
+                            </div>
+                            <div id="analytics-service-share" class="space-y-2 text-xs">
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                                <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-diagram-project text-indigo-600"></i> 業務與通路效益分析 (來源統計)
+                                </span>
+                                <span class="text-[11px] text-slate-400">總案源分佈</span>
+                            </div>
+                            <div id="analytics-source-benefit" class="space-y-2 text-xs">
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-bold text-slate-800">案件管理</h3>
+                    <h3 class="text-lg font-bold text-slate-800">2026案件管控面板</h3>
                     <div class="flex items-center gap-2">
                         <button onclick="openAddCaseModal()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                             <i class="fa-solid fa-plus"></i> 新增案件
@@ -177,6 +202,7 @@
                                         data-case-desc="農地違規工廠欲申請變更為特定目的事業用地。"
                                         data-sales-note="業主補件中，待取得完整地籍圖冊。"
                                         data-quote-amount="500000"
+                                        data-case-source="製造業"
                                         data-contract-amount="0"
                                         data-referrer="林地政士"
                                         data-status="案件評估">
@@ -200,6 +226,7 @@
                                         data-case-desc="閒置廠房處分與資產活化方案規劃。"
                                         data-sales-note="已提供初版簡報，等待董事會決議。"
                                         data-quote-amount="280000"
+                                        data-case-source="同業"
                                         data-contract-amount="0"
                                         data-referrer="張總經理"
                                         data-status="案件評估">
@@ -248,6 +275,7 @@
                                         data-case-desc="已完成第一階段書面審查，準備進行消防及水利設施補正。"
                                         data-sales-note="已收定金，現正進行現場測量與圖資套繪。"
                                         data-quote-amount="350000"
+                                        data-case-source="工廠健檢"
                                         data-contract-amount="350000"
                                         data-referrer="陳經理"
                                         data-pay1-amount="100000" data-pay1-date="2026-03-01"
@@ -275,8 +303,9 @@
                                         data-case-desc="屋頂結構評估安全，規劃建置 300KW 屋頂型太陽能系統。"
                                         data-sales-note="台電審查已通過，預計下月開工動土。"
                                         data-quote-amount="1200000"
+                                        data-case-source="BNI"
                                         data-contract-amount="1200000"
-                                        data-referrer="自開發"
+                                        data-referrer="黃會長"
                                         data-pay1-amount="300000" data-pay1-date="2026-02-10"
                                         data-pay2-amount="400000" data-pay2-date="2026-04-01"
                                         data-pay3-amount="300000" data-pay3-date="2026-05-20"
@@ -328,6 +357,7 @@
                                         data-case-desc="2025年11月簽約案件，跨年度持續辦理中。"
                                         data-sales-note="二期改善施工中，等待環保局複查。"
                                         data-quote-amount="680000"
+                                        data-case-source="老客戶"
                                         data-contract-amount="680000"
                                         data-referrer="王建築師"
                                         data-status="去年度簽約未結案件">
@@ -376,6 +406,7 @@
                                         data-case-desc="輔導取得特定工廠登記執照全程辦理。"
                                         data-sales-note="執照順利核發，已完成結案交付。"
                                         data-quote-amount="420000"
+                                        data-case-source="專業技師"
                                         data-contract-amount="420000"
                                         data-referrer="黃會計師"
                                         data-status="已結案">
@@ -424,6 +455,7 @@
                                         data-case-desc="評估農地變更特定目的事業用地可行性。"
                                         data-sales-note="土地條件不符現行法規，終止評估。"
                                         data-quote-amount="0"
+                                        data-case-source="製造業"
                                         data-contract-amount="0"
                                         data-referrer="自開發"
                                         data-status="廢件區">
@@ -613,10 +645,25 @@
                     <textarea id="input-sales-note" rows="2" placeholder="請輸入業務最新進度說明..." oninput="autoExpandTextarea(this)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 resize-none overflow-hidden leading-relaxed"></textarea>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 報價金額 (NT$)</label>
                         <input type="number" id="input-quote-amount" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 案件來源</label>
+                        <select id="select-case-source" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
+                            <option value="老客戶">老客戶</option>
+                            <option value="工廠健檢">工廠健檢</option>
+                            <option value="同業">同業</option>
+                            <option value="製造業">製造業</option>
+                            <option value="顧問業">顧問業</option>
+                            <option value="專業技師">專業技師</option>
+                            <option value="BNI">BNI</option>
+                            <option value="獅子會">獅子會</option>
+                            <option value="其他" selected>其他</option>
+                        </select>
                     </div>
 
                     <div>
@@ -749,6 +796,7 @@
             document.getElementById('input-case-description').value = dataset.caseDesc || '';
             document.getElementById('input-sales-note').value = dataset.salesNote || '';
             document.getElementById('input-quote-amount').value = dataset.quoteAmount || 0;
+            document.getElementById('select-case-source').value = dataset.caseSource || '其他';
             document.getElementById('input-contract-amount').value = dataset.contractAmount || 0;
             document.getElementById('input-referrer').value = dataset.referrer || '';
             
@@ -792,16 +840,22 @@
             document.getElementById('count-closed').textContent = `${closedCount} 件`;
             document.getElementById('count-trash').textContent = `${trashCount} 件`;
 
-            // 去年度案件不計入 2026 總案件數、簽約金額與簽約率
             const totalCases2026 = evalCount + signedCount + closedCount + trashCount;
             document.getElementById('stat-total-cases').textContent = `${totalCases2026} 件`;
 
             let totalSignedAmount = 0;
+            const signedServiceMap = {};
             const signedRows = document.querySelectorAll('#tbody-signed tr');
+            
             signedRows.forEach(row => {
                 const amt = parseFloat(row.dataset.contractAmount || row.dataset.quoteAmount || 0);
-                totalSignedAmount += isNaN(amt) ? 0 : amt;
+                const validAmt = isNaN(amt) ? 0 : amt;
+                totalSignedAmount += validAmt;
+
+                const item = row.dataset.serviceItem || '其他';
+                signedServiceMap[item] = (signedServiceMap[item] || 0) + validAmt;
             });
+
             document.getElementById('stat-signed-amount').textContent = `NT$ ${totalSignedAmount.toLocaleString()}`;
 
             const evalAndSignedTotal = evalCount + signedCount;
@@ -810,6 +864,66 @@
                 conversionRate = (signedCount / evalAndSignedTotal) * 100;
             }
             document.getElementById('stat-conversion-rate').textContent = `${conversionRate.toFixed(1)}%`;
+
+            // 1. 戰情室：服務項目營收佔比
+            const shareContainer = document.getElementById('analytics-service-share');
+            shareContainer.innerHTML = '';
+
+            if (totalSignedAmount === 0 || Object.keys(signedServiceMap).length === 0) {
+                shareContainer.innerHTML = '<div class="text-slate-400 py-1">無已簽約案件數據</div>';
+            } else {
+                for (const [item, amt] of Object.entries(signedServiceMap)) {
+                    const pct = ((amt / totalSignedAmount) * 100).toFixed(1);
+                    const html = `
+                        <div>
+                            <div class="flex justify-between text-slate-600 mb-1">
+                                <span class="font-medium">${item}</span>
+                                <span class="font-mono">NT$ ${amt.toLocaleString()} (${pct}%)</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                                <div class="bg-sky-500 h-full" style="width: ${pct}%"></div>
+                            </div>
+                        </div>
+                    `;
+                    shareContainer.insertAdjacentHTML('beforeend', html);
+                }
+            }
+
+            // 2. 戰情室：業務與通路效益分析 (2026全區域案源)
+            const sourceContainer = document.getElementById('analytics-source-benefit');
+            sourceContainer.innerHTML = '';
+            
+            const sourceMap = {};
+            const all2026Rows = document.querySelectorAll('#tbody-eval tr, #tbody-signed tr, #tbody-closed tr, #tbody-trash tr');
+            
+            all2026Rows.forEach(row => {
+                const src = row.dataset.caseSource || '其他';
+                const amt = parseFloat(row.dataset.contractAmount || row.dataset.quoteAmount || 0);
+                const validAmt = isNaN(amt) ? 0 : amt;
+
+                if (!sourceMap[src]) {
+                    sourceMap[src] = { count: 0, amount: 0 };
+                }
+                sourceMap[src].count += 1;
+                sourceMap[src].amount += validAmt;
+            });
+
+            if (all2026Rows.length === 0) {
+                sourceContainer.innerHTML = '<div class="text-slate-400 py-1">無案件來源數據</div>';
+            } else {
+                for (const [src, data] of Object.entries(sourceMap)) {
+                    const html = `
+                        <div class="flex justify-between items-center bg-white p-2 rounded border border-slate-200">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 font-semibold rounded text-[11px]">${src}</span>
+                                <span class="text-slate-500">${data.count} 件</span>
+                            </div>
+                            <span class="font-mono font-medium text-slate-700">NT$ ${data.amount.toLocaleString()}</span>
+                        </div>
+                    `;
+                    sourceContainer.insertAdjacentHTML('beforeend', html);
+                }
+            }
         }
 
         function deleteSelectedCases() {
@@ -899,6 +1013,7 @@
             const caseDesc = document.getElementById('input-case-description').value;
             const salesNote = document.getElementById('input-sales-note').value || '尚未提供即時說明。';
             const quoteAmountVal = document.getElementById('input-quote-amount').value || '0';
+            const caseSource = document.getElementById('select-case-source').value;
             const contractAmountVal = document.getElementById('input-contract-amount').value || '0';
             const referrer = document.getElementById('input-referrer').value;
             
@@ -958,6 +1073,7 @@
             tr.dataset.caseDesc = caseDesc;
             tr.dataset.salesNote = salesNote;
             tr.dataset.quoteAmount = quoteAmountVal;
+            tr.dataset.caseSource = caseSource;
             tr.dataset.contractAmount = contractAmountVal;
             tr.dataset.referrer = referrer;
             
