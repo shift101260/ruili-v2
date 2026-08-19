@@ -35,12 +35,18 @@
             </div>
         </div>
 
-        <!-- 導覽選單 (更新為 4 個新項目) -->
+        <!-- 導覽選單 (已在 2026案件管理 下方新增 特登工廠) -->
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
             <button onclick="switchTab('cases-2026')" id="btn-cases-2026" 
                 class="sidebar-btn sidebar-item-active w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all hover:bg-slate-800 hover:text-white">
                 <i class="fa-solid fa-list-check text-lg w-5 text-center"></i>
                 <span>2026案件管理</span>
+            </button>
+
+            <button onclick="switchTab('special-factory')" id="btn-special-factory" 
+                class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
+                <i class="fa-solid fa-industry text-lg w-5 text-center"></i>
+                <span>特登工廠</span>
             </button>
 
             <button onclick="switchTab('project-eval')" id="btn-project-eval" 
@@ -124,7 +130,20 @@
                 </div>
             </section>
 
-            <!-- 2. 專案評估 Tab -->
+            <!-- 2. 特登工廠 Tab -->
+            <section id="tab-special-factory" class="tab-content hidden space-y-6">
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-5 border-b border-slate-100 flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800">特定工廠改善計畫與用地變更進度追蹤</h3>
+                        <button class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition">+ 新增廠區案件</button>
+                    </div>
+                    <div class="p-5 text-slate-500 text-sm">
+                        特定工廠（特登工廠）輔導、消防/水利改善計畫及用地變更作業控台。
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. 專案評估 Tab -->
             <section id="tab-project-eval" class="tab-content hidden space-y-6">
                 <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                     <h3 class="font-bold text-slate-800 mb-2">專案可行性與效益評估</h3>
@@ -135,7 +154,7 @@
                 </div>
             </section>
 
-            <!-- 3. 太陽能自建評估 Tab -->
+            <!-- 4. 太陽能自建評估 Tab -->
             <section id="tab-solar-eval" class="tab-content hidden space-y-6">
                 <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                     <h3 class="font-bold text-slate-800 mb-2">太陽能自建案場評估管理</h3>
@@ -153,7 +172,7 @@
                 </div>
             </section>
 
-            <!-- 4. 不動產案件資料表 Tab -->
+            <!-- 5. 不動產案件資料表 Tab -->
             <section id="tab-real-estate-table" class="tab-content hidden space-y-6">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-5 border-b border-slate-100 flex justify-between items-center">
@@ -221,6 +240,7 @@
             // 動態更換 Header 標題
             const titles = {
                 'cases-2026': '2026案件管理',
+                'special-factory': '特登工廠',
                 'project-eval': '專案評估',
                 'solar-eval': '太陽能自建評估',
                 'real-estate-table': '不動產案件資料表'
