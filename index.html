@@ -82,7 +82,7 @@
         <header class="bg-white border-b border-slate-200 px-8 py-4 flex items-center justify-between shadow-sm">
             <div>
                 <h2 id="page-title" class="text-xl font-bold text-slate-800">戰情室</h2>
-                <p class="text-xs text-slate-500 mt-0.5">系統自動存取模式｜即時營運指標與戰情數據</p>
+                <p class="text-xs text-slate-500 mt-0.5">睿立｜即時營運指標與戰情數據</p>
             </div>
             
             <div class="flex items-center gap-3">
@@ -102,7 +102,7 @@
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                     <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
                         <i class="fa-solid fa-chart-line text-sky-600 text-sm"></i>
-                        <h3 class="font-bold text-slate-800 text-sm">戰情室數據中心 (2026年度)</h3>
+                        <h3 class="font-bold text-slate-800 text-sm">2026戰情室數據中心</h3>
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -212,7 +212,7 @@
                         <div class="p-4 bg-purple-50 border-b border-purple-100 flex justify-between items-center">
                             <div class="flex items-center gap-2">
                                 <span class="w-3 h-3 rounded-full bg-purple-500"></span>
-                                <h4 class="font-bold text-purple-900 text-sm">去年度簽約未結案件</h4>
+                                <h4 class="font-bold text-purple-900 text-sm">歷年簽約未結案</h4>
                                 <span class="text-[11px] text-purple-600 bg-purple-100/60 px-2 py-0.5 rounded font-normal">不計入2026統計數據</span>
                             </div>
                             <span id="count-last-year" class="text-xs font-semibold px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full">0 件</span>
@@ -400,34 +400,34 @@
 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 地址</label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 地址</label>
                         <input type="text" id="input-address" placeholder="請輸入地址" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 地段地號</label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 地段地號</label>
                         <input type="text" id="input-land-number" placeholder="例：彰化市大肚段123地號" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 案件說明</label>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1"> 案件說明</label>
                     <textarea id="input-case-description" rows="2" placeholder="請輸入詳細案件說明..." oninput="autoExpandTextarea(this)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 resize-none overflow-hidden leading-relaxed"></textarea>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 業務即時說明</label>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1"> 業務即時說明</label>
                     <textarea id="input-sales-note" rows="2" placeholder="請輸入業務最新進度說明..." oninput="autoExpandTextarea(this)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 resize-none overflow-hidden leading-relaxed"></textarea>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 報價金額 (NT$)</label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 報價金額 (NT$)</label>
                         <input type="number" id="input-quote-amount" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 案件來源</label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 案件來源</label>
                         <select id="select-case-source" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
                             <option value="股東">股東</option>
                             <option value="老客戶">老客戶</option>
@@ -443,18 +443,18 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 簽約金額 (NT$)</label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 簽約金額 (NT$)</label>
                         <input type="number" id="input-contract-amount" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 介紹人</label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 介紹人</label>
                         <input type="text" id="input-referrer" placeholder="請輸入介紹人姓名" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
                     </div>
                 </div>
 
                 <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
-                    <label class="block text-xs font-bold text-slate-800">◎ 案件評估</label>
+                    <label class="block text-xs font-bold text-slate-800"> 案件評估</label>
                     <div class="flex flex-wrap gap-2">
                         <button type="button" onclick="openLandModal()" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                             <i class="fa-solid fa-plus text-sky-600"></i> 土地基本資料
@@ -469,7 +469,7 @@
                 </div>
 
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                    <label class="block text-xs font-bold text-slate-800">◎ 付款期程</label>
+                    <label class="block text-xs font-bold text-slate-800"> 付款期程</label>
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
                         <div class="bg-white p-2.5 rounded-lg border border-slate-200 space-y-2">
                             <div>
@@ -477,7 +477,7 @@
                                 <input type="number" id="input-pay1-amount" placeholder="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">第一期日期</label>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">日期</label>
                                 <input type="date" id="input-pay1-date" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
                             </div>
                         </div>
@@ -488,7 +488,7 @@
                                 <input type="number" id="input-pay2-amount" placeholder="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">第二期日期</label>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">日期</label>
                                 <input type="date" id="input-pay2-date" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
                             </div>
                         </div>
@@ -499,7 +499,7 @@
                                 <input type="number" id="input-pay3-amount" placeholder="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">第三期日期</label>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">日期</label>
                                 <input type="date" id="input-pay3-date" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
                             </div>
                         </div>
@@ -510,7 +510,7 @@
                                 <input type="number" id="input-pay4-amount" placeholder="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">第四期日期</label>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">日期</label>
                                 <input type="date" id="input-pay4-date" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
                             </div>
                         </div>
@@ -539,10 +539,10 @@
             </div>
 
             <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs">
-                <!-- 第一排：基本區域資訊 -->
+                <!-- 土地基本資訊 -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <h4 class="font-bold text-slate-700 mb-3 flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-sky-500"></span> 第一排：土地基本區域與權屬
+                        <span class="w-2 h-2 rounded-full bg-sky-500"></span> 地號
                     </h4>
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div>
@@ -564,7 +564,7 @@
                     </div>
                 </div>
 
-                <!-- 第二排：動態地號列表區 (8欄位橫向一排) -->
+                <!-- 第二排：動態地號列表區 (固定單一標題列) -->
                 <div class="space-y-3">
                     <div class="flex justify-between items-center">
                         <h4 class="font-bold text-slate-700 flex items-center gap-1.5">
@@ -575,8 +575,25 @@
                         </button>
                     </div>
 
-                    <div id="land-rows-container" class="space-y-4 overflow-x-auto pb-2">
-                        <!-- 動態插入地號資料卡片 -->
+                    <!-- 資料表區域（滑動外框） -->
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
+                        <div class="min-w-[1050px] space-y-2">
+                            <!-- 固定頂端標題列 (只顯示一次) -->
+                            <div class="grid grid-cols-[1fr_1fr_1.2fr_0.9fr_0.9fr_1.2fr_0.9fr_1fr_32px] gap-2 bg-slate-100 p-2.5 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
+                                <div>(1) 地號</div>
+                                <div>(2) 登記日期</div>
+                                <div>(3) 使用分區</div>
+                                <div>(4) 用地</div>
+                                <div>(5) 面積 (㎡)</div>
+                                <div>(6) 權利範圍</div>
+                                <div>(7) 平方公尺</div>
+                                <div>(8) 他項權利</div>
+                                <div></div>
+                            </div>
+
+                            <!-- 動態新增地號資料列 (不含標題) -->
+                            <div id="land-rows-container" class="space-y-2"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -808,68 +825,42 @@
             landRowCount++;
             const rowId = `land-row-${landRowCount}`;
             const html = `
-                <div id="${rowId}" class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm relative min-w-[1000px]">
-                    <button type="button" onclick="removeLandRow('${rowId}')" class="absolute top-2 right-2 text-slate-400 hover:text-rose-600 transition" title="刪除此筆地號">
+                <div id="${rowId}" class="grid grid-cols-[1fr_1fr_1.2fr_0.9fr_0.9fr_1.2fr_0.9fr_1fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
+                    <!-- (1) 地號 -->
+                    <input type="text" placeholder="例：0899-0000" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+
+                    <!-- (2) 登記日期（手動輸入） -->
+                    <input type="text" placeholder="例：112/05/20" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+
+                    <!-- (3) 使用分區（下拉選單） -->
+                    <select class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white text-xs">
+                        <option value="都計使用分區">都計使用分區</option>
+                        <option value="非都使用地類別">非都使用地類別</option>
+                    </select>
+
+                    <!-- (4) 用地 -->
+                    <input type="text" placeholder="例：建築用地" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+
+                    <!-- (5) 面積 (㎡) -->
+                    <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateLandTotals()" class="land-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+
+                    <!-- (6) 權利範圍 -->
+                    <div class="flex items-center gap-0.5">
+                        <input type="number" min="1" value="1" oninput="calculateLandTotals()" class="land-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                        <span class="text-slate-400 font-bold">/</span>
+                        <input type="number" min="1" value="1" oninput="calculateLandTotals()" class="land-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                    </div>
+
+                    <!-- (7) 平方公尺 (計算結果) -->
+                    <input type="text" readonly placeholder="0.00" class="land-sqm-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-lg font-mono font-bold text-xs">
+
+                    <!-- (8) 他項權利 -->
+                    <input type="text" placeholder="例：最高限額抵押" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+
+                    <!-- 刪除按鈕 -->
+                    <button type="button" onclick="removeLandRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆地號">
                         <i class="fa-solid fa-trash-can text-sm"></i>
                     </button>
-
-                    <!-- (1)~(8) 欄位橫向一排 -->
-                    <div class="grid grid-cols-8 gap-2 pr-6">
-                        <!-- (1) 地號 -->
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1 truncate">地號</label>
-                            <input type="text" placeholder="例：0899-0000" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                        </div>
-
-                        <!-- (2) 登記日期（手動輸入文字框，無日曆） -->
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1 truncate">登記日期</label>
-                            <input type="text" placeholder="例：112/05/20" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                        </div>
-
-                        <!-- (3) 使用分區（下拉選單） -->
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1 truncate">使用分區</label>
-                            <select class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white text-xs">
-                                <option value="都計使用分區">都計使用分區</option>
-                                <option value="非都使用地類別">非都使用地類別</option>
-                            </select>
-                        </div>
-
-                        <!-- (4) 用地 -->
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1 truncate">用地</label>
-                            <input type="text" placeholder="例：建築用地" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                        </div>
-
-                        <!-- (5) 面積 -->
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1 truncate">面積 (㎡)</label>
-                            <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateLandTotals()" class="land-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
-                        </div>
-
-                        <!-- (6) 權利範圍 -->
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1 truncate">權利範圍</label>
-                            <div class="flex items-center gap-0.5">
-                                <input type="number" min="1" value="1" oninput="calculateLandTotals()" class="land-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
-                                <span class="text-slate-400 font-bold">/</span>
-                                <input type="number" min="1" value="1" oninput="calculateLandTotals()" class="land-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
-                            </div>
-                        </div>
-
-                        <!-- (7) 平方公尺 (計算結果) -->
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1 truncate">平方公尺</label>
-                            <input type="text" readonly placeholder="0.00" class="land-sqm-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-lg font-mono font-bold text-xs">
-                        </div>
-
-                        <!-- (8) 他項權利 -->
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1 truncate">他項權利</label>
-                            <input type="text" placeholder="例：最高限額抵押" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                        </div>
-                    </div>
                 </div>
             `;
             document.getElementById('land-rows-container').insertAdjacentHTML('beforeend', html);
