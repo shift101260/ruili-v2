@@ -91,6 +91,48 @@
         <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
             <section id="tab-cases-2026" class="tab-content space-y-6">
                 
+                <!-- 新增：戰情室模組 -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
+                        <i class="fa-solid fa-chart-line text-sky-600 text-sm"></i>
+                        <h3 class="font-bold text-slate-800 text-sm">戰情室控台</h3>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- 左格：總案件數 -->
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-semibold text-slate-500 mb-1">總案件數</p>
+                                <h4 id="stat-total-cases" class="text-2xl font-black text-slate-800 font-mono">0 件</h4>
+                            </div>
+                            <div class="w-10 h-10 rounded-lg bg-slate-200/60 flex items-center justify-center text-slate-600">
+                                <i class="fa-solid fa-folder-open text-lg"></i>
+                            </div>
+                        </div>
+
+                        <!-- 中格：簽約金額 -->
+                        <div class="p-4 bg-emerald-50/60 rounded-xl border border-emerald-100 flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-semibold text-emerald-800 mb-1">簽約金額</p>
+                                <h4 id="stat-signed-amount" class="text-2xl font-black text-emerald-700 font-mono">NT$ 0</h4>
+                            </div>
+                            <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600">
+                                <i class="fa-solid fa-sack-dollar text-lg"></i>
+                            </div>
+                        </div>
+
+                        <!-- 右格：簽約率 -->
+                        <div class="p-4 bg-sky-50/60 rounded-xl border border-sky-100 flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-semibold text-sky-800 mb-1">簽約率</p>
+                                <h4 id="stat-conversion-rate" class="text-2xl font-black text-sky-700 font-mono">0.0%</h4>
+                            </div>
+                            <div class="w-10 h-10 rounded-lg bg-sky-100 flex items-center justify-center text-sky-600">
+                                <i class="fa-solid fa-chart-pie text-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">2026案件管控面板</h3>
                     <button onclick="openAddCaseModal()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
@@ -426,6 +468,17 @@
             </div>
 
             <form id="add-case-form" onsubmit="handleSaveCase(event)" class="p-6 space-y-4 overflow-y-auto flex-1">
+                <!-- 調整：案件狀態移至最上方 -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span></label>
+                    <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500">
+                        <option value="已簽約">已簽約</option>
+                        <option value="案件評估" selected>案件評估</option>
+                        <option value="已結案">已結案</option>
+                        <option value="廢件區">廢件區</option>
+                    </select>
+                </div>
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 客戶名稱 <span class="text-rose-500">*</span></label>
@@ -506,7 +559,7 @@
                     </div>
                 </div>
 
-                <!-- 新增：付款期程模組 -->
+                <!-- 付款期程模組 -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                     <label class="block text-xs font-bold text-slate-800">◎ 付款期程</label>
                     
@@ -557,16 +610,6 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span></label>
-                    <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500">
-                        <option value="已簽約">已簽約</option>
-                        <option value="案件評估" selected>案件評估</option>
-                        <option value="已結案">已結案</option>
-                        <option value="廢件區">廢件區</option>
-                    </select>
-                </div>
-
                 <div class="pt-4 border-t border-slate-100 flex justify-end gap-3">
                     <button type="button" onclick="closeAddCaseModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg text-xs font-medium hover:bg-slate-50 transition">取消</button>
                     <button type="submit" id="btn-submit-case" class="px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition shadow-sm">儲存</button>
@@ -577,6 +620,11 @@
 
     <script>
         let currentEditingRow = null;
+
+        // 初始化統計戰情室數據
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDashboard();
+        });
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -621,6 +669,7 @@
             document.getElementById('btn-submit-case').textContent = '儲存變更';
 
             const dataset = trElement.dataset;
+            document.getElementById('select-case-status').value = dataset.status || '案件評估';
             document.getElementById('input-client-name').value = dataset.clientName || '';
             document.getElementById('select-work-progress').value = dataset.workProgress || '潛在客戶';
             document.getElementById('select-service-item').value = dataset.serviceItem || '地政士';
@@ -643,8 +692,6 @@
             document.getElementById('input-pay4-amount').value = dataset.pay4Amount || '';
             document.getElementById('input-pay4-date').value = dataset.pay4Date || '';
 
-            document.getElementById('select-case-status').value = dataset.status || '案件評估';
-
             document.querySelectorAll('#add-case-modal textarea').forEach(ta => {
                 autoExpandTextarea(ta);
             });
@@ -663,23 +710,45 @@
             element.style.height = element.scrollHeight + 'px';
         }
 
-        function updateCategoryCounts() {
-            const categories = [
-                { tbody: 'tbody-signed', badge: 'count-signed' },
-                { tbody: 'tbody-eval', badge: 'count-eval' },
-                { tbody: 'tbody-closed', badge: 'count-closed' },
-                { tbody: 'tbody-trash', badge: 'count-trash' }
-            ];
+        // 更新區域件數與戰情室數據
+        function updateDashboard() {
+            const signedCount = document.getElementById('tbody-signed').children.length;
+            const evalCount = document.getElementById('tbody-eval').children.length;
+            const closedCount = document.getElementById('tbody-closed').children.length;
+            const trashCount = document.getElementById('tbody-trash').children.length;
 
-            categories.forEach(cat => {
-                const count = document.getElementById(cat.tbody).children.length;
-                document.getElementById(cat.badge).textContent = `${count} 件`;
+            // 各看板右上方 Badge
+            document.getElementById('count-signed').textContent = `${signedCount} 件`;
+            document.getElementById('count-eval').textContent = `${evalCount} 件`;
+            document.getElementById('count-closed').textContent = `${closedCount} 件`;
+            document.getElementById('count-trash').textContent = `${trashCount} 件`;
+
+            // 1. 總案件數（加總已簽約、案件評估、已結案、廢件區）
+            const totalCases = signedCount + evalCount + closedCount + trashCount;
+            document.getElementById('stat-total-cases').textContent = `${totalCases} 件`;
+
+            // 2. 簽約金額（自動加總『已簽約』裡的『簽約金額』）
+            let totalSignedAmount = 0;
+            const signedRows = document.querySelectorAll('#tbody-signed tr');
+            signedRows.forEach(row => {
+                const amt = parseFloat(row.dataset.contractAmount || row.dataset.quoteAmount || 0);
+                totalSignedAmount += isNaN(amt) ? 0 : amt;
             });
+            document.getElementById('stat-signed-amount').textContent = `NT$ ${totalSignedAmount.toLocaleString()}`;
+
+            // 3. 簽約率（『案件評估』案件數拋轉到『已簽約』百分比）
+            const evalAndSignedTotal = evalCount + signedCount;
+            let conversionRate = 0;
+            if (evalAndSignedTotal > 0) {
+                conversionRate = (signedCount / evalAndSignedTotal) * 100;
+            }
+            document.getElementById('stat-conversion-rate').textContent = `${conversionRate.toFixed(1)}%`;
         }
 
         function handleSaveCase(event) {
             event.preventDefault();
 
+            const status = document.getElementById('select-case-status').value;
             const clientName = document.getElementById('input-client-name').value;
             const workProgress = document.getElementById('select-work-progress').value;
             const serviceItem = document.getElementById('select-service-item').value;
@@ -701,8 +770,6 @@
             const pay3Date = document.getElementById('input-pay3-date').value;
             const pay4Amount = document.getElementById('input-pay4-amount').value;
             const pay4Date = document.getElementById('input-pay4-date').value;
-
-            const status = document.getElementById('select-case-status').value;
 
             const quoteFormatted = `NT$ ${parseInt(quoteAmountVal).toLocaleString()}`;
             const displayService = serviceDetail || serviceItem;
@@ -737,6 +804,7 @@
                 tr.onclick = function() { openEditCaseModal(this); };
             }
 
+            tr.dataset.status = status;
             tr.dataset.clientName = clientName;
             tr.dataset.workProgress = workProgress;
             tr.dataset.serviceItem = serviceItem;
@@ -759,8 +827,6 @@
             tr.dataset.pay4Amount = pay4Amount;
             tr.dataset.pay4Date = pay4Date;
 
-            tr.dataset.status = status;
-
             tr.innerHTML = `
                 <td class="p-3 font-semibold text-sky-600 hover:underline truncate">${clientName}</td>
                 <td class="p-3 truncate">${displayService}</td>
@@ -774,7 +840,7 @@
                 targetTbody.appendChild(tr);
             }
 
-            updateCategoryCounts();
+            updateDashboard();
             closeAddCaseModal();
             alert(`儲存成功！案件已更新並歸類至【${status}】。`);
         }
