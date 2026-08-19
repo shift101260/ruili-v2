@@ -22,9 +22,7 @@
 
     <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col flex-shrink-0 shadow-lg">
         <div class="p-5 flex items-center gap-3 border-b border-slate-800">
-            <div class="w-10 h-10 rounded-lg bg-sky-600 flex items-center justify-center text-white font-bold text-xl shadow">
-                睿
-            </div>
+            <div class="w-10 h-10 rounded-lg bg-sky-600 flex items-center justify-center text-white font-bold text-xl shadow">睿</div>
             <div>
                 <h1 class="font-bold text-white tracking-wide">睿立集團</h1>
                 <p class="text-xs text-slate-400">RUILI SYSTEM</p>
@@ -32,38 +30,27 @@
         </div>
 
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-            <button onclick="switchTab('war-room')" id="btn-war-room" 
-                class="sidebar-btn sidebar-item-active w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all hover:bg-slate-800 hover:text-white">
+            <button onclick="switchTab('war-room')" id="btn-war-room" class="sidebar-btn sidebar-item-active w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all hover:bg-slate-800 hover:text-white">
                 <i class="fa-solid fa-chart-line text-lg w-5 text-center"></i>
                 <span>戰情室</span>
             </button>
-
-            <button onclick="switchTab('cases-2026')" id="btn-cases-2026" 
-                class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
+            <button onclick="switchTab('cases-2026')" id="btn-cases-2026" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
                 <i class="fa-solid fa-list-check text-lg w-5 text-center"></i>
                 <span>2026案件管理</span>
             </button>
-
-            <button onclick="switchTab('project-eval')" id="btn-project-eval" 
-                class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
+            <button onclick="switchTab('project-eval')" id="btn-project-eval" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
                 <i class="fa-solid fa-calculator text-lg w-5 text-center"></i>
                 <span>專案評估</span>
             </button>
-
-            <button onclick="switchTab('special-factory')" id="btn-special-factory" 
-                class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
+            <button onclick="switchTab('special-factory')" id="btn-special-factory" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
                 <i class="fa-solid fa-industry text-lg w-5 text-center"></i>
                 <span>土地變更</span>
             </button>
-
-            <button onclick="switchTab('solar-eval')" id="btn-solar-eval" 
-                class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
+            <button onclick="switchTab('solar-eval')" id="btn-solar-eval" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
                 <i class="fa-solid fa-solar-panel text-lg w-5 text-center"></i>
                 <span>太陽能自建</span>
             </button>
-
-            <button onclick="switchTab('real-estate-table')" id="btn-real-estate-table" 
-                class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
+            <button onclick="switchTab('real-estate-table')" id="btn-real-estate-table" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
                 <i class="fa-solid fa-building text-lg w-5 text-center"></i>
                 <span>不動產案件資料表</span>
             </button>
@@ -84,7 +71,6 @@
                 <h2 id="page-title" class="text-xl font-bold text-slate-800">戰情室</h2>
                 <p class="text-xs text-slate-500 mt-0.5">睿立｜即時營運指標與戰情數據</p>
             </div>
-            
             <div class="flex items-center gap-3">
                 <button onclick="clearAllData()" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md text-xs font-medium flex items-center gap-1.5 transition">
                     <i class="fa-solid fa-trash-can"></i> 清空本地資料
@@ -104,7 +90,6 @@
                         <i class="fa-solid fa-chart-line text-sky-600 text-sm"></i>
                         <h3 class="font-bold text-slate-800 text-sm">2026戰情室數據中心</h3>
                     </div>
-                    
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
                             <div>
@@ -115,7 +100,6 @@
                                 <i class="fa-solid fa-folder-open text-lg"></i>
                             </div>
                         </div>
-
                         <div class="p-4 bg-emerald-50/60 rounded-xl border border-emerald-100 flex items-center justify-between">
                             <div>
                                 <p class="text-xs font-semibold text-emerald-800 mb-1">簽約金額</p>
@@ -125,7 +109,6 @@
                                 <i class="fa-solid fa-sack-dollar text-lg"></i>
                             </div>
                         </div>
-
                         <div class="p-4 bg-sky-50/60 rounded-xl border border-sky-100 flex items-center justify-between">
                             <div>
                                 <p class="text-xs font-semibold text-sky-800 mb-1">簽約率</p>
@@ -136,7 +119,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2">
                         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
                             <div class="flex justify-between items-center border-b border-slate-200 pb-2">
@@ -147,7 +129,6 @@
                             </div>
                             <div id="analytics-service-share" class="space-y-2 text-xs"></div>
                         </div>
-
                         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
                             <div class="flex justify-between items-center border-b border-slate-200 pb-2">
                                 <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
@@ -323,7 +304,6 @@
         </div>
     </main>
 
-    <!-- 主案件表單彈窗 -->
     <div id="add-case-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
@@ -525,7 +505,6 @@
         </div>
     </div>
 
-    <!-- ＋土地基本資料彈窗 -->
     <div id="land-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-[96vw] max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -539,7 +518,6 @@
             </div>
 
             <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs">
-                <!-- 土地基本資訊 -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div>
@@ -561,7 +539,6 @@
                     </div>
                 </div>
 
-                <!-- 動態地號列表區 (固定單一標題列) -->
                 <div class="space-y-3">
                     <div class="flex justify-between items-center">
                         <div></div>
@@ -570,10 +547,8 @@
                         </button>
                     </div>
 
-                    <!-- 資料表區域（滑動外框） -->
                     <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
                         <div class="min-w-[1150px] space-y-2">
-                            <!-- 固定頂端標題列 -->
                             <div class="grid grid-cols-[1fr_1fr_1.2fr_0.9fr_0.9fr_1.2fr_0.9fr_0.9fr_1fr_32px] gap-2 bg-slate-100 p-2.5 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
                                 <div>地號</div>
                                 <div>登記日期</div>
@@ -586,14 +561,11 @@
                                 <div>他項權利</div>
                                 <div></div>
                             </div>
-
-                            <!-- 動態新增地號資料列 -->
                             <div id="land-rows-container" class="space-y-2"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 自動加總 -->
                 <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
                     <h4 class="font-bold text-sky-900 mb-3 flex items-center gap-1.5">
                         <i class="fa-solid fa-calculator text-sky-600"></i> 自動加總
@@ -622,7 +594,6 @@
         </div>
     </div>
 
-    <!-- ＋保存登記建物 Modal -->
     <div id="registered-building-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-[96vw] max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -636,7 +607,6 @@
             </div>
 
             <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs">
-                <!-- 第一排：建物所有權人、建物門牌 -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -650,7 +620,6 @@
                     </div>
                 </div>
 
-                <!-- 第二排：建號表格動態列區 -->
                 <div class="space-y-3">
                     <div class="flex justify-between items-center">
                         <span class="font-bold text-slate-700">建號詳細列表</span>
@@ -661,7 +630,6 @@
 
                     <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
                         <div class="min-w-[1150px] space-y-2">
-                            <!-- 標題列 -->
                             <div class="grid grid-cols-[1fr_1.2fr_1fr_1.1fr_0.9fr_1.2fr_0.9fr_0.9fr_32px] gap-2 bg-slate-100 p-2.5 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
                                 <div>建號</div>
                                 <div>坐落地號</div>
@@ -678,7 +646,6 @@
                     </div>
                 </div>
 
-                <!-- 第三排：自動加總 -->
                 <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
                     <h4 class="font-bold text-sky-900 mb-3 flex items-center gap-1.5">
                         <i class="fa-solid fa-calculator text-sky-600"></i> 自動加總
@@ -707,7 +674,6 @@
         </div>
     </div>
 
-    <!-- ＋未保存登記建物 Modal -->
     <div id="unregistered-building-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -721,13 +687,11 @@
             </div>
 
             <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs">
-                <!-- 第一排：起造人 -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <label class="block font-semibold text-slate-700 mb-1">起造人</label>
                     <input type="text" id="unreg-building-builder" placeholder="請輸入起造人姓名" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
                 </div>
 
-                <!-- 第二排：未保存建物列表動態列區 -->
                 <div class="space-y-3">
                     <div class="flex justify-between items-center">
                         <span class="font-bold text-slate-700">未保存登記建物列表</span>
@@ -738,7 +702,6 @@
 
                     <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
                         <div class="min-w-[600px] space-y-2">
-                            <!-- 標題列 -->
                             <div class="grid grid-cols-[1.5fr_1fr_1.2fr_1.2fr_32px] gap-2 bg-slate-100 p-2.5 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
                                 <div>主要用途</div>
                                 <div>起造年份</div>
@@ -751,7 +714,6 @@
                     </div>
                 </div>
 
-                <!-- 第三排：自動加總 -->
                 <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
                     <h4 class="font-bold text-sky-900 mb-3 flex items-center gap-1.5">
                         <i class="fa-solid fa-calculator text-sky-600"></i> 自動加總
@@ -780,7 +742,6 @@
         const STORAGE_KEY = 'RUILI_SYSTEM_CASES_2026';
         let casesData = [];
         let deleteHistoryStack = [];
-        
         let landRowCount = 0;
         let regBuildingRowCount = 0;
         let unregBuildingRowCount = 0;
@@ -961,7 +922,6 @@
             element.style.height = element.scrollHeight + 'px';
         }
 
-        /* 土地基本資料 Modal 邏輯 */
         function openLandModal() {
             document.getElementById('land-rows-container').innerHTML = '';
             landRowCount = 0;
@@ -987,18 +947,13 @@
                     </select>
                     <input type="text" placeholder="例：建築用地" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
                     <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateLandTotals()" class="land-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
-                    
                     <div class="flex items-center gap-0.5">
                         <input type="number" min="1" value="1" oninput="calculateLandTotals()" class="land-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
                         <span class="text-slate-400 font-bold">/</span>
                         <input type="number" min="1" value="1" oninput="calculateLandTotals()" class="land-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
                     </div>
-
-                    <!-- 平方公尺 (計算結果) -->
                     <input type="text" readonly placeholder="0.00" class="land-sqm-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-lg font-mono font-bold text-xs">
-                    <!-- 坪數 (計算結果) -->
                     <input type="text" readonly placeholder="0.00" class="land-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 rounded-lg font-mono font-bold text-xs">
-
                     <input type="text" placeholder="例：最高限額抵押" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
                     <button type="button" onclick="removeLandRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆地號">
                         <i class="fa-solid fa-trash-can text-sm"></i>
@@ -1057,7 +1012,6 @@
             alert('土地基本資料已成功帶入！');
         }
 
-        /* 一、保存登記建物 Modal 邏輯 */
         function openRegisteredBuildingModal() {
             document.getElementById('reg-building-rows-container').innerHTML = '';
             regBuildingRowCount = 0;
@@ -1080,16 +1034,13 @@
                     <input type="text" placeholder="例：住家用" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
                     <input type="text" placeholder="例：112/05/20" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
                     <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateRegBuildingTotals()" class="reg-bldg-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
-                    
                     <div class="flex items-center gap-0.5">
                         <input type="number" min="1" value="1" oninput="calculateRegBuildingTotals()" class="reg-bldg-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
                         <span class="text-slate-400 font-bold">/</span>
                         <input type="number" min="1" value="1" oninput="calculateRegBuildingTotals()" class="reg-bldg-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
                     </div>
-
                     <input type="text" readonly placeholder="0.00" class="reg-bldg-sqm-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-lg font-mono font-bold text-xs">
                     <input type="text" readonly placeholder="0.00" class="reg-bldg-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 rounded-lg font-mono font-bold text-xs">
-
                     <button type="button" onclick="removeRegBuildingRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆建號">
                         <i class="fa-solid fa-trash-can text-sm"></i>
                     </button>
@@ -1134,7 +1085,6 @@
             document.getElementById('reg-sum-ping').textContent = `${totalPing.toFixed(2)} 坪`;
         }
 
-        /* 二、未保存登記建物 Modal 邏輯 */
         function openUnregisteredBuildingModal() {
             document.getElementById('unreg-building-rows-container').innerHTML = '';
             unregBuildingRowCount = 0;
@@ -1156,7 +1106,6 @@
                     <input type="text" placeholder="例：2015年" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
                     <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateUnregBuildingTotals()" class="unreg-bldg-sqm-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
                     <input type="text" readonly placeholder="0.00" class="unreg-bldg-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 rounded-lg font-mono font-bold text-xs">
-
                     <button type="button" onclick="removeUnregBuildingRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆資料">
                         <i class="fa-solid fa-trash-can text-sm"></i>
                     </button>
