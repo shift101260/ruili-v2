@@ -459,10 +459,10 @@
                         <button type="button" onclick="openLandModal()" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                             <i class="fa-solid fa-plus text-sky-600"></i> 土地基本資料
                         </button>
-                        <button type="button" onclick="alert('開啟【＋保存登記建物】輸入介面')" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                        <button type="button" onclick="openRegisteredBuildingModal()" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                             <i class="fa-solid fa-plus text-sky-600"></i> 保存登記建物
                         </button>
-                        <button type="button" onclick="alert('開啟【＋未保存登記建物】輸入介面')" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                        <button type="button" onclick="openUnregisteredBuildingModal()" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                             <i class="fa-solid fa-plus text-sky-600"></i> 未保存登記建物
                         </button>
                     </div>
@@ -572,9 +572,9 @@
 
                     <!-- 資料表區域（滑動外框） -->
                     <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
-                        <div class="min-w-[1050px] space-y-2">
-                            <!-- 固定頂端標題列 (只顯示一次) -->
-                            <div class="grid grid-cols-[1fr_1fr_1.2fr_0.9fr_0.9fr_1.2fr_0.9fr_1fr_32px] gap-2 bg-slate-100 p-2.5 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
+                        <div class="min-w-[1150px] space-y-2">
+                            <!-- 固定頂端標題列 -->
+                            <div class="grid grid-cols-[1fr_1fr_1.2fr_0.9fr_0.9fr_1.2fr_0.9fr_0.9fr_1fr_32px] gap-2 bg-slate-100 p-2.5 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
                                 <div>地號</div>
                                 <div>登記日期</div>
                                 <div>使用分區</div>
@@ -582,11 +582,12 @@
                                 <div>面積 (㎡)</div>
                                 <div>權利範圍</div>
                                 <div>平方公尺</div>
+                                <div>坪數</div>
                                 <div>他項權利</div>
                                 <div></div>
                             </div>
 
-                            <!-- 動態新增地號資料列 (不含標題) -->
+                            <!-- 動態新增地號資料列 -->
                             <div id="land-rows-container" class="space-y-2"></div>
                         </div>
                     </div>
@@ -621,11 +622,168 @@
         </div>
     </div>
 
+    <!-- ＋保存登記建物 Modal -->
+    <div id="registered-building-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-[96vw] max-h-[92vh] flex flex-col overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-house-chimney-crack text-sky-400 text-lg"></i>
+                    <h3 class="font-bold text-base">保存登記建物</h3>
+                </div>
+                <button onclick="closeRegisteredBuildingModal()" class="text-slate-400 hover:text-white p-1 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs">
+                <!-- 第一排：建物所有權人、建物門牌 -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">建物所有權人</label>
+                            <input type="text" id="reg-building-owner" placeholder="請輸入所有權人" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">建物門牌</label>
+                            <input type="text" id="reg-building-address" placeholder="請輸入建物門牌地址" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第二排：建號表格動態列區 -->
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-slate-700">建號詳細列表</span>
+                        <button type="button" onclick="addRegBuildingRow()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-plus"></i> ＋新增建號
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
+                        <div class="min-w-[1150px] space-y-2">
+                            <!-- 標題列 -->
+                            <div class="grid grid-cols-[1fr_1.2fr_1fr_1.1fr_0.9fr_1.2fr_0.9fr_0.9fr_32px] gap-2 bg-slate-100 p-2.5 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
+                                <div>建號</div>
+                                <div>坐落地號</div>
+                                <div>主要用途</div>
+                                <div>登記日期</div>
+                                <div>面積 (㎡)</div>
+                                <div>權利範圍</div>
+                                <div>平方公尺</div>
+                                <div>坪數</div>
+                                <div></div>
+                            </div>
+                            <div id="reg-building-rows-container" class="space-y-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第三排：自動加總 -->
+                <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                    <h4 class="font-bold text-sky-900 mb-3 flex items-center gap-1.5">
+                        <i class="fa-solid fa-calculator text-sky-600"></i> 自動加總
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div class="bg-white p-3 rounded-lg border border-sky-200">
+                            <span class="block text-slate-500 font-semibold mb-1">總面積</span>
+                            <span id="reg-sum-area" class="text-base font-bold text-slate-800 font-mono">0.00 ㎡</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200">
+                            <span class="block text-slate-500 font-semibold mb-1">總持有平方公尺</span>
+                            <span id="reg-sum-sqm" class="text-base font-bold text-sky-700 font-mono">0.00 ㎡</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200">
+                            <span class="block text-slate-500 font-semibold mb-1">總持有坪數</span>
+                            <span id="reg-sum-ping" class="text-base font-bold text-emerald-700 font-mono">0.00 坪</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
+                <button type="button" onclick="closeRegisteredBuildingModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-medium hover:bg-white transition">取消</button>
+                <button type="button" onclick="closeRegisteredBuildingModal(); alert('保存登記建物資料已儲存！');" class="px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition shadow-sm">確認儲存建物資料</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ＋未保存登記建物 Modal -->
+    <div id="unregistered-building-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-house-circle-exclamation text-amber-400 text-lg"></i>
+                    <h3 class="font-bold text-base">未保存登記建物</h3>
+                </div>
+                <button onclick="closeUnregisteredBuildingModal()" class="text-slate-400 hover:text-white p-1 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs">
+                <!-- 第一排：起造人 -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <label class="block font-semibold text-slate-700 mb-1">起造人</label>
+                    <input type="text" id="unreg-building-builder" placeholder="請輸入起造人姓名" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                </div>
+
+                <!-- 第二排：未保存建物列表動態列區 -->
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-slate-700">未保存登記建物列表</span>
+                        <button type="button" onclick="addUnregBuildingRow()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-plus"></i> ＋新增筆數
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
+                        <div class="min-w-[600px] space-y-2">
+                            <!-- 標題列 -->
+                            <div class="grid grid-cols-[1.5fr_1fr_1.2fr_1.2fr_32px] gap-2 bg-slate-100 p-2.5 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
+                                <div>主要用途</div>
+                                <div>起造年份</div>
+                                <div>平方公尺 (㎡)</div>
+                                <div>坪數</div>
+                                <div></div>
+                            </div>
+                            <div id="unreg-building-rows-container" class="space-y-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第三排：自動加總 -->
+                <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                    <h4 class="font-bold text-sky-900 mb-3 flex items-center gap-1.5">
+                        <i class="fa-solid fa-calculator text-sky-600"></i> 自動加總
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                        <div class="bg-white p-3 rounded-lg border border-sky-200">
+                            <span class="block text-slate-500 font-semibold mb-1">總平方公尺</span>
+                            <span id="unreg-sum-sqm" class="text-base font-bold text-sky-700 font-mono">0.00 ㎡</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200">
+                            <span class="block text-slate-500 font-semibold mb-1">總坪數</span>
+                            <span id="unreg-sum-ping" class="text-base font-bold text-emerald-700 font-mono">0.00 坪</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
+                <button type="button" onclick="closeUnregisteredBuildingModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-medium hover:bg-white transition">取消</button>
+                <button type="button" onclick="closeUnregisteredBuildingModal(); alert('未保存登記建物資料已儲存！');" class="px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition shadow-sm">確認儲存建物資料</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const STORAGE_KEY = 'RUILI_SYSTEM_CASES_2026';
         let casesData = [];
         let deleteHistoryStack = [];
+        
         let landRowCount = 0;
+        let regBuildingRowCount = 0;
+        let unregBuildingRowCount = 0;
 
         document.addEventListener('DOMContentLoaded', () => {
             initTableHeaders();
@@ -807,7 +965,7 @@
         function openLandModal() {
             document.getElementById('land-rows-container').innerHTML = '';
             landRowCount = 0;
-            addLandRow(); // 預設帶出一筆地號輸入區
+            addLandRow();
             calculateLandTotals();
             document.getElementById('land-modal').classList.remove('hidden');
         }
@@ -820,39 +978,28 @@
             landRowCount++;
             const rowId = `land-row-${landRowCount}`;
             const html = `
-                <div id="${rowId}" class="grid grid-cols-[1fr_1fr_1.2fr_0.9fr_0.9fr_1.2fr_0.9fr_1fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
-                    <!-- (1) 地號 -->
+                <div id="${rowId}" class="grid grid-cols-[1fr_1fr_1.2fr_0.9fr_0.9fr_1.2fr_0.9fr_0.9fr_1fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
                     <input type="text" placeholder="例：0899-0000" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-
-                    <!-- (2) 登記日期（手動輸入） -->
                     <input type="text" placeholder="例：112/05/20" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-
-                    <!-- (3) 使用分區（下拉選單） -->
                     <select class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white text-xs">
                         <option value="都計使用分區">都計使用分區</option>
                         <option value="非都使用地類別">非都使用地類別</option>
                     </select>
-
-                    <!-- (4) 用地 -->
                     <input type="text" placeholder="例：建築用地" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-
-                    <!-- (5) 面積 (㎡) -->
                     <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateLandTotals()" class="land-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
-
-                    <!-- (6) 權利範圍 -->
+                    
                     <div class="flex items-center gap-0.5">
                         <input type="number" min="1" value="1" oninput="calculateLandTotals()" class="land-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
                         <span class="text-slate-400 font-bold">/</span>
                         <input type="number" min="1" value="1" oninput="calculateLandTotals()" class="land-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
                     </div>
 
-                    <!-- (7) 平方公尺 (計算結果) -->
+                    <!-- 平方公尺 (計算結果) -->
                     <input type="text" readonly placeholder="0.00" class="land-sqm-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-lg font-mono font-bold text-xs">
+                    <!-- 坪數 (計算結果) -->
+                    <input type="text" readonly placeholder="0.00" class="land-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 rounded-lg font-mono font-bold text-xs">
 
-                    <!-- (8) 他項權利 -->
                     <input type="text" placeholder="例：最高限額抵押" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-
-                    <!-- 刪除按鈕 -->
                     <button type="button" onclick="removeLandRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆地號">
                         <i class="fa-solid fa-trash-can text-sm"></i>
                     </button>
@@ -878,9 +1025,13 @@
 
                 const validDen = denVal <= 0 ? 1 : denVal;
                 const sqm = areaVal * (numVal / validDen);
+                const ping = sqm * 0.3025;
 
                 const sqmOutput = row.querySelector('.land-sqm-output');
                 if (sqmOutput) sqmOutput.value = sqm.toFixed(2);
+
+                const pingOutput = row.querySelector('.land-ping-output');
+                if (pingOutput) pingOutput.value = ping.toFixed(2);
 
                 totalArea += areaVal;
                 totalSqm += sqm;
@@ -904,6 +1055,139 @@
             }
             closeLandModal();
             alert('土地基本資料已成功帶入！');
+        }
+
+        /* 一、保存登記建物 Modal 邏輯 */
+        function openRegisteredBuildingModal() {
+            document.getElementById('reg-building-rows-container').innerHTML = '';
+            regBuildingRowCount = 0;
+            addRegBuildingRow();
+            calculateRegBuildingTotals();
+            document.getElementById('registered-building-modal').classList.remove('hidden');
+        }
+
+        function closeRegisteredBuildingModal() {
+            document.getElementById('registered-building-modal').classList.add('hidden');
+        }
+
+        function addRegBuildingRow() {
+            regBuildingRowCount++;
+            const rowId = `reg-bldg-row-${regBuildingRowCount}`;
+            const html = `
+                <div id="${rowId}" class="grid grid-cols-[1fr_1.2fr_1fr_1.1fr_0.9fr_1.2fr_0.9fr_0.9fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
+                    <input type="text" placeholder="例：01234-000" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" placeholder="例：大肚段123地號" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" placeholder="例：住家用" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" placeholder="例：112/05/20" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateRegBuildingTotals()" class="reg-bldg-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    
+                    <div class="flex items-center gap-0.5">
+                        <input type="number" min="1" value="1" oninput="calculateRegBuildingTotals()" class="reg-bldg-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                        <span class="text-slate-400 font-bold">/</span>
+                        <input type="number" min="1" value="1" oninput="calculateRegBuildingTotals()" class="reg-bldg-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                    </div>
+
+                    <input type="text" readonly placeholder="0.00" class="reg-bldg-sqm-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-lg font-mono font-bold text-xs">
+                    <input type="text" readonly placeholder="0.00" class="reg-bldg-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 rounded-lg font-mono font-bold text-xs">
+
+                    <button type="button" onclick="removeRegBuildingRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆建號">
+                        <i class="fa-solid fa-trash-can text-sm"></i>
+                    </button>
+                </div>
+            `;
+            document.getElementById('reg-building-rows-container').insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeRegBuildingRow(rowId) {
+            const row = document.getElementById(rowId);
+            if (row) row.remove();
+            calculateRegBuildingTotals();
+        }
+
+        function calculateRegBuildingTotals() {
+            let totalArea = 0;
+            let totalSqm = 0;
+
+            document.querySelectorAll('#reg-building-rows-container > div').forEach(row => {
+                const areaVal = parseFloat(row.querySelector('.reg-bldg-area-input')?.value || 0);
+                const numVal = parseFloat(row.querySelector('.reg-bldg-num-input')?.value || 1);
+                const denVal = parseFloat(row.querySelector('.reg-bldg-den-input')?.value || 1);
+
+                const validDen = denVal <= 0 ? 1 : denVal;
+                const sqm = areaVal * (numVal / validDen);
+                const ping = sqm * 0.3025;
+
+                const sqmOutput = row.querySelector('.reg-bldg-sqm-output');
+                if (sqmOutput) sqmOutput.value = sqm.toFixed(2);
+
+                const pingOutput = row.querySelector('.reg-bldg-ping-output');
+                if (pingOutput) pingOutput.value = ping.toFixed(2);
+
+                totalArea += areaVal;
+                totalSqm += sqm;
+            });
+
+            const totalPing = totalSqm * 0.3025;
+
+            document.getElementById('reg-sum-area').textContent = `${totalArea.toFixed(2)} ㎡`;
+            document.getElementById('reg-sum-sqm').textContent = `${totalSqm.toFixed(2)} ㎡`;
+            document.getElementById('reg-sum-ping').textContent = `${totalPing.toFixed(2)} 坪`;
+        }
+
+        /* 二、未保存登記建物 Modal 邏輯 */
+        function openUnregisteredBuildingModal() {
+            document.getElementById('unreg-building-rows-container').innerHTML = '';
+            unregBuildingRowCount = 0;
+            addUnregBuildingRow();
+            calculateUnregBuildingTotals();
+            document.getElementById('unregistered-building-modal').classList.remove('hidden');
+        }
+
+        function closeUnregisteredBuildingModal() {
+            document.getElementById('unregistered-building-modal').classList.add('hidden');
+        }
+
+        function addUnregBuildingRow() {
+            unregBuildingRowCount++;
+            const rowId = `unreg-bldg-row-${unregBuildingRowCount}`;
+            const html = `
+                <div id="${rowId}" class="grid grid-cols-[1.5fr_1fr_1.2fr_1.2fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
+                    <input type="text" placeholder="例：農舍/廠房" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" placeholder="例：2015年" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateUnregBuildingTotals()" class="unreg-bldg-sqm-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <input type="text" readonly placeholder="0.00" class="unreg-bldg-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 rounded-lg font-mono font-bold text-xs">
+
+                    <button type="button" onclick="removeUnregBuildingRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆資料">
+                        <i class="fa-solid fa-trash-can text-sm"></i>
+                    </button>
+                </div>
+            `;
+            document.getElementById('unreg-building-rows-container').insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeUnregBuildingRow(rowId) {
+            const row = document.getElementById(rowId);
+            if (row) row.remove();
+            calculateUnregBuildingTotals();
+        }
+
+        function calculateUnregBuildingTotals() {
+            let totalSqm = 0;
+
+            document.querySelectorAll('#unreg-building-rows-container > div').forEach(row => {
+                const sqmVal = parseFloat(row.querySelector('.unreg-bldg-sqm-input')?.value || 0);
+                const ping = sqmVal * 0.3025;
+
+                const pingOutput = row.querySelector('.unreg-bldg-ping-output');
+                if (pingOutput) pingOutput.value = ping.toFixed(2);
+
+                totalSqm += sqmVal;
+            });
+
+            const totalPing = totalSqm * 0.3025;
+
+            document.getElementById('unreg-sum-sqm').textContent = `${totalSqm.toFixed(2)} ㎡`;
+            document.getElementById('unreg-sum-ping').textContent = `${totalPing.toFixed(2)} 坪`;
         }
 
         function updateDashboard() {
