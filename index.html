@@ -133,6 +133,10 @@
                                         data-quote-amount="350000"
                                         data-contract-amount="350000"
                                         data-referrer="陳經理"
+                                        data-pay1-amount="100000" data-pay1-date="2026-03-01"
+                                        data-pay2-amount="100000" data-pay2-date="2026-04-15"
+                                        data-pay3-amount="100000" data-pay3-date="2026-06-01"
+                                        data-pay4-amount="50000"  data-pay4-date="2026-07-30"
                                         data-status="已簽約">
                                         <td class="p-3 font-semibold text-sky-600 hover:underline truncate">睿立科技股份有限公司</td>
                                         <td class="p-3 truncate">特定工廠改善計畫</td>
@@ -153,6 +157,10 @@
                                         data-quote-amount="1200000"
                                         data-contract-amount="1200000"
                                         data-referrer="自開發"
+                                        data-pay1-amount="300000" data-pay1-date="2026-02-10"
+                                        data-pay2-amount="400000" data-pay2-date="2026-04-01"
+                                        data-pay3-amount="300000" data-pay3-date="2026-05-20"
+                                        data-pay4-amount="200000" data-pay4-date="2026-06-30"
                                         data-status="已簽約">
                                         <td class="p-3 font-semibold text-sky-600 hover:underline truncate">和美工業廠房</td>
                                         <td class="p-3 truncate">太陽能屋頂自建</td>
@@ -498,6 +506,57 @@
                     </div>
                 </div>
 
+                <!-- 新增：付款期程模組 -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <label class="block text-xs font-bold text-slate-800">◎ 付款期程</label>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="grid grid-cols-2 gap-2 bg-white p-2.5 rounded-lg border border-slate-200">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">第一期款 (NT$)</label>
+                                <input type="number" id="input-pay1-amount" placeholder="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">第一期日期</label>
+                                <input type="date" id="input-pay1-date" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 bg-white p-2.5 rounded-lg border border-slate-200">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">第二期款 (NT$)</label>
+                                <input type="number" id="input-pay2-amount" placeholder="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">第二期日期</label>
+                                <input type="date" id="input-pay2-date" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 bg-white p-2.5 rounded-lg border border-slate-200">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">第三期款 (NT$)</label>
+                                <input type="number" id="input-pay3-amount" placeholder="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">第三期日期</label>
+                                <input type="date" id="input-pay3-date" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 bg-white p-2.5 rounded-lg border border-slate-200">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">第四期款 (NT$)</label>
+                                <input type="number" id="input-pay4-amount" placeholder="0" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-slate-600 mb-1">第四期日期</label>
+                                <input type="date" id="input-pay4-date" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div>
                     <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span></label>
                     <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500">
@@ -573,6 +632,17 @@
             document.getElementById('input-quote-amount').value = dataset.quoteAmount || 0;
             document.getElementById('input-contract-amount').value = dataset.contractAmount || 0;
             document.getElementById('input-referrer').value = dataset.referrer || '';
+            
+            // 載入付款期程資料
+            document.getElementById('input-pay1-amount').value = dataset.pay1Amount || '';
+            document.getElementById('input-pay1-date').value = dataset.pay1Date || '';
+            document.getElementById('input-pay2-amount').value = dataset.pay2Amount || '';
+            document.getElementById('input-pay2-date').value = dataset.pay2Date || '';
+            document.getElementById('input-pay3-amount').value = dataset.pay3Amount || '';
+            document.getElementById('input-pay3-date').value = dataset.pay3Date || '';
+            document.getElementById('input-pay4-amount').value = dataset.pay4Amount || '';
+            document.getElementById('input-pay4-date').value = dataset.pay4Date || '';
+
             document.getElementById('select-case-status').value = dataset.status || '案件評估';
 
             document.querySelectorAll('#add-case-modal textarea').forEach(ta => {
@@ -621,6 +691,17 @@
             const quoteAmountVal = document.getElementById('input-quote-amount').value || '0';
             const contractAmountVal = document.getElementById('input-contract-amount').value || '0';
             const referrer = document.getElementById('input-referrer').value;
+            
+            // 取得付款期程欄位值
+            const pay1Amount = document.getElementById('input-pay1-amount').value;
+            const pay1Date = document.getElementById('input-pay1-date').value;
+            const pay2Amount = document.getElementById('input-pay2-amount').value;
+            const pay2Date = document.getElementById('input-pay2-date').value;
+            const pay3Amount = document.getElementById('input-pay3-amount').value;
+            const pay3Date = document.getElementById('input-pay3-date').value;
+            const pay4Amount = document.getElementById('input-pay4-amount').value;
+            const pay4Date = document.getElementById('input-pay4-date').value;
+
             const status = document.getElementById('select-case-status').value;
 
             const quoteFormatted = `NT$ ${parseInt(quoteAmountVal).toLocaleString()}`;
@@ -667,6 +748,17 @@
             tr.dataset.quoteAmount = quoteAmountVal;
             tr.dataset.contractAmount = contractAmountVal;
             tr.dataset.referrer = referrer;
+            
+            // 寫入付款期程至 dataset
+            tr.dataset.pay1Amount = pay1Amount;
+            tr.dataset.pay1Date = pay1Date;
+            tr.dataset.pay2Amount = pay2Amount;
+            tr.dataset.pay2Date = pay2Date;
+            tr.dataset.pay3Amount = pay3Amount;
+            tr.dataset.pay3Date = pay3Date;
+            tr.dataset.pay4Amount = pay4Amount;
+            tr.dataset.pay4Date = pay4Date;
+
             tr.dataset.status = status;
 
             tr.innerHTML = `
