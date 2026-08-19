@@ -35,24 +35,30 @@
             </div>
         </div>
 
-        <!-- 導覽選單 (僅保留：專案管理、太陽能自建、案件資料表) -->
+        <!-- 導覽選單 (更新為 4 個新項目) -->
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-            <button onclick="switchTab('project-mgmt')" id="btn-project-mgmt" 
+            <button onclick="switchTab('cases-2026')" id="btn-cases-2026" 
                 class="sidebar-btn sidebar-item-active w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all hover:bg-slate-800 hover:text-white">
-                <i class="fa-solid fa-folder-tree text-lg w-5 text-center"></i>
-                <span>專案管理</span>
+                <i class="fa-solid fa-list-check text-lg w-5 text-center"></i>
+                <span>2026案件管理</span>
             </button>
 
-            <button onclick="switchTab('solar-build')" id="btn-solar-build" 
+            <button onclick="switchTab('project-eval')" id="btn-project-eval" 
+                class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
+                <i class="fa-solid fa-calculator text-lg w-5 text-center"></i>
+                <span>專案評估</span>
+            </button>
+
+            <button onclick="switchTab('solar-eval')" id="btn-solar-eval" 
                 class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
                 <i class="fa-solid fa-solar-panel text-lg w-5 text-center"></i>
-                <span>太陽能自建</span>
+                <span>太陽能自建評估</span>
             </button>
 
-            <button onclick="switchTab('case-table')" id="btn-case-table" 
+            <button onclick="switchTab('real-estate-table')" id="btn-real-estate-table" 
                 class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
-                <i class="fa-solid fa-table-list text-lg w-5 text-center"></i>
-                <span>案件資料表</span>
+                <i class="fa-solid fa-building text-lg w-5 text-center"></i>
+                <span>不動產案件資料表</span>
             </button>
         </nav>
 
@@ -72,7 +78,7 @@
         <!-- 頂部頁眉 Header -->
         <header class="bg-white border-b border-slate-200 px-8 py-4 flex items-center justify-between shadow-sm">
             <div>
-                <h2 id="page-title" class="text-xl font-bold text-slate-800">專案管理</h2>
+                <h2 id="page-title" class="text-xl font-bold text-slate-800">2026案件管理</h2>
                 <p class="text-xs text-slate-500 mt-0.5">系統自動存取模式｜案件管理與即時控台</p>
             </div>
             
@@ -88,12 +94,12 @@
         <!-- 內容容器 -->
         <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
             
-            <!-- 1. 專案管理 Tab -->
-            <section id="tab-project-mgmt" class="tab-content space-y-6">
+            <!-- 1. 2026案件管理 Tab -->
+            <section id="tab-cases-2026" class="tab-content space-y-6">
                 <!-- 概覽數據卡片 -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                        <div class="text-xs font-semibold text-slate-400 uppercase">進行中專案</div>
+                        <div class="text-xs font-semibold text-slate-400 uppercase">2026 進行中案件</div>
                         <div class="text-3xl font-extrabold text-slate-800 mt-2">12 <span class="text-xs font-normal text-slate-500">案</span></div>
                     </div>
                     <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
@@ -106,43 +112,54 @@
                     </div>
                 </div>
 
-                <!-- 專案進度追蹤表 -->
+                <!-- 案件進度追蹤表 -->
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-5 border-b border-slate-100 flex justify-between items-center">
-                        <h3 class="font-bold text-slate-800">專案階段追蹤表</h3>
-                        <button class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition">+ 新增專案</button>
+                        <h3 class="font-bold text-slate-800">2026年度案件進度追蹤</h3>
+                        <button class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition">+ 新增案件</button>
                     </div>
                     <div class="p-5 text-slate-500 text-sm">
-                        專案管控面板預設版面。
+                        2026案件管控面板預設版面。
                     </div>
                 </div>
             </section>
 
-            <!-- 2. 太陽能自建 Tab -->
-            <section id="tab-solar-build" class="tab-content hidden space-y-6">
+            <!-- 2. 專案評估 Tab -->
+            <section id="tab-project-eval" class="tab-content hidden space-y-6">
                 <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                    <h3 class="font-bold text-slate-800 mb-2">太陽能自建工程管理</h3>
-                    <p class="text-slate-500 text-sm mb-4">掌握案場興建進度、容量規劃與設備採購流程。</p>
+                    <h3 class="font-bold text-slate-800 mb-2">專案可行性與效益評估</h3>
+                    <p class="text-slate-500 text-sm mb-4">綜合評估各項投資專案之財務模型、風險與預期效益。</p>
+                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 text-slate-600 text-sm">
+                        目前尚無待評估專案，點擊上方新增以建立評估表。
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. 太陽能自建評估 Tab -->
+            <section id="tab-solar-eval" class="tab-content hidden space-y-6">
+                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h3 class="font-bold text-slate-800 mb-2">太陽能自建案場評估管理</h3>
+                    <p class="text-slate-500 text-sm mb-4">包含屋頂/地面案場評估、日照條件測量、容量規劃與投資報酬率試算。</p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="p-4 bg-sky-50 rounded-lg border border-sky-100">
-                            <div class="font-semibold text-sky-900 text-sm">總規劃容量</div>
+                            <div class="font-semibold text-sky-900 text-sm">預估總規劃容量</div>
                             <div class="text-2xl font-bold text-sky-700 mt-1">2.4 MW</div>
                         </div>
                         <div class="p-4 bg-emerald-50 rounded-lg border border-emerald-100">
-                            <div class="font-semibold text-emerald-900 text-sm">已併網發電</div>
+                            <div class="font-semibold text-emerald-900 text-sm">預估年發電效益</div>
                             <div class="text-2xl font-bold text-emerald-700 mt-1">1.8 MW</div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 3. 案件資料表 Tab -->
-            <section id="tab-case-table" class="tab-content hidden space-y-6">
+            <!-- 4. 不動產案件資料表 Tab -->
+            <section id="tab-real-estate-table" class="tab-content hidden space-y-6">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-5 border-b border-slate-100 flex justify-between items-center">
-                        <h3 class="font-bold text-slate-800">所有案件總表</h3>
+                        <h3 class="font-bold text-slate-800">不動產案件總表</h3>
                         <div class="flex gap-2">
-                            <input type="text" placeholder="搜尋案件名稱..." class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs w-48 focus:outline-none focus:border-sky-500">
+                            <input type="text" placeholder="搜尋不動產案件..." class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs w-48 focus:outline-none focus:border-sky-500">
                             <button class="px-3 py-1.5 bg-slate-800 text-white rounded-lg text-xs font-medium">匯出 EXCEL</button>
                         </div>
                     </div>
@@ -151,23 +168,23 @@
                             <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
                                 <tr>
                                     <th class="p-3 font-semibold">案件編號</th>
-                                    <th class="p-3 font-semibold">案件名稱</th>
+                                    <th class="p-3 font-semibold">不動產標的名稱</th>
                                     <th class="p-3 font-semibold">負責人</th>
-                                    <th class="p-3 font-semibold">狀態</th>
+                                    <th class="p-3 font-semibold">進度狀態</th>
                                     <th class="p-3 font-semibold">建立日期</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
                                 <tr class="hover:bg-slate-50">
-                                    <td class="p-3 font-mono text-slate-500">RL-2026-001</td>
-                                    <td class="p-3 font-medium text-slate-800">彰化太陽能案場 A區</td>
+                                    <td class="p-3 font-mono text-slate-500">RE-2026-001</td>
+                                    <td class="p-3 font-medium text-slate-800">彰化特定工廠用地變更案</td>
                                     <td class="p-3">張專案</td>
                                     <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full font-medium">進行中</span></td>
                                     <td class="p-3 text-slate-400">2026-01-15</td>
                                 </tr>
                                 <tr class="hover:bg-slate-50">
-                                    <td class="p-3 font-mono text-slate-500">RL-2026-002</td>
-                                    <td class="p-3 font-medium text-slate-800">雲林土地變更評估</td>
+                                    <td class="p-3 font-mono text-slate-500">RE-2026-002</td>
+                                    <td class="p-3 font-medium text-slate-800">雲林工業地資產重組評估</td>
                                     <td class="p-3">李顧問</td>
                                     <td class="p-3"><span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full font-medium">審核中</span></td>
                                     <td class="p-3 text-slate-400">2026-02-01</td>
@@ -203,9 +220,10 @@
 
             // 動態更換 Header 標題
             const titles = {
-                'project-mgmt': '專案管理',
-                'solar-build': '太陽能自建',
-                'case-table': '案件資料表'
+                'cases-2026': '2026案件管理',
+                'project-eval': '專案評估',
+                'solar-eval': '太陽能自建評估',
+                'real-estate-table': '不動產案件資料表'
             };
             document.getElementById('page-title').textContent = titles[tabId];
         }
