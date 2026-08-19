@@ -341,7 +341,7 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span></label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span></label>
                         <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500">
                             <option value="案件評估" selected>案件評估</option>
                             <option value="已簽約">已簽約</option>
@@ -352,19 +352,19 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 建檔時間/日期</label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 建檔時間/日期</label>
                         <input type="datetime-local" id="input-created-at" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 客戶名稱 <span class="text-rose-500">*</span></label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 客戶名稱 <span class="text-rose-500">*</span></label>
                         <input type="text" id="input-client-name" required placeholder="請輸入客戶名稱" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 工作進度</label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 工作進度</label>
                         <select id="select-work-progress" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
                             <option value="潛在客戶">潛在客戶</option>
                             <option value="現勘">現勘</option>
@@ -374,7 +374,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 服務項目</label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 服務項目</label>
                         <select id="select-service-item" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
                             <option value="地政士">地政士</option>
                             <option value="特定工廠登記">特定工廠登記</option>
@@ -393,7 +393,7 @@
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 服務細項</label>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 服務細項</label>
                         <input type="text" id="input-service-detail" placeholder="請輸入服務細項說明" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
                     </div>
                 </div>
@@ -531,7 +531,7 @@
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-map-location-dot text-sky-400 text-lg"></i>
-                    <h3 class="font-bold text-base">土地基本資料輸入</h3>
+                    <h3 class="font-bold text-base">土地基本資料</h3>
                 </div>
                 <button onclick="closeLandModal()" class="text-slate-400 hover:text-white p-1 transition">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -580,14 +580,14 @@
                         <div class="min-w-[1050px] space-y-2">
                             <!-- 固定頂端標題列 (只顯示一次) -->
                             <div class="grid grid-cols-[1fr_1fr_1.2fr_0.9fr_0.9fr_1.2fr_0.9fr_1fr_32px] gap-2 bg-slate-100 p-2.5 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
-                                <div>(1) 地號</div>
-                                <div>(2) 登記日期</div>
-                                <div>(3) 使用分區</div>
-                                <div>(4) 用地</div>
-                                <div>(5) 面積 (㎡)</div>
-                                <div>(6) 權利範圍</div>
-                                <div>(7) 平方公尺</div>
-                                <div>(8) 他項權利</div>
+                                <div>地號</div>
+                                <div>登記日期</div>
+                                <div>使用分區</div>
+                                <div>用地</div>
+                                <div>面積 (㎡)</div>
+                                <div>權利範圍</div>
+                                <div>平方公尺</div>
+                                <div>他項權利</div>
                                 <div></div>
                             </div>
 
@@ -597,10 +597,10 @@
                     </div>
                 </div>
 
-                <!-- 第三排：自動加總統計列 -->
+                <!-- 自動加總 -->
                 <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
                     <h4 class="font-bold text-sky-900 mb-3 flex items-center gap-1.5">
-                        <i class="fa-solid fa-calculator text-sky-600"></i> 第三排：自動計算總計資料
+                        <i class="fa-solid fa-calculator text-sky-600"></i> 自動加總
                     </h4>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                         <div class="bg-white p-3 rounded-lg border border-sky-200">
