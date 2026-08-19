@@ -93,7 +93,7 @@
                 
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">2026案件管控面板</h3>
-                    <button onclick="openAddCaseModal()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1">
+                    <button onclick="openAddCaseModal()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                         <i class="fa-solid fa-plus"></i> 新增案件
                     </button>
                 </div>
@@ -120,17 +120,43 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbody-signed" class="divide-y divide-slate-100">
-                                    <tr class="hover:bg-slate-50">
-                                        <td class="p-3 font-medium text-slate-800 truncate">睿立科技股份有限公司</td>
+                                    <tr class="hover:bg-slate-50 transition cursor-pointer" 
+                                        onclick="openEditCaseModal(this)"
+                                        data-client-name="睿立科技股份有限公司"
+                                        data-work-progress="準備簽約"
+                                        data-service-item="特定工廠登記"
+                                        data-service-detail="特定工廠改善計畫"
+                                        data-address="彰化縣和美鎮彰美路六段100號"
+                                        data-land-number="和美段 0452-0000 地號"
+                                        data-case-desc="已完成第一階段書面審查，準備進行消防及水利設施補正。"
+                                        data-sales-note="已收定金，現正進行現場測量與圖資套繪。"
+                                        data-quote-amount="350000"
+                                        data-contract-amount="350000"
+                                        data-referrer="陳經理"
+                                        data-status="已簽約">
+                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">睿立科技股份有限公司</td>
                                         <td class="p-3 truncate">特定工廠改善計畫</td>
-                                        <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">合約生效</span></td>
+                                        <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">已簽約</span></td>
                                         <td class="p-3 font-mono text-slate-700">NT$ 350,000</td>
                                         <td class="p-3 text-slate-500 truncate">已收定金，現正進行現場測量與圖資套繪。</td>
                                     </tr>
-                                    <tr class="hover:bg-slate-50">
-                                        <td class="p-3 font-medium text-slate-800 truncate">和美工業廠房</td>
+                                    <tr class="hover:bg-slate-50 transition cursor-pointer" 
+                                        onclick="openEditCaseModal(this)"
+                                        data-client-name="和美工業廠房"
+                                        data-work-progress="準備簽約"
+                                        data-service-item="太陽能"
+                                        data-service-detail="太陽能屋頂自建"
+                                        data-address="彰化縣和美鎮工區路88號"
+                                        data-land-number="和美工段 0112-0000 地號"
+                                        data-case-desc="屋頂結構評估安全，規劃建置 300KW 屋頂型太陽能系統。"
+                                        data-sales-note="台電審查已通過，預計下月開工動土。"
+                                        data-quote-amount="1200000"
+                                        data-contract-amount="1200000"
+                                        data-referrer="自開發"
+                                        data-status="已簽約">
+                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">和美工業廠房</td>
                                         <td class="p-3 truncate">太陽能屋頂自建</td>
-                                        <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">已簽約待施工</span></td>
+                                        <td class="p-3"><span class="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">已簽約</span></td>
                                         <td class="p-3 font-mono text-slate-700">NT$ 1,200,000</td>
                                         <td class="p-3 text-slate-500 truncate">台電審查已通過，預計下月開工動土。</td>
                                     </tr>
@@ -159,17 +185,43 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbody-eval" class="divide-y divide-slate-100">
-                                    <tr class="hover:bg-slate-50">
-                                        <td class="p-3 font-medium text-slate-800 truncate">鹿港金屬加工廠</td>
+                                    <tr class="hover:bg-slate-50 transition cursor-pointer" 
+                                        onclick="openEditCaseModal(this)"
+                                        data-client-name="鹿港金屬加工廠"
+                                        data-work-progress="現勘"
+                                        data-service-item="土地變更"
+                                        data-service-detail="土地變更審查"
+                                        data-address="彰化縣鹿港鎮頂番路250號"
+                                        data-land-number="鹿港頂番段 0899-0000 地號"
+                                        data-case-desc="農地違規工廠欲申請變更為特定目的事業用地。"
+                                        data-sales-note="業主補件中，待取得完整地籍圖冊。"
+                                        data-quote-amount="500000"
+                                        data-contract-amount="0"
+                                        data-referrer="林地政士"
+                                        data-status="案件評估">
+                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">鹿港金屬加工廠</td>
                                         <td class="p-3 truncate">土地變更審查</td>
-                                        <td class="p-3"><span class="px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">現場勘查中</span></td>
+                                        <td class="p-3"><span class="px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">案件評估</span></td>
                                         <td class="p-3 font-mono text-slate-700">NT$ 500,000</td>
                                         <td class="p-3 text-slate-500 truncate">業主補件中，待取得完整地籍圖冊。</td>
                                     </tr>
-                                    <tr class="hover:bg-slate-50">
-                                        <td class="p-3 font-medium text-slate-800 truncate">彰濱工業區B廠</td>
+                                    <tr class="hover:bg-slate-50 transition cursor-pointer" 
+                                        onclick="openEditCaseModal(this)"
+                                        data-client-name="彰濱工業區B廠"
+                                        data-work-progress="報價"
+                                        data-service-item="不動產買賣"
+                                        data-service-detail="資產活化諮詢"
+                                        data-address="彰化縣鹿港鎮彰濱工業區鹿工路12號"
+                                        data-land-number="彰濱段 0035-0000 地號"
+                                        data-case-desc="閒置廠房處分與資產活化方案規劃。"
+                                        data-sales-note="已提供初版簡報，等待董事會決議。"
+                                        data-quote-amount="280000"
+                                        data-contract-amount="0"
+                                        data-referrer="張總經理"
+                                        data-status="案件評估">
+                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">彰濱工業區B廠</td>
                                         <td class="p-3 truncate">資產活化諮詢</td>
-                                        <td class="p-3"><span class="px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">報價審核中</span></td>
+                                        <td class="p-3"><span class="px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">案件評估</span></td>
                                         <td class="p-3 font-mono text-slate-700">NT$ 280,000</td>
                                         <td class="p-3 text-slate-500 truncate">已提供初版簡報，等待董事會決議。</td>
                                     </tr>
@@ -198,10 +250,23 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbody-closed" class="divide-y divide-slate-100">
-                                    <tr class="hover:bg-slate-50">
-                                        <td class="p-3 font-medium text-slate-800 truncate">員林塑膠企業社</td>
+                                    <tr class="hover:bg-slate-50 transition cursor-pointer" 
+                                        onclick="openEditCaseModal(this)"
+                                        data-client-name="員林塑膠企業社"
+                                        data-work-progress="準備簽約"
+                                        data-service-item="特定工廠登記"
+                                        data-service-detail="特定工廠登記執照取得"
+                                        data-address="彰化縣員林市員鹿路55號"
+                                        data-land-number="員林段 0310-0000 地號"
+                                        data-case-desc="輔導取得特定工廠登記執照全程辦理。"
+                                        data-sales-note="執照順利核發，已完成結案交付。"
+                                        data-quote-amount="420000"
+                                        data-contract-amount="420000"
+                                        data-referrer="黃會計師"
+                                        data-status="已結案">
+                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">員林塑膠企業社</td>
                                         <td class="p-3 truncate">特定工廠登記執照取得</td>
-                                        <td class="p-3"><span class="px-2 py-0.5 bg-slate-200 text-slate-700 rounded-full">已辦結歸檔</span></td>
+                                        <td class="p-3"><span class="px-2 py-0.5 bg-slate-200 text-slate-700 rounded-full">已結案</span></td>
                                         <td class="p-3 font-mono text-slate-700">NT$ 420,000</td>
                                         <td class="p-3 text-slate-500 truncate">執照順利核發，已完成結案交付。</td>
                                     </tr>
@@ -230,10 +295,23 @@
                                     </tr>
                                 </thead>
                                 <tbody id="tbody-trash" class="divide-y divide-slate-100">
-                                    <tr class="hover:bg-slate-50">
-                                        <td class="p-3 font-medium text-slate-800 truncate">福興織帶廠</td>
+                                    <tr class="hover:bg-slate-50 transition cursor-pointer" 
+                                        onclick="openEditCaseModal(this)"
+                                        data-client-name="福興織帶廠"
+                                        data-work-progress="現勘"
+                                        data-service-item="土地變更"
+                                        data-service-detail="農地變更規劃"
+                                        data-address="彰化縣福興鄉員鹿路二段300號"
+                                        data-land-number="福興段 0621-0000 地號"
+                                        data-case-desc="評估農地變更特定目的事業用地可行性。"
+                                        data-sales-note="土地條件不符現行法規，終止評估。"
+                                        data-quote-amount="0"
+                                        data-contract-amount="0"
+                                        data-referrer="自開發"
+                                        data-status="廢件區">
+                                        <td class="p-3 font-semibold text-sky-600 hover:underline truncate">福興織帶廠</td>
                                         <td class="p-3 truncate">農地變更規劃</td>
-                                        <td class="p-3"><span class="px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full">條件不符終止</span></td>
+                                        <td class="p-3"><span class="px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full">廢件區</span></td>
                                         <td class="p-3 font-mono text-slate-700">NT$ 0</td>
                                         <td class="p-3 text-slate-500 truncate">土地條件不符現行法規，終止評估。</td>
                                     </tr>
@@ -332,14 +410,14 @@
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
                 <div class="flex items-center gap-2">
                     <div class="w-3 h-3 rounded-full bg-sky-600"></div>
-                    <h3 class="font-bold text-slate-800 text-base">建立新案件</h3>
+                    <h3 id="modal-title" class="font-bold text-slate-800 text-base">建立新案件</h3>
                 </div>
                 <button onclick="closeAddCaseModal()" class="text-slate-400 hover:text-slate-600 p-1 transition">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
 
-            <form id="add-case-form" onsubmit="handleCreateCase(event)" class="p-6 space-y-4 overflow-y-auto flex-1">
+            <form id="add-case-form" onsubmit="handleSaveCase(event)" class="p-6 space-y-4 overflow-y-auto flex-1">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 客戶名稱 <span class="text-rose-500">*</span></label>
@@ -352,6 +430,7 @@
                             <option value="潛在客戶">潛在客戶</option>
                             <option value="現勘">現勘</option>
                             <option value="報價">報價</option>
+                            <option value="準備簽約">準備簽約</option>
                         </select>
                     </div>
 
@@ -378,7 +457,9 @@
                         <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 服務細項</label>
                         <input type="text" id="input-service-detail" placeholder="請輸入服務細項說明" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
                     </div>
+                </div>
 
+                <div class="space-y-4">
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">◎ 地址</label>
                         <input type="text" id="input-address" placeholder="請輸入地址" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
@@ -429,13 +510,15 @@
 
                 <div class="pt-4 border-t border-slate-100 flex justify-end gap-3">
                     <button type="button" onclick="closeAddCaseModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg text-xs font-medium hover:bg-slate-50 transition">取消</button>
-                    <button type="submit" class="px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition shadow-sm">確認儲存並拋轉</button>
+                    <button type="submit" id="btn-submit-case" class="px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition shadow-sm">儲存</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
+        let currentEditingRow = null;
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             
@@ -461,16 +544,48 @@
         }
 
         function openAddCaseModal() {
+            currentEditingRow = null;
+            document.getElementById('modal-title').textContent = '建立新案件';
+            document.getElementById('btn-submit-case').textContent = '儲存';
+            document.getElementById('add-case-form').reset();
+            
+            document.querySelectorAll('#add-case-modal textarea').forEach(ta => {
+                ta.style.height = 'auto';
+            });
+
+            document.getElementById('add-case-modal').classList.remove('hidden');
+        }
+
+        function openEditCaseModal(trElement) {
+            currentEditingRow = trElement;
+            document.getElementById('modal-title').textContent = '編輯案件資料';
+            document.getElementById('btn-submit-case').textContent = '儲存變更';
+
+            const dataset = trElement.dataset;
+            document.getElementById('input-client-name').value = dataset.clientName || '';
+            document.getElementById('select-work-progress').value = dataset.workProgress || '潛在客戶';
+            document.getElementById('select-service-item').value = dataset.serviceItem || '地政士';
+            document.getElementById('input-service-detail').value = dataset.serviceDetail || '';
+            document.getElementById('input-address').value = dataset.address || '';
+            document.getElementById('input-land-number').value = dataset.landNumber || '';
+            document.getElementById('input-case-description').value = dataset.caseDesc || '';
+            document.getElementById('input-sales-note').value = dataset.salesNote || '';
+            document.getElementById('input-quote-amount').value = dataset.quoteAmount || 0;
+            document.getElementById('input-contract-amount').value = dataset.contractAmount || 0;
+            document.getElementById('input-referrer').value = dataset.referrer || '';
+            document.getElementById('select-case-status').value = dataset.status || '案件評估';
+
+            document.querySelectorAll('#add-case-modal textarea').forEach(ta => {
+                autoExpandTextarea(ta);
+            });
+
             document.getElementById('add-case-modal').classList.remove('hidden');
         }
 
         function closeAddCaseModal() {
             document.getElementById('add-case-modal').classList.add('hidden');
             document.getElementById('add-case-form').reset();
-            
-            document.querySelectorAll('#add-case-modal textarea').forEach(ta => {
-                ta.style.height = 'auto';
-            });
+            currentEditingRow = null;
         }
 
         function autoExpandTextarea(element) {
@@ -480,10 +595,10 @@
 
         function updateCategoryCounts() {
             const categories = [
-                { id: 'signed', tbody: 'tbody-signed', badge: 'count-signed' },
-                { id: 'eval', tbody: 'tbody-eval', badge: 'count-eval' },
-                { id: 'closed', tbody: 'tbody-closed', badge: 'count-closed' },
-                { id: 'trash', tbody: 'tbody-trash', badge: 'count-trash' }
+                { tbody: 'tbody-signed', badge: 'count-signed' },
+                { tbody: 'tbody-eval', badge: 'count-eval' },
+                { tbody: 'tbody-closed', badge: 'count-closed' },
+                { tbody: 'tbody-trash', badge: 'count-trash' }
             ];
 
             categories.forEach(cat => {
@@ -492,15 +607,24 @@
             });
         }
 
-        function handleCreateCase(event) {
+        function handleSaveCase(event) {
             event.preventDefault();
 
             const clientName = document.getElementById('input-client-name').value;
+            const workProgress = document.getElementById('select-work-progress').value;
             const serviceItem = document.getElementById('select-service-item').value;
-            const quoteAmountVal = document.getElementById('input-quote-amount').value;
-            const quoteAmount = quoteAmountVal ? `NT$ ${parseInt(quoteAmountVal).toLocaleString()}` : 'NT$ 0';
+            const serviceDetail = document.getElementById('input-service-detail').value;
+            const address = document.getElementById('input-address').value;
+            const landNumber = document.getElementById('input-land-number').value;
+            const caseDesc = document.getElementById('input-case-description').value;
             const salesNote = document.getElementById('input-sales-note').value || '尚未提供即時說明。';
+            const quoteAmountVal = document.getElementById('input-quote-amount').value || '0';
+            const contractAmountVal = document.getElementById('input-contract-amount').value || '0';
+            const referrer = document.getElementById('input-referrer').value;
             const status = document.getElementById('select-case-status').value;
+
+            const quoteFormatted = `NT$ ${parseInt(quoteAmountVal).toLocaleString()}`;
+            const displayService = serviceDetail || serviceItem;
 
             let targetTbodyId = '';
             let badgeClass = '';
@@ -524,21 +648,43 @@
                     break;
             }
 
-            const tr = document.createElement('tr');
-            tr.className = 'hover:bg-slate-50';
+            let tr = currentEditingRow;
+
+            if (!tr) {
+                tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition cursor-pointer';
+                tr.onclick = function() { openEditCaseModal(this); };
+            }
+
+            tr.dataset.clientName = clientName;
+            tr.dataset.workProgress = workProgress;
+            tr.dataset.serviceItem = serviceItem;
+            tr.dataset.serviceDetail = serviceDetail;
+            tr.dataset.address = address;
+            tr.dataset.landNumber = landNumber;
+            tr.dataset.caseDesc = caseDesc;
+            tr.dataset.salesNote = salesNote;
+            tr.dataset.quoteAmount = quoteAmountVal;
+            tr.dataset.contractAmount = contractAmountVal;
+            tr.dataset.referrer = referrer;
+            tr.dataset.status = status;
+
             tr.innerHTML = `
-                <td class="p-3 font-medium text-slate-800 truncate">${clientName}</td>
-                <td class="p-3 truncate">${serviceItem}</td>
+                <td class="p-3 font-semibold text-sky-600 hover:underline truncate">${clientName}</td>
+                <td class="p-3 truncate">${displayService}</td>
                 <td class="p-3"><span class="px-2 py-0.5 ${badgeClass} rounded-full">${status}</span></td>
-                <td class="p-3 font-mono text-slate-700">${quoteAmount}</td>
+                <td class="p-3 font-mono text-slate-700">${quoteFormatted}</td>
                 <td class="p-3 text-slate-500 truncate">${salesNote}</td>
             `;
 
-            document.getElementById(targetTbodyId).appendChild(tr);
+            const targetTbody = document.getElementById(targetTbodyId);
+            if (tr.parentElement !== targetTbody) {
+                targetTbody.appendChild(tr);
+            }
 
             updateCategoryCounts();
             closeAddCaseModal();
-            alert(`新增成功！案件已拋轉至【${status}】區。`);
+            alert(`儲存成功！案件已更新並歸類至【${status}】。`);
         }
     </script>
 </body>
