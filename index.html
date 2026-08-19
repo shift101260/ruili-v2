@@ -32,8 +32,14 @@
         </div>
 
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-            <button onclick="switchTab('cases-2026')" id="btn-cases-2026" 
+            <button onclick="switchTab('war-room')" id="btn-war-room" 
                 class="sidebar-btn sidebar-item-active w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all hover:bg-slate-800 hover:text-white">
+                <i class="fa-solid fa-chart-line text-lg w-5 text-center"></i>
+                <span>戰情室</span>
+            </button>
+
+            <button onclick="switchTab('cases-2026')" id="btn-cases-2026" 
+                class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
                 <i class="fa-solid fa-list-check text-lg w-5 text-center"></i>
                 <span>2026案件管理</span>
             </button>
@@ -41,7 +47,7 @@
             <button onclick="switchTab('project-eval')" id="btn-project-eval" 
                 class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
                 <i class="fa-solid fa-calculator text-lg w-5 text-center"></i>
-                <span>站情室</span>
+                <span>專案評估</span>
             </button>
 
             <button onclick="switchTab('special-factory')" id="btn-special-factory" 
@@ -75,8 +81,8 @@
     <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
         <header class="bg-white border-b border-slate-200 px-8 py-4 flex items-center justify-between shadow-sm">
             <div>
-                <h2 id="page-title" class="text-xl font-bold text-slate-800">2026案件管理</h2>
-                <p class="text-xs text-slate-500 mt-0.5">系統自動存取模式｜案件管理與即時控台</p>
+                <h2 id="page-title" class="text-xl font-bold text-slate-800">戰情室</h2>
+                <p class="text-xs text-slate-500 mt-0.5">系統自動存取模式｜即時營運指標與戰情數據</p>
             </div>
             
             <div class="flex items-center gap-3">
@@ -89,7 +95,72 @@
         </header>
 
         <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
-            <section id="tab-cases-2026" class="tab-content space-y-6">
+            <section id="tab-war-room" class="tab-content space-y-6">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                    <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
+                        <i class="fa-solid fa-chart-line text-sky-600 text-sm"></i>
+                        <h3 class="font-bold text-slate-800 text-sm">戰情室數據中心 (2026年度)</h3>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-semibold text-slate-500 mb-1">總案件數</p>
+                                <h4 id="stat-total-cases" class="text-2xl font-black text-slate-800 font-mono">0 件</h4>
+                            </div>
+                            <div class="w-10 h-10 rounded-lg bg-slate-200/60 flex items-center justify-center text-slate-600">
+                                <i class="fa-solid fa-folder-open text-lg"></i>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-emerald-50/60 rounded-xl border border-emerald-100 flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-semibold text-emerald-800 mb-1">簽約金額</p>
+                                <h4 id="stat-signed-amount" class="text-2xl font-black text-emerald-700 font-mono">NT$ 0</h4>
+                            </div>
+                            <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600">
+                                <i class="fa-solid fa-sack-dollar text-lg"></i>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-sky-50/60 rounded-xl border border-sky-100 flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-semibold text-sky-800 mb-1">簽約率</p>
+                                <h4 id="stat-conversion-rate" class="text-2xl font-black text-sky-700 font-mono">0.0%</h4>
+                            </div>
+                            <div class="w-10 h-10 rounded-lg bg-sky-100 flex items-center justify-center text-sky-600">
+                                <i class="fa-solid fa-chart-pie text-lg"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2">
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                                <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-chart-bar text-sky-600"></i> 服務項目營收佔比 (已簽約)
+                                </span>
+                                <span class="text-[11px] text-slate-400">即時計算</span>
+                            </div>
+                            <div id="analytics-service-share" class="space-y-2 text-xs">
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                                <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-diagram-project text-indigo-600"></i> 業務與通路效益分析 (來源統計)
+                                </span>
+                                <span class="text-[11px] text-slate-400">總案源分佈</span>
+                            </div>
+                            <div id="analytics-source-benefit" class="space-y-2 text-xs">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-cases-2026" class="tab-content hidden space-y-6">
                 
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">2026案件管控面板</h3>
@@ -420,69 +491,6 @@
             </section>
 
             <section id="tab-project-eval" class="tab-content hidden space-y-6">
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
-                    <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
-                        <i class="fa-solid fa-chart-line text-sky-600 text-sm"></i>
-                        <h3 class="font-bold text-slate-800 text-sm">戰情室數據中心 (2026年度)</h3>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
-                            <div>
-                                <p class="text-xs font-semibold text-slate-500 mb-1">總案件數</p>
-                                <h4 id="stat-total-cases" class="text-2xl font-black text-slate-800 font-mono">0 件</h4>
-                            </div>
-                            <div class="w-10 h-10 rounded-lg bg-slate-200/60 flex items-center justify-center text-slate-600">
-                                <i class="fa-solid fa-folder-open text-lg"></i>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-emerald-50/60 rounded-xl border border-emerald-100 flex items-center justify-between">
-                            <div>
-                                <p class="text-xs font-semibold text-emerald-800 mb-1">簽約金額</p>
-                                <h4 id="stat-signed-amount" class="text-2xl font-black text-emerald-700 font-mono">NT$ 0</h4>
-                            </div>
-                            <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600">
-                                <i class="fa-solid fa-sack-dollar text-lg"></i>
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-sky-50/60 rounded-xl border border-sky-100 flex items-center justify-between">
-                            <div>
-                                <p class="text-xs font-semibold text-sky-800 mb-1">簽約率</p>
-                                <h4 id="stat-conversion-rate" class="text-2xl font-black text-sky-700 font-mono">0.0%</h4>
-                            </div>
-                            <div class="w-10 h-10 rounded-lg bg-sky-100 flex items-center justify-center text-sky-600">
-                                <i class="fa-solid fa-chart-pie text-lg"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2">
-                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
-                            <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                                <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-chart-bar text-sky-600"></i> 服務項目營收佔比 (已簽約)
-                                </span>
-                                <span class="text-[11px] text-slate-400">即時計算</span>
-                            </div>
-                            <div id="analytics-service-share" class="space-y-2 text-xs">
-                            </div>
-                        </div>
-
-                        <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
-                            <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                                <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-diagram-project text-indigo-600"></i> 業務與通路效益分析 (來源統計)
-                                </span>
-                                <span class="text-[11px] text-slate-400">總案源分佈</span>
-                            </div>
-                            <div id="analytics-source-benefit" class="space-y-2 text-xs">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
                     <h3 class="font-bold text-slate-800 mb-2">專案可行性與效益評估</h3>
                     <p class="text-slate-500 text-sm mb-4">綜合評估各項投資專案之財務模型、風險與預期效益。</p>
@@ -495,7 +503,7 @@
             <section id="tab-special-factory" class="tab-content hidden space-y-6">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-5 border-b border-slate-100 flex justify-between items-center">
-                        <h3 class="font-bold text-slate-800">特定工廠改善計畫與用地變更進度追蹤</h3>
+                        <h3 class="font-bold text-slate-800">特定工廠改善計畫與用地變更進術追蹤</h3>
                         <button class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition">+ 新增廠區案件</button>
                     </div>
                     <div class="p-5 text-slate-500 text-sm">
@@ -786,6 +794,7 @@
             activeBtn.classList.remove('text-slate-400');
 
             const titles = {
+                'war-room': '戰情室',
                 'cases-2026': '2026案件管理',
                 'project-eval': '專案評估',
                 'special-factory': '土地變更',
@@ -964,40 +973,28 @@
                 return;
             }
 
-            if (!confirm(`確定要將選取的 ${checkedBoxes.length} 筆案件移至廢件區嗎？`)) {
+            if (!confirm(`確定要徹底刪除選取的 ${checkedBoxes.length} 筆案件嗎？`)) {
                 return;
             }
 
             const currentBatch = [];
-            const trashTbody = document.getElementById('tbody-trash');
 
             checkedBoxes.forEach(chk => {
                 const tr = chk.closest('tr');
-                if (tr && tr.dataset.status !== '廢件區') {
-                    const prevStatus = tr.dataset.status;
-                    const prevTbody = tr.parentElement;
-
+                if (tr) {
                     currentBatch.push({
                         element: tr,
-                        prevStatus: prevStatus,
-                        prevTbody: prevTbody
+                        parent: tr.parentElement,
+                        nextSibling: tr.nextSibling
                     });
-
-                    tr.dataset.status = '廢件區';
-                    const statusTd = tr.children[2];
-                    if (statusTd) {
-                        statusTd.innerHTML = `<span class="px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full">廢件區</span>`;
-                    }
-
-                    chk.checked = false;
-                    trashTbody.appendChild(tr);
+                    tr.remove();
                 }
             });
 
             if (currentBatch.length > 0) {
                 deleteHistoryStack.push(currentBatch);
                 updateDashboard();
-                alert(`已將 ${currentBatch.length} 筆案件移至廢件區。`);
+                alert(`已成功刪除 ${currentBatch.length} 筆案件。`);
             }
         }
 
@@ -1009,26 +1006,18 @@
 
             const lastBatch = deleteHistoryStack.pop();
             lastBatch.forEach(item => {
-                const tr = item.element;
-                const status = item.prevStatus;
-                tr.dataset.status = status;
+                const chk = item.element.querySelector('.case-checkbox');
+                if (chk) chk.checked = false;
 
-                let badgeClass = 'bg-sky-100 text-sky-700';
-                if (status === '已簽約') badgeClass = 'bg-emerald-100 text-emerald-700';
-                else if (status === '去年度簽約未結案件') badgeClass = 'bg-purple-100 text-purple-700';
-                else if (status === '已結案') badgeClass = 'bg-slate-200 text-slate-700';
-                else if (status === '廢件區') badgeClass = 'bg-rose-100 text-rose-700';
-
-                const statusTd = tr.children[2];
-                if (statusTd) {
-                    statusTd.innerHTML = `<span class="px-2 py-0.5 ${badgeClass} rounded-full">${status}</span>`;
+                if (item.nextSibling && item.parent.contains(item.nextSibling)) {
+                    item.parent.insertBefore(item.element, item.nextSibling);
+                } else {
+                    item.parent.appendChild(item.element);
                 }
-
-                item.prevTbody.appendChild(tr);
             });
 
             updateDashboard();
-            alert(`已成功恢復 ${lastBatch.length} 筆案件至原狀態區！`);
+            alert(`已成功恢復 ${lastBatch.length} 筆誤刪案件！`);
         }
 
         function handleSaveCase(event) {
