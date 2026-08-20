@@ -657,8 +657,16 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
                         <div class="bg-white p-3 rounded-lg border border-slate-200 flex justify-between items-center shadow-sm">
+                            <span class="font-bold text-slate-700 text-xs">總案件成本</span>
+                            <span id="sum-case-untaxed-amount" class="text-sm font-black text-slate-800 font-mono">NT$ 0</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-slate-200 flex justify-between items-center shadow-sm">
                             <span class="font-bold text-slate-700 text-xs">總簽約金額</span>
                             <span id="sum-case-cost-amount" class="text-sm font-black text-emerald-700 font-mono">NT$ 0</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-slate-200 flex justify-between items-center shadow-sm">
+                            <span class="font-bold text-slate-700 text-xs">稅後8%總金額</span>
+                            <span id="sum-case-after-tax-amount" class="text-sm font-black text-indigo-700 font-mono">NT$ 0</span>
                         </div>
                         <div class="bg-white p-3 rounded-lg border border-slate-200 flex justify-between items-center shadow-sm">
                             <span class="font-bold text-slate-700 text-xs">總案件利潤</span>
@@ -1443,6 +1451,17 @@
             });
 
             const totalProfit = totalContract - totalUntaxed;
+            const afterTax8Amount = totalUntaxed * 1.08;
+
+            const untaxedEl = document.getElementById('sum-case-untaxed-amount');
+            if (untaxedEl) {
+                untaxedEl.textContent = `NT$ ${Math.round(totalUntaxed).toLocaleString()}`;
+            }
+
+            const afterTaxEl = document.getElementById('sum-case-after-tax-amount');
+            if (afterTaxEl) {
+                afterTaxEl.textContent = `NT$ ${Math.round(afterTax8Amount).toLocaleString()}`;
+            }
 
             const totalEl = document.getElementById('sum-case-cost-amount');
             if (totalEl) {
