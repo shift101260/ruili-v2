@@ -20,7 +20,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 flex h-screen overflow-hidden">
 
-    <!-- 左側導覽列 -->
     <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col flex-shrink-0 shadow-lg">
         <div class="p-5 flex items-center gap-3 border-b border-slate-800">
             <div class="w-10 h-10 rounded-lg bg-sky-600 flex items-center justify-center text-white font-bold text-xl shadow">睿</div>
@@ -66,7 +65,6 @@
         </div>
     </aside>
 
-    <!-- 主要內容區 -->
     <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
         <header class="bg-white border-b border-slate-200 px-8 py-4 flex items-center justify-between shadow-sm">
             <div>
@@ -86,7 +84,6 @@
         </header>
 
         <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
-            <!-- 戰情室 Tab -->
             <section id="tab-war-room" class="tab-content space-y-6">
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                     <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
@@ -145,7 +142,6 @@
                 </div>
             </section>
 
-            <!-- 2026案件管理 Tab -->
             <section id="tab-cases-2026" class="tab-content hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">2026案件管控面板</h3>
@@ -211,7 +207,6 @@
                 </div>
             </section>
 
-            <!-- 土地變更 Tab -->
             <section id="tab-special-factory" class="tab-content hidden space-y-6">
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-2">
@@ -228,7 +223,7 @@
 
                 <div class="space-y-6">
                     <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                        <h3 class="font-bold text-slate-800 text-base">特定工廠改善計畫與用地變更進度追蹤</h3>
+                        <h3 class="font-bold text-slate-800 text-base">客戶清單</h3>
                         
                         <div class="flex items-center gap-3">
                             <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-lg border border-slate-200">
@@ -255,12 +250,11 @@
                             </button>
 
                             <button onclick="openAddCaseModal('土地變更')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                                <i class="fa-solid fa-plus"></i> 新增廠區案件
+                                <i class="fa-solid fa-plus"></i> 新增案件
                             </button>
                         </div>
                     </div>
 
-                    <!-- 各類別追蹤表格區塊 -->
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="p-4 bg-emerald-50 border-b border-emerald-100 flex justify-between items-center">
                             <div class="flex items-center gap-2">
@@ -368,7 +362,6 @@
                 </div>
             </section>
 
-            <!-- 不動產案件資料表 Tab -->
             <section id="tab-real-estate-table" class="tab-content hidden space-y-6">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-5 border-b border-slate-100 flex justify-between items-center">
@@ -395,7 +388,6 @@
                 </div>
             </section>
 
-            <!-- 結案 Tab -->
             <section id="tab-closed-cases" class="tab-content hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">結案案件管理</h3>
@@ -424,7 +416,6 @@
                 </div>
             </section>
 
-            <!-- 廢件區 Tab -->
             <section id="tab-trash-cases" class="tab-content hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">廢件區案件管理</h3>
@@ -455,7 +446,6 @@
         </div>
     </main>
 
-    <!-- 新增 / 編輯案件 彈出視窗 -->
     <div id="add-case-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
@@ -635,6 +625,16 @@
                 </div>
 
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <label class="block text-xs font-bold text-slate-800"> 案件成本</label>
+                        <button type="button" onclick="addCaseCostRow()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-plus text-xs"></i> 新增案件成本
+                        </button>
+                    </div>
+                    <div id="case-cost-container" class="space-y-3"></div>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                     <label class="block text-xs font-bold text-slate-800"> 付款期程</label>
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
                         <div class="bg-white p-2.5 rounded-lg border border-slate-200 space-y-2">
@@ -691,7 +691,6 @@
         </div>
     </div>
 
-    <!-- 土地變更評估視窗 -->
     <div id="land-change-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -850,7 +849,6 @@
         </div>
     </div>
 
-    <!-- 土地基本資料視窗 -->
     <div id="land-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-[96vw] max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -940,7 +938,6 @@
         </div>
     </div>
 
-    <!-- 保存登記建物視窗 -->
     <div id="registered-building-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-[96vw] max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -1021,7 +1018,6 @@
         </div>
     </div>
 
-    <!-- 未保存登記建物視窗 -->
     <div id="unregistered-building-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -1171,7 +1167,6 @@
         }
 
         function renderCaseRow(c) {
-            // 土地變更專屬狀態，不繪製在 2026 案件管理面板中
             const landChangeOnlyStatuses = ['優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證', '土地變更'];
             if (!landChangeOnlyStatuses.includes(c.status)) {
                 const tr = document.createElement('tr');
@@ -1320,6 +1315,8 @@
             document.getElementById('add-case-form').reset();
             document.getElementById('input-case-id').value = '';
             document.getElementById('select-case-status').value = defaultStatus;
+            document.getElementById('case-cost-container').innerHTML = '';
+            addCaseCostRow();
 
             const now = new Date();
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
@@ -1362,6 +1359,9 @@
             document.getElementById('input-pay4-amount').value = c.pay4Amount || '';
             document.getElementById('input-pay4-date').value = c.pay4Date || '';
 
+            document.getElementById('case-cost-container').innerHTML = '';
+            addCaseCostRow();
+
             document.querySelectorAll('#add-case-modal textarea').forEach(ta => autoExpandTextarea(ta));
             document.getElementById('add-case-modal').classList.remove('hidden');
         }
@@ -1374,6 +1374,45 @@
         function autoExpandTextarea(element) {
             element.style.height = 'auto';
             element.style.height = element.scrollHeight + 'px';
+        }
+
+        function addCaseCostRow() {
+            const container = document.getElementById('case-cost-container');
+            const rowId = 'case-cost-row-' + Date.now();
+            const html = `
+                <div id="${rowId}" class="grid grid-cols-1 md:grid-cols-6 gap-2 bg-white p-3 rounded-lg border border-slate-200 shadow-sm items-center relative group">
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">供應商名稱</label>
+                        <input type="text" placeholder="供應商名稱" class="case-cost-supplier w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">項目</label>
+                        <input type="text" placeholder="項目" class="case-cost-item w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">未稅報價 (NT$)</label>
+                        <input type="number" placeholder="0" class="case-cost-untaxed w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">稅後報價 (NT$)</label>
+                        <input type="number" placeholder="0" class="case-cost-taxed w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">睿立報價 (NT$)</label>
+                        <input type="number" placeholder="0" class="case-cost-ruili w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="flex-1">
+                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">簽約價格 (NT$)</label>
+                            <input type="number" placeholder="0" class="case-cost-contract w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
+                        </div>
+                        <button type="button" onclick="document.getElementById('${rowId}').remove()" class="mt-5 p-1.5 text-slate-400 hover:text-rose-600 transition" title="刪除此項目">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
         }
 
         function addCostQuoteRow() {
@@ -1838,12 +1877,10 @@
             let selectedStatus = document.getElementById('select-case-status').value;
             const workProgress = document.getElementById('select-work-progress').value;
 
-            // 若選擇「土地變更」，預設自動歸類至「優先處理」
             if (selectedStatus === '土地變更') {
                 selectedStatus = '優先處理';
             }
 
-            // 判斷是否調整至簽約狀態
             if (selectedStatus === '簽約案件' || selectedStatus === '已簽約' || workProgress === '已簽約' || document.getElementById('select-no-sign-reason').value === '已簽約') {
                 selectedStatus = '簽約案件';
             }
