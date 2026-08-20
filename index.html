@@ -20,6 +20,7 @@
 </head>
 <body class="bg-slate-50 text-slate-800 flex h-screen overflow-hidden">
 
+    <!-- 左側導覽列 -->
     <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col flex-shrink-0 shadow-lg">
         <div class="p-5 flex items-center gap-3 border-b border-slate-800">
             <div class="w-10 h-10 rounded-lg bg-sky-600 flex items-center justify-center text-white font-bold text-xl shadow">睿</div>
@@ -38,17 +39,9 @@
                 <i class="fa-solid fa-list-check text-lg w-5 text-center"></i>
                 <span>2026案件管理</span>
             </button>
-            <button onclick="switchTab('project-eval')" id="btn-project-eval" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
-                <i class="fa-solid fa-calculator text-lg w-5 text-center"></i>
-                <span>專案評估</span>
-            </button>
             <button onclick="switchTab('special-factory')" id="btn-special-factory" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
                 <i class="fa-solid fa-industry text-lg w-5 text-center"></i>
                 <span>土地變更</span>
-            </button>
-            <button onclick="switchTab('solar-eval')" id="btn-solar-eval" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
-                <i class="fa-solid fa-solar-panel text-lg w-5 text-center"></i>
-                <span>太陽能自建</span>
             </button>
             <button onclick="switchTab('real-estate-table')" id="btn-real-estate-table" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
                 <i class="fa-solid fa-building text-lg w-5 text-center"></i>
@@ -73,6 +66,7 @@
         </div>
     </aside>
 
+    <!-- 主要內容區 -->
     <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
         <header class="bg-white border-b border-slate-200 px-8 py-4 flex items-center justify-between shadow-sm">
             <div>
@@ -92,6 +86,7 @@
         </header>
 
         <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
+            <!-- 戰情室 Tab -->
             <section id="tab-war-room" class="tab-content space-y-6">
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                     <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
@@ -150,6 +145,7 @@
                 </div>
             </section>
 
+            <!-- 2026案件管理 Tab -->
             <section id="tab-cases-2026" class="tab-content hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">2026案件管控面板</h3>
@@ -215,18 +211,8 @@
                 </div>
             </section>
 
-            <section id="tab-project-eval" class="tab-content hidden space-y-6">
-                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                    <h3 class="font-bold text-slate-800 mb-2">專案可行性與效益評估</h3>
-                    <p class="text-slate-500 text-sm mb-4">綜合評估各項投資專案之財務模型、風險與預期效益。</p>
-                    <div class="p-4 bg-slate-50 rounded-lg border border-slate-200 text-slate-600 text-sm">
-                        目前尚無待評估專案，點擊上方新增以建立評估表。
-                    </div>
-                </div>
-            </section>
-
+            <!-- 土地變更 Tab -->
             <section id="tab-special-factory" class="tab-content hidden space-y-6">
-                <!-- 土地變更戰情室 -->
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-2">
                         <div class="flex items-center gap-2">
@@ -240,7 +226,6 @@
                     </div>
                 </div>
 
-                <!-- 特定工廠改善計畫與用地變更進度追蹤 (直排八大項分類) -->
                 <div class="space-y-6">
                     <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                         <h3 class="font-bold text-slate-800 text-base">特定工廠改善計畫與用地變更進度追蹤</h3>
@@ -248,12 +233,15 @@
                         <div class="flex items-center gap-3">
                             <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-lg border border-slate-200">
                                 <span class="text-xs font-semibold text-slate-600 pl-1"><i class="fa-solid fa-share-from-square text-sky-600"></i> 拋轉選取案件至：</span>
+                                <!-- 需求 4：更新拋轉選項 -->
                                 <select id="select-batch-target" class="px-2 py-1 border border-slate-300 rounded text-xs focus:outline-none focus:border-sky-500 bg-white font-medium">
-                                    <option value="簽約案件">簽約案件</option>
-                                    <option value="土地變更">土地變更</option>
-                                    <option value="案件評估">案件評估</option>
-                                    <option value="廢件區">廢件區</option>
-                                    <option value="結案">結案</option>
+                                    <option value="已簽約">已簽約</option>
+                                    <option value="優先處理">優先處理</option>
+                                    <option value="總有一天">總有一天</option>
+                                    <option value="租客案件">租客案件</option>
+                                    <option value="同業案件">同業案件</option>
+                                    <option value="已被斬件">已被斬件</option>
+                                    <option value="無法領證">無法領證</option>
                                 </select>
                                 <button onclick="transferSelectedSpecialCases()" class="px-3 py-1 bg-sky-600 hover:bg-sky-700 text-white rounded text-xs font-medium transition shadow-sm">
                                     執行拋轉
@@ -266,7 +254,7 @@
                         </div>
                     </div>
 
-                    <!-- 1. 已簽約 -->
+                    <!-- 各類別追蹤表格區塊 -->
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="p-4 bg-emerald-50 border-b border-emerald-100 flex justify-between items-center">
                             <div class="flex items-center gap-2">
@@ -282,7 +270,6 @@
                         </div>
                     </div>
 
-                    <!-- 2. 優先處理 -->
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="p-4 bg-amber-50 border-b border-amber-100 flex justify-between items-center">
                             <div class="flex items-center gap-2">
@@ -298,7 +285,6 @@
                         </div>
                     </div>
 
-                    <!-- 3. 總有一天 -->
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="p-4 bg-sky-50 border-b border-sky-100 flex justify-between items-center">
                             <div class="flex items-center gap-2">
@@ -314,7 +300,6 @@
                         </div>
                     </div>
 
-                    <!-- 4. 租客案件 -->
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="p-4 bg-indigo-50 border-b border-indigo-100 flex justify-between items-center">
                             <div class="flex items-center gap-2">
@@ -330,7 +315,6 @@
                         </div>
                     </div>
 
-                    <!-- 5. 同業案件 -->
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="p-4 bg-purple-50 border-b border-purple-100 flex justify-between items-center">
                             <div class="flex items-center gap-2">
@@ -346,7 +330,6 @@
                         </div>
                     </div>
 
-                    <!-- 6. 已被斬件 -->
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="p-4 bg-rose-50 border-b border-rose-100 flex justify-between items-center">
                             <div class="flex items-center gap-2">
@@ -362,7 +345,6 @@
                         </div>
                     </div>
 
-                    <!-- 7. 無法領證 -->
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="p-4 bg-slate-100 border-b border-slate-200 flex justify-between items-center">
                             <div class="flex items-center gap-2">
@@ -380,23 +362,7 @@
                 </div>
             </section>
 
-            <section id="tab-solar-eval" class="tab-content hidden space-y-6">
-                <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
-                    <h3 class="font-bold text-slate-800 mb-2">太陽能自建案場評估管理</h3>
-                    <p class="text-slate-500 text-sm mb-4">包含屋頂與地面案場評估、日照條件測量、容量規劃與投資報酬率試算。</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="p-4 bg-sky-50 rounded-lg border border-sky-100">
-                            <div class="font-semibold text-sky-900 text-sm">預估總規劃容量</div>
-                            <div class="text-2xl font-bold text-sky-700 mt-1">2.4 MW</div>
-                        </div>
-                        <div class="p-4 bg-emerald-50 rounded-lg border border-emerald-100">
-                            <div class="font-semibold text-emerald-900 text-sm">預估年發電效益</div>
-                            <div class="text-2xl font-bold text-emerald-700 mt-1">1.8 MW</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
+            <!-- 不動產案件資料表 Tab -->
             <section id="tab-real-estate-table" class="tab-content hidden space-y-6">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-5 border-b border-slate-100 flex justify-between items-center">
@@ -423,6 +389,7 @@
                 </div>
             </section>
 
+            <!-- 結案 Tab -->
             <section id="tab-closed-cases" class="tab-content hidden space-y-6">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-4 bg-slate-100 border-b border-slate-200 flex justify-between items-center">
@@ -440,6 +407,7 @@
                 </div>
             </section>
 
+            <!-- 廢件區 Tab -->
             <section id="tab-trash-cases" class="tab-content hidden space-y-6">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-4 bg-rose-50 border-b border-rose-100 flex justify-between items-center">
@@ -459,6 +427,7 @@
         </div>
     </main>
 
+    <!-- 新增 / 編輯案件 彈出視窗 -->
     <div id="add-case-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
@@ -476,15 +445,15 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <!-- 需求 3 & 需求 4：調整後的案件狀態選單 -->
+                        <!-- 需求 3：調整「土地變更」位於「歷年簽約案件」下方 -->
                         <label class="block text-xs font-semibold text-slate-700 mb-1"> 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span></label>
                         <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500">
                             <option value="案件評估" selected>案件評估</option>
                             <option value="簽約案件">簽約案件</option>
-                            <option value="土地變更">土地變更</option>
                             <option value="廢件區">廢件區</option>
                             <option value="結案">結案</option>
                             <option value="歷年簽約案件">歷年簽約案件</option>
+                            <option value="土地變更">土地變更</option>
                         </select>
                     </div>
 
@@ -537,7 +506,6 @@
                 </div>
 
                 <div class="space-y-4">
-                    <!-- 需求 2：新增未簽約原因下拉選單（位於地址上方） -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1"> 未簽約原因</label>
                         <select id="select-no-sign-reason" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
@@ -630,9 +598,6 @@
                         <button type="button" onclick="openLandChangeModal()" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                             <i class="fa-solid fa-plus text-sky-600"></i> 土地變更
                         </button>
-                        <button type="button" onclick="switchTab('solar-eval'); closeAddCaseModal();" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                            <i class="fa-solid fa-plus text-sky-600"></i> 太陽能試算
-                        </button>
                         <button type="button" onclick="alert('補照試算功能模組載入中...')" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                             <i class="fa-solid fa-plus text-sky-600"></i> 補照試算
                         </button>
@@ -696,7 +661,7 @@
         </div>
     </div>
 
-    <!-- 土地變更評估彈跳視窗 -->
+    <!-- 土地變更評估視窗 -->
     <div id="land-change-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -855,6 +820,7 @@
         </div>
     </div>
 
+    <!-- 土地基本資料視窗 -->
     <div id="land-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-[96vw] max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -944,6 +910,7 @@
         </div>
     </div>
 
+    <!-- 保存登記建物視窗 -->
     <div id="registered-building-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-[96vw] max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -1024,6 +991,7 @@
         </div>
     </div>
 
+    <!-- 未保存登記建物視窗 -->
     <div id="unregistered-building-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -1119,7 +1087,6 @@
                 table.insertAdjacentHTML('afterbegin', caseTableHeader);
             });
 
-            // 需求 1：移除『分區』後的特定工廠表頭結構
             const specialFactoryHeader = `
                 <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
                     <tr>
@@ -1219,12 +1186,10 @@
             renderSpecialFactoryRow(c);
         }
 
-        // 需求 1：特定工廠改善計畫渲染時移除『分區』欄位
         function renderSpecialFactoryRow(c) {
             const categories = ['已簽約', '優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證', '土地變更'];
             if (!categories.includes(c.status) && c.status !== '土地變更') return;
 
-            // 若為土地變更，將資料呈現在特定工廠進度追蹤的第一個分類格中
             let categoryIndex = categories.indexOf(c.status);
             if (categoryIndex === -1 || categoryIndex > 6) categoryIndex = 0;
 
@@ -1299,9 +1264,7 @@
             const titles = {
                 'war-room': '戰情室',
                 'cases-2026': '2026案件管理',
-                'project-eval': '專案評估',
                 'special-factory': '土地變更',
-                'solar-eval': '太陽能自建',
                 'real-estate-table': '不動產案件資料表',
                 'closed-cases': '結案',
                 'trash-cases': '廢件區'
@@ -1826,7 +1789,6 @@
             alert(`已成功恢復 ${lastBatch.length} 筆誤刪案件！`);
         }
 
-        // 需求 4：點選案件簽約後，資料複製/拋轉至 2026案件管理的簽約案件
         function handleSaveCase(event) {
             event.preventDefault();
 
@@ -1861,7 +1823,6 @@
                 pay4Date: document.getElementById('input-pay4-date').value
             };
 
-            // 如果是在土地變更下點選已簽約，或設定工作進度為已簽約，自動複製至 2026 簽約案件
             if (caseObj.noSignReason === '已簽約' || workProgress === '已簽約') {
                 caseObj.status = '簽約案件';
             }
