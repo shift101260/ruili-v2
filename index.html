@@ -250,6 +250,9 @@
                             <button onclick="deleteSelectedCases()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                                 <i class="fa-solid fa-trash-can"></i> 案件刪除
                             </button>
+                            <button onclick="restoreDeletedCases()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                                <i class="fa-solid fa-rotate-left"></i> 誤刪恢復
+                            </button>
 
                             <button onclick="openAddCaseModal('土地變更')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                                 <i class="fa-solid fa-plus"></i> 新增廠區案件
@@ -396,9 +399,14 @@
             <section id="tab-closed-cases" class="tab-content hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">結案案件管理</h3>
-                    <button onclick="deleteSelectedCases()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                        <i class="fa-solid fa-trash-can"></i> 案件刪除
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button onclick="deleteSelectedCases()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-trash-can"></i> 案件刪除
+                        </button>
+                        <button onclick="restoreDeletedCases()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-rotate-left"></i> 誤刪恢復
+                        </button>
+                    </div>
                 </div>
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-4 bg-slate-100 border-b border-slate-200 flex justify-between items-center">
@@ -420,9 +428,14 @@
             <section id="tab-trash-cases" class="tab-content hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">廢件區案件管理</h3>
-                    <button onclick="deleteSelectedCases()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                        <i class="fa-solid fa-trash-can"></i> 案件刪除
-                    </button>
+                    <div class="flex items-center gap-2">
+                        <button onclick="deleteSelectedCases()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-trash-can"></i> 案件刪除
+                        </button>
+                        <button onclick="restoreDeletedCases()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-rotate-left"></i> 誤刪恢復
+                        </button>
+                    </div>
                 </div>
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-4 bg-rose-50 border-b border-rose-100 flex justify-between items-center">
