@@ -226,13 +226,139 @@
             </section>
 
             <section id="tab-special-factory" class="tab-content hidden space-y-6">
-                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                    <div class="p-5 border-b border-slate-100 flex justify-between items-center">
-                        <h3 class="font-bold text-slate-800">特定工廠改善計畫與用地變更進度追蹤</h3>
-                        <button class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition">+ 新增廠區案件</button>
+                <!-- 土地變更戰情室 -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-sky-600 text-sm"></i>
+                            <h3 class="font-bold text-slate-800 text-sm">土地變更戰情室</h3>
+                        </div>
+                        <span class="text-xs text-slate-400">分析指標設定中</span>
                     </div>
-                    <div class="p-5 text-slate-500 text-sm">
-                        特定工廠輔導、消防與水利改善計畫及用地變更作業控台。
+                    <div class="p-6 bg-slate-50 rounded-lg border border-dashed border-slate-300 text-center text-slate-400 text-xs">
+                        戰情室分析內容待設定（預留營運數據、各區轉換率與進度儀表板）
+                    </div>
+                </div>
+
+                <!-- 特定工廠改善計畫與用地變更進度追蹤 (直排八大項分類) -->
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-slate-800 text-base">特定工廠改善計畫與用地變更進度追蹤</h3>
+                        <button onclick="openAddCaseModal()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-plus"></i> 新增廠區案件
+                        </button>
+                    </div>
+
+                    <!-- 1. 已簽約 -->
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-emerald-50 border-b border-emerald-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                <h4 class="font-bold text-emerald-900 text-sm">已簽約</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 2. 優先處理 -->
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-amber-50 border-b border-amber-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                                <h4 class="font-bold text-amber-900 text-sm">優先處理</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 3. 總有一天 -->
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-sky-50 border-b border-sky-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-sky-500"></span>
+                                <h4 class="font-bold text-sky-900 text-sm">總有一天</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 4. 租客案件 -->
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-indigo-50 border-b border-indigo-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-indigo-500"></span>
+                                <h4 class="font-bold text-indigo-900 text-sm">租客案件</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 5. 同業案件 -->
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-purple-50 border-b border-purple-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-purple-500"></span>
+                                <h4 class="font-bold text-purple-900 text-sm">同業案件</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 6. 已被斬件 -->
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-rose-50 border-b border-rose-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                                <h4 class="font-bold text-rose-900 text-sm">已被斬件</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 7. 無法領證 -->
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-slate-100 border-b border-slate-200 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-slate-500"></span>
+                                <h4 class="font-bold text-slate-800 text-sm">無法領證</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-slate-200 text-slate-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -931,7 +1057,7 @@
         });
 
         function initTableHeaders() {
-            const headerHTML = `
+            const caseTableHeader = `
                 <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
                     <tr>
                         <th class="p-3 font-semibold w-[24%]">客戶名稱</th>
@@ -943,7 +1069,24 @@
                 </thead>
             `;
             document.querySelectorAll('.case-table').forEach(table => {
-                table.insertAdjacentHTML('afterbegin', headerHTML);
+                table.insertAdjacentHTML('afterbegin', caseTableHeader);
+            });
+
+            const specialFactoryHeader = `
+                <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
+                    <tr>
+                        <th class="p-3 font-semibold w-[16%]">客戶名稱</th>
+                        <th class="p-3 font-semibold w-[12%]">分區</th>
+                        <th class="p-3 font-semibold w-[12%]">工作進度</th>
+                        <th class="p-3 font-semibold w-[16%]">未簽約原因</th>
+                        <th class="p-3 font-semibold w-[12%]">報價金額</th>
+                        <th class="p-3 font-semibold w-[12%]">簽約金額</th>
+                        <th class="p-3 font-semibold w-[22%]">案件即時說明</th>
+                    </tr>
+                </thead>
+            `;
+            document.querySelectorAll('.special-factory-table').forEach(table => {
+                table.insertAdjacentHTML('afterbegin', specialFactoryHeader);
             });
         }
 
