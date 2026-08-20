@@ -242,11 +242,31 @@
 
                 <!-- 特定工廠改善計畫與用地變更進度追蹤 (直排八大項分類) -->
                 <div class="space-y-6">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                         <h3 class="font-bold text-slate-800 text-base">特定工廠改善計畫與用地變更進度追蹤</h3>
-                        <button onclick="openAddCaseModal()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                            <i class="fa-solid fa-plus"></i> 新增廠區案件
-                        </button>
+                        
+                        <!-- 需求 3：新增批量拋轉工具列 -->
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-lg border border-slate-200">
+                                <span class="text-xs font-semibold text-slate-600 pl-1"><i class="fa-solid fa-share-from-square text-sky-600"></i> 拋轉選取案件至：</span>
+                                <select id="select-batch-target" class="px-2 py-1 border border-slate-300 rounded text-xs focus:outline-none focus:border-sky-500 bg-white font-medium">
+                                    <option value="已簽約">已簽約</option>
+                                    <option value="優先處理">優先處理</option>
+                                    <option value="總有一天">總有一天</option>
+                                    <option value="租客案件">租客案件</option>
+                                    <option value="同業案件">同業案件</option>
+                                    <option value="已被斬件">已被斬件</option>
+                                    <option value="無法領證">無法領證</option>
+                                </select>
+                                <button onclick="transferSelectedSpecialCases()" class="px-3 py-1 bg-sky-600 hover:bg-sky-700 text-white rounded text-xs font-medium transition shadow-sm">
+                                    執行拋轉
+                                </button>
+                            </div>
+
+                            <button onclick="openAddCaseModal()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                                <i class="fa-solid fa-plus"></i> 新增廠區案件
+                            </button>
+                        </div>
                     </div>
 
                     <!-- 1. 已簽約 -->
@@ -466,6 +486,13 @@
                             <option value="廢件區">廢件區</option>
                             <option value="結案">結案</option>
                             <option value="歷年簽約案件">歷年簽約案件</option>
+                            <option value="已簽約">已簽約</option>
+                            <option value="優先處理">優先處理</option>
+                            <option value="總有一天">總有一天</option>
+                            <option value="租客案件">租客案件</option>
+                            <option value="同業案件">同業案件</option>
+                            <option value="已被斬件">已被斬件</option>
+                            <option value="無法領證">無法領證</option>
                         </select>
                     </div>
 
@@ -701,21 +728,33 @@
                     </div>
                 </div>
 
-                <!-- 建築師報價資料區塊 -->
+                <!-- 需求 1：改名為「二、案件成本」，並新增「新增報價項目」按鈕與「報價項目」欄位 -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
-                    <h4 class="font-bold text-slate-800 text-sm border-b border-slate-200 pb-2">二、建築師報價金額</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1">填表時間/日期</label>
-                            <input type="datetime-local" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
-                        </div>
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1">未稅報價金額 (NT$)</label>
-                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white font-mono">
-                        </div>
-                        <div>
-                            <label class="block font-semibold text-slate-700 mb-1">稅後報價金額 (NT$)</label>
-                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white font-mono">
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <h4 class="font-bold text-slate-800 text-sm">二、案件成本</h4>
+                        <button type="button" onclick="addCostQuoteRow()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-plus text-xs"></i> 新增報價項目
+                        </button>
+                    </div>
+
+                    <div id="cost-quote-items-container" class="space-y-3">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 bg-white p-3 rounded-lg border border-slate-200 shadow-sm items-center">
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">報價項目</label>
+                                <input type="text" placeholder="例如：建築師設計費" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">填表時間/日期</label>
+                                <input type="datetime-local" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">未稅報價金額 (NT$)</label>
+                                <input type="number" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white font-mono">
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-700 mb-1">稅後報價金額 (NT$)</label>
+                                <input type="number" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white font-mono">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1072,16 +1111,17 @@
                 table.insertAdjacentHTML('afterbegin', caseTableHeader);
             });
 
+            // 需求 2：土地變更進度追蹤表頭
             const specialFactoryHeader = `
                 <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
                     <tr>
-                        <th class="p-3 font-semibold w-[16%]">客戶名稱</th>
-                        <th class="p-3 font-semibold w-[12%]">分區</th>
+                        <th class="p-3 font-semibold w-[18%]">客戶名稱</th>
+                        <th class="p-3 font-semibold w-[10%]">分區</th>
                         <th class="p-3 font-semibold w-[12%]">工作進度</th>
                         <th class="p-3 font-semibold w-[16%]">未簽約原因</th>
                         <th class="p-3 font-semibold w-[12%]">報價金額</th>
                         <th class="p-3 font-semibold w-[12%]">簽約金額</th>
-                        <th class="p-3 font-semibold w-[22%]">案件即時說明</th>
+                        <th class="p-3 font-semibold w-[20%]">案件即時說明</th>
                     </tr>
                 </thead>
             `;
@@ -1110,6 +1150,9 @@
             document.getElementById('tbody-last-year').innerHTML = '';
             document.getElementById('tbody-closed').innerHTML = '';
             document.getElementById('tbody-trash').innerHTML = '';
+
+            // 清空土地變更下的各子列表
+            document.querySelectorAll('.special-factory-table tbody').forEach(tb => tb.innerHTML = '');
 
             casesData.forEach(c => renderCaseRow(c));
             updateDashboard();
@@ -1166,6 +1209,70 @@
 
             const tbody = document.getElementById(targetTbodyId);
             if (tbody) tbody.appendChild(tr);
+
+            // 同時渲染特定工廠進度追蹤列表
+            renderSpecialFactoryRow(c);
+        }
+
+        // 需求 2：渲染特定工廠改善計畫與用地變更進度追蹤列表 (客戶名稱前新增 Checkbox)
+        function renderSpecialFactoryRow(c) {
+            const categories = ['已簽約', '優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證'];
+            if (!categories.includes(c.status)) return;
+
+            const categoryIndex = categories.indexOf(c.status);
+            const sfTables = document.querySelectorAll('.special-factory-table');
+            if (!sfTables[categoryIndex]) return;
+
+            const targetTbody = sfTables[categoryIndex].querySelector('tbody');
+            if (!targetTbody) return;
+
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-slate-50 transition cursor-pointer';
+            tr.dataset.id = c.id;
+            tr.onclick = function() { openEditCaseModal(c.id); };
+
+            const quoteFormatted = c.quoteAmount ? `NT$ ${parseInt(c.quoteAmount).toLocaleString()}` : 'NT$ 0';
+            const contractFormatted = c.contractAmount ? `NT$ ${parseInt(c.contractAmount).toLocaleString()}` : 'NT$ 0';
+
+            // 客戶名稱前加入 sf-case-checkbox 方框
+            tr.innerHTML = `
+                <td class="p-3 font-semibold text-slate-800 truncate">
+                    <input type="checkbox" onclick="event.stopPropagation()" class="sf-case-checkbox mr-2 rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer align-middle" data-id="${c.id}">
+                    <span class="align-middle">${c.clientName}</span>
+                </td>
+                <td class="p-3 truncate">${c.zone || '-'}</td>
+                <td class="p-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-700 border border-slate-200 rounded-full font-medium">${c.workProgress || '-'}</span></td>
+                <td class="p-3 truncate text-slate-500">${c.noSignReason || '-'}</td>
+                <td class="p-3 font-mono text-slate-700">${quoteFormatted}</td>
+                <td class="p-3 font-mono text-emerald-700 font-bold">${contractFormatted}</td>
+                <td class="p-3 text-slate-500 truncate">${c.salesNote || '無即時說明'}</td>
+            `;
+
+            targetTbody.appendChild(tr);
+        }
+
+        // 需求 3：勾選案件批量拋轉功能
+        function transferSelectedSpecialCases() {
+            const checkedBoxes = document.querySelectorAll('.sf-case-checkbox:checked');
+            if (checkedBoxes.length === 0) {
+                alert('請先勾選欲拋轉的客戶案件！');
+                return;
+            }
+
+            const targetStatus = document.getElementById('select-batch-target').value;
+            const idsToTransfer = Array.from(checkedBoxes).map(chk => chk.dataset.id);
+
+            let count = 0;
+            casesData.forEach(c => {
+                if (idsToTransfer.includes(c.id)) {
+                    c.status = targetStatus;
+                    count++;
+                }
+            });
+
+            saveCasesToStorage();
+            loadCasesFromStorage();
+            alert(`已成功將 ${count} 筆案件拋轉至【${targetStatus}】！`);
         }
 
         function switchTab(tabId) {
@@ -1255,6 +1362,38 @@
         function autoExpandTextarea(element) {
             element.style.height = 'auto';
             element.style.height = element.scrollHeight + 'px';
+        }
+
+        // 需求 1：新增案件成本報價明細行
+        function addCostQuoteRow() {
+            const container = document.getElementById('cost-quote-items-container');
+            const rowId = 'cost-row-' + Date.now();
+            const html = `
+                <div id="${rowId}" class="grid grid-cols-1 md:grid-cols-4 gap-3 bg-white p-3 rounded-lg border border-slate-200 shadow-sm items-center relative group">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">報價項目</label>
+                        <input type="text" placeholder="例如：技師簽證費" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">填表時間/日期</label>
+                        <input type="datetime-local" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">未稅報價金額 (NT$)</label>
+                        <input type="number" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white font-mono">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="flex-1">
+                            <label class="block font-semibold text-slate-700 mb-1">稅後報價金額 (NT$)</label>
+                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white font-mono">
+                        </div>
+                        <button type="button" onclick="document.getElementById('${rowId}').remove()" class="mt-5 p-2 text-slate-400 hover:text-rose-600 transition" title="刪除此項目">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
         }
 
         function openLandModal() {
@@ -1513,7 +1652,7 @@
                     <input type="text" placeholder="例：農舍/廠房" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
                     <input type="text" placeholder="例：2015年" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
                     <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateUnregBuildingTotals()" class="unreg-bldg-sqm-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
-                    <input type="text" readonly placeholder="0.00" class="unreg-bldg-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 rounded-lg font-mono font-bold text-xs">
+                    <input type="text" readonly placeholder="0.00" class="unreg-bldg-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 font-mono font-bold text-xs">
                     <button type="button" onclick="removeUnregBuildingRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆資料">
                         <i class="fa-solid fa-trash-can text-sm"></i>
                     </button>
