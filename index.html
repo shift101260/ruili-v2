@@ -54,6 +54,14 @@
                 <i class="fa-solid fa-building text-lg w-5 text-center"></i>
                 <span>不動產案件資料表</span>
             </button>
+            <button onclick="switchTab('closed-cases')" id="btn-closed-cases" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
+                <i class="fa-solid fa-box-archive text-lg w-5 text-center"></i>
+                <span>結案</span>
+            </button>
+            <button onclick="switchTab('trash-cases')" id="btn-trash-cases" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
+                <i class="fa-solid fa-trash-can text-lg w-5 text-center"></i>
+                <span>廢件區</span>
+            </button>
         </nav>
 
         <div class="p-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
@@ -178,7 +186,7 @@
                         <div class="p-4 bg-emerald-50 border-b border-emerald-100 flex justify-between items-center">
                             <div class="flex items-center gap-2">
                                 <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
-                                <h4 class="font-bold text-emerald-900 text-sm">已簽約</h4>
+                                <h4 class="font-bold text-emerald-900 text-sm">簽約案件</h4>
                             </div>
                             <span id="count-signed" class="text-xs font-semibold px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">0 件</span>
                         </div>
@@ -193,7 +201,7 @@
                         <div class="p-4 bg-purple-50 border-b border-purple-100 flex justify-between items-center">
                             <div class="flex items-center gap-2">
                                 <span class="w-3 h-3 rounded-full bg-purple-500"></span>
-                                <h4 class="font-bold text-purple-900 text-sm">歷年未結案</h4>
+                                <h4 class="font-bold text-purple-900 text-sm">歷年簽約案件</h4>
                                 <span class="text-[11px] text-purple-600 bg-purple-100/60 px-2 py-0.5 rounded font-normal">不計入2026統計數據</span>
                             </div>
                             <span id="count-last-year" class="text-xs font-semibold px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full">0 件</span>
@@ -201,36 +209,6 @@
                         <div class="overflow-x-auto">
                             <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
                                 <tbody id="tbody-last-year" class="divide-y divide-slate-100"></tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div class="p-4 bg-slate-100 border-b border-slate-200 flex justify-between items-center">
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-slate-500"></span>
-                                <h4 class="font-bold text-slate-800 text-sm">已結案</h4>
-                            </div>
-                            <span id="count-closed" class="text-xs font-semibold px-2 py-0.5 bg-slate-200 text-slate-700 rounded-full">0 件</span>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
-                                <tbody id="tbody-closed" class="divide-y divide-slate-100"></tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div class="p-4 bg-rose-50 border-b border-rose-100 flex justify-between items-center">
-                            <div class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full bg-rose-500"></span>
-                                <h4 class="font-bold text-rose-900 text-sm">廢件區</h4>
-                            </div>
-                            <span id="count-trash" class="text-xs font-semibold px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full">0 件</span>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
-                                <tbody id="tbody-trash" class="divide-y divide-slate-100"></tbody>
                             </table>
                         </div>
                     </div>
@@ -301,6 +279,40 @@
                     </div>
                 </div>
             </section>
+
+            <section id="tab-closed-cases" class="tab-content hidden space-y-6">
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-4 bg-slate-100 border-b border-slate-200 flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-slate-500"></span>
+                            <h4 class="font-bold text-slate-800 text-sm">結案案件列表</h4>
+                        </div>
+                        <span id="count-closed" class="text-xs font-semibold px-2 py-0.5 bg-slate-200 text-slate-700 rounded-full">0 件</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
+                            <tbody id="tbody-closed" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tab-trash-cases" class="tab-content hidden space-y-6">
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                    <div class="p-4 bg-rose-50 border-b border-rose-100 flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                            <h4 class="font-bold text-rose-900 text-sm">廢件區案件列表</h4>
+                        </div>
+                        <span id="count-trash" class="text-xs font-semibold px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full">0 件</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
+                            <tbody id="tbody-trash" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
         </div>
     </main>
 
@@ -324,10 +336,10 @@
                         <label class="block text-xs font-semibold text-slate-700 mb-1"> 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span></label>
                         <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500">
                             <option value="案件評估" selected>案件評估</option>
-                            <option value="已簽約">已簽約</option>
-                            <option value="歷年未結案">歷年未結案</option>
-                            <option value="已結案">已結案</option>
+                            <option value="簽約案件">簽約案件</option>
                             <option value="廢件區">廢件區</option>
+                            <option value="結案">結案</option>
+                            <option value="歷年簽約案件">歷年簽約案件</option>
                         </select>
                     </div>
 
@@ -351,8 +363,6 @@
                             <option value="報價">報價</option>
                             <option value="準備簽約">準備簽約</option>
                             <option value="已簽約">已簽約</option>
-                            <option value="已結案">已結案</option>
-                            <option value="廢件區">廢件區</option>
                         </select>
                     </div>
 
@@ -360,6 +370,7 @@
                         <label class="block text-xs font-semibold text-slate-700 mb-1"> 服務項目</label>
                         <select id="select-service-item" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
                             <option value="地政士">地政士</option>
+                            <option value="改善計劃">改善計劃</option>
                             <option value="特定工廠登記">特定工廠登記</option>
                             <option value="一般工廠登記/變更">一般工廠登記/變更</option>
                             <option value="土地變更">土地變更</option>
@@ -370,8 +381,7 @@
                             <option value="ESG轉型">ESG轉型</option>
                             <option value="債務處理">債務處理</option>
                             <option value="太陽能">太陽能</option>
-                            <option value="工程">工程</option>
-                            <option value="財務會計">財務會計</option>
+                            <option value="其他">其他</option>
                         </select>
                     </div>
 
@@ -399,8 +409,8 @@
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 mb-1"> 業務即時說明</label>
-                    <textarea id="input-sales-note" rows="2" placeholder="請輸入業務最新進度說明..." oninput="autoExpandTextarea(this)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 resize-none overflow-hidden leading-relaxed"></textarea>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1"> 案件即時說明</label>
+                    <textarea id="input-sales-note" rows="2" placeholder="請輸入案件最新進度說明..." oninput="autoExpandTextarea(this)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 resize-none overflow-hidden leading-relaxed"></textarea>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -436,8 +446,9 @@
                     </div>
                 </div>
 
-                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2">
+                <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
                     <label class="block text-xs font-bold text-slate-800"> 案件評估</label>
+                    <div class="text-xs font-semibold text-slate-600 pt-1">服務項目格式</div>
                     <div class="flex flex-wrap gap-2">
                         <button type="button" onclick="openLandModal()" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                             <i class="fa-solid fa-plus text-sky-600"></i> 土地基本資料
@@ -447,6 +458,12 @@
                         </button>
                         <button type="button" onclick="openUnregisteredBuildingModal()" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                             <i class="fa-solid fa-plus text-sky-600"></i> 未保存登記建物
+                        </button>
+                        <button type="button" onclick="switchTab('special-factory'); closeAddCaseModal();" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-plus text-sky-600"></i> 土地變更
+                        </button>
+                        <button type="button" onclick="switchTab('solar-eval'); closeAddCaseModal();" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-plus text-sky-600"></i> 太陽能試算
                         </button>
                     </div>
                 </div>
@@ -760,7 +777,7 @@
                 <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
                     <tr>
                         <th class="p-3 font-semibold w-[24%]">客戶名稱</th>
-                        <th class="p-3 font-semibold w-[18%]">服務項目</th>
+                        <th class="p-3 font-semibold w-[18%]">服務細項</th>
                         <th class="p-3 font-semibold w-[15%]">工作進度</th>
                         <th class="p-3 font-semibold w-[15%]">報價金額</th>
                         <th class="p-3 font-semibold w-[28%]">案件即時說明</th>
@@ -815,8 +832,12 @@
             let targetTbodyId = 'tbody-eval';
             switch(c.status) {
                 case '案件評估': targetTbodyId = 'tbody-eval'; break;
+                case '簽約案件':
                 case '已簽約': targetTbodyId = 'tbody-signed'; break;
+                case '歷年簽約案件':
+                case '歷年未結案':
                 case '去年度簽約未結案件': targetTbodyId = 'tbody-last-year'; break;
+                case '結案':
                 case '已結案': targetTbodyId = 'tbody-closed'; break;
                 case '廢件區': targetTbodyId = 'tbody-trash'; break;
             }
@@ -848,11 +869,14 @@
                 btn.classList.add('text-slate-400');
             });
 
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            const targetTab = document.getElementById('tab-' + tabId);
+            if (targetTab) targetTab.classList.remove('hidden');
 
             const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.classList.add('sidebar-item-active', 'text-white');
-            activeBtn.classList.remove('text-slate-400');
+            if (activeBtn) {
+                activeBtn.classList.add('sidebar-item-active', 'text-white');
+                activeBtn.classList.remove('text-slate-400');
+            }
 
             const titles = {
                 'war-room': '戰情室',
@@ -860,9 +884,11 @@
                 'project-eval': '專案評估',
                 'special-factory': '土地變更',
                 'solar-eval': '太陽能自建',
-                'real-estate-table': '不動產案件資料表'
+                'real-estate-table': '不動產案件資料表',
+                'closed-cases': '結案',
+                'trash-cases': '廢件區'
             };
-            document.getElementById('page-title').textContent = titles[tabId];
+            document.getElementById('page-title').textContent = titles[tabId] || '睿立集團內部管理系統';
         }
 
         function openAddCaseModal() {
@@ -1144,9 +1170,9 @@
 
         function updateDashboard() {
             const evalList = casesData.filter(c => c.status === '案件評估');
-            const signedList = casesData.filter(c => c.status === '已簽約');
-            const lastYearList = casesData.filter(c => c.status === '去年度簽約未結案件');
-            const closedList = casesData.filter(c => c.status === '已結案');
+            const signedList = casesData.filter(c => c.status === '簽約案件' || c.status === '已簽約');
+            const lastYearList = casesData.filter(c => c.status === '歷年簽約案件' || c.status === '歷年未結案' || c.status === '去年度簽約未結案件');
+            const closedList = casesData.filter(c => c.status === '結案' || c.status === '已結案');
             const trashList = casesData.filter(c => c.status === '廢件區');
 
             document.getElementById('count-eval').textContent = `${evalList.length} 件`;
@@ -1183,7 +1209,7 @@
             shareContainer.innerHTML = '';
 
             if (totalSignedAmount === 0 || Object.keys(signedServiceMap).length === 0) {
-                shareContainer.innerHTML = '<div class="text-slate-400 py-1">無已簽約案件數據</div>';
+                shareContainer.innerHTML = '<div class="text-slate-400 py-1">無簽約案件數據</div>';
             } else {
                 for (const [item, amt] of Object.entries(signedServiceMap)) {
                     const pct = ((amt / totalSignedAmount) * 100).toFixed(1);
