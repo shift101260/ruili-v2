@@ -245,25 +245,22 @@
                     <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                         <h3 class="font-bold text-slate-800 text-base">特定工廠改善計畫與用地變更進度追蹤</h3>
                         
-                        <!-- 需求 3：新增批量拋轉工具列 -->
                         <div class="flex items-center gap-3">
                             <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-lg border border-slate-200">
                                 <span class="text-xs font-semibold text-slate-600 pl-1"><i class="fa-solid fa-share-from-square text-sky-600"></i> 拋轉選取案件至：</span>
                                 <select id="select-batch-target" class="px-2 py-1 border border-slate-300 rounded text-xs focus:outline-none focus:border-sky-500 bg-white font-medium">
-                                    <option value="已簽約">已簽約</option>
-                                    <option value="優先處理">優先處理</option>
-                                    <option value="總有一天">總有一天</option>
-                                    <option value="租客案件">租客案件</option>
-                                    <option value="同業案件">同業案件</option>
-                                    <option value="已被斬件">已被斬件</option>
-                                    <option value="無法領證">無法領證</option>
+                                    <option value="簽約案件">簽約案件</option>
+                                    <option value="土地變更">土地變更</option>
+                                    <option value="案件評估">案件評估</option>
+                                    <option value="廢件區">廢件區</option>
+                                    <option value="結案">結案</option>
                                 </select>
                                 <button onclick="transferSelectedSpecialCases()" class="px-3 py-1 bg-sky-600 hover:bg-sky-700 text-white rounded text-xs font-medium transition shadow-sm">
                                     執行拋轉
                                 </button>
                             </div>
 
-                            <button onclick="openAddCaseModal()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                            <button onclick="openAddCaseModal('土地變更')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                                 <i class="fa-solid fa-plus"></i> 新增廠區案件
                             </button>
                         </div>
@@ -479,20 +476,15 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
+                        <!-- 需求 3 & 需求 4：調整後的案件狀態選單 -->
                         <label class="block text-xs font-semibold text-slate-700 mb-1"> 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span></label>
                         <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500">
                             <option value="案件評估" selected>案件評估</option>
                             <option value="簽約案件">簽約案件</option>
+                            <option value="土地變更">土地變更</option>
                             <option value="廢件區">廢件區</option>
                             <option value="結案">結案</option>
                             <option value="歷年簽約案件">歷年簽約案件</option>
-                            <option value="已簽約">已簽約</option>
-                            <option value="優先處理">優先處理</option>
-                            <option value="總有一天">總有一天</option>
-                            <option value="租客案件">租客案件</option>
-                            <option value="同業案件">同業案件</option>
-                            <option value="已被斬件">已被斬件</option>
-                            <option value="無法領證">無法領證</option>
                         </select>
                     </div>
 
@@ -545,6 +537,26 @@
                 </div>
 
                 <div class="space-y-4">
+                    <!-- 需求 2：新增未簽約原因下拉選單（位於地址上方） -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 未簽約原因</label>
+                        <select id="select-no-sign-reason" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
+                            <option value="">-- 請選擇未簽約原因 --</option>
+                            <option value="尚未面談">尚未面談</option>
+                            <option value="價格問題">價格問題</option>
+                            <option value="暫時沒錢">暫時沒錢</option>
+                            <option value="隔離綠帶">隔離綠帶</option>
+                            <option value="無接班人">無接班人</option>
+                            <option value="法規政策">法規政策</option>
+                            <option value="事業經營不善">事業經營不善</option>
+                            <option value="企業社想賣">企業社想賣</option>
+                            <option value="有限公司想賣">有限公司想賣</option>
+                            <option value="想買工廠擴廠">想買工廠擴廠</option>
+                            <option value="客戶機車">客戶機車</option>
+                            <option value="已簽約">已簽約</option>
+                        </select>
+                    </div>
+
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1"> 地址</label>
                         <input type="text" id="input-address" placeholder="請輸入地址" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
@@ -698,7 +710,6 @@
             </div>
 
             <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs">
-                <!-- 基本行政評估區塊 -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
                     <h4 class="font-bold text-slate-800 text-sm border-b border-slate-200 pb-2">一、基本條件評估</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -728,7 +739,6 @@
                     </div>
                 </div>
 
-                <!-- 需求 1：改名為「二、案件成本」，並新增「新增報價項目」按鈕與「報價項目」欄位 -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
                     <div class="flex justify-between items-center border-b border-slate-200 pb-2">
                         <h4 class="font-bold text-slate-800 text-sm">二、案件成本</h4>
@@ -759,7 +769,6 @@
                     </div>
                 </div>
 
-                <!-- 面積與建蔽容積率區塊 -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
                     <h4 class="font-bold text-slate-800 text-sm border-b border-slate-200 pb-2">三、面積與建築規格</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -808,7 +817,6 @@
                     </div>
                 </div>
 
-                <!-- 回饋金試算區塊 -->
                 <div class="bg-sky-50 p-4 rounded-xl border border-sky-100 space-y-4">
                     <div class="flex justify-between items-center border-b border-sky-200 pb-2">
                         <h4 class="font-bold text-sky-900 text-sm flex items-center gap-1.5">
@@ -1111,17 +1119,16 @@
                 table.insertAdjacentHTML('afterbegin', caseTableHeader);
             });
 
-            // 需求 2：土地變更進度追蹤表頭
+            // 需求 1：移除『分區』後的特定工廠表頭結構
             const specialFactoryHeader = `
                 <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
                     <tr>
-                        <th class="p-3 font-semibold w-[18%]">客戶名稱</th>
-                        <th class="p-3 font-semibold w-[10%]">分區</th>
+                        <th class="p-3 font-semibold w-[20%]">客戶名稱</th>
                         <th class="p-3 font-semibold w-[12%]">工作進度</th>
-                        <th class="p-3 font-semibold w-[16%]">未簽約原因</th>
-                        <th class="p-3 font-semibold w-[12%]">報價金額</th>
-                        <th class="p-3 font-semibold w-[12%]">簽約金額</th>
-                        <th class="p-3 font-semibold w-[20%]">案件即時說明</th>
+                        <th class="p-3 font-semibold w-[18%]">未簽約原因</th>
+                        <th class="p-3 font-semibold w-[13%]">報價金額</th>
+                        <th class="p-3 font-semibold w-[13%]">簽約金額</th>
+                        <th class="p-3 font-semibold w-[24%]">案件即時說明</th>
                     </tr>
                 </thead>
             `;
@@ -1151,7 +1158,6 @@
             document.getElementById('tbody-closed').innerHTML = '';
             document.getElementById('tbody-trash').innerHTML = '';
 
-            // 清空土地變更下的各子列表
             document.querySelectorAll('.special-factory-table tbody').forEach(tb => tb.innerHTML = '');
 
             casesData.forEach(c => renderCaseRow(c));
@@ -1210,16 +1216,18 @@
             const tbody = document.getElementById(targetTbodyId);
             if (tbody) tbody.appendChild(tr);
 
-            // 同時渲染特定工廠進度追蹤列表
             renderSpecialFactoryRow(c);
         }
 
-        // 需求 2：渲染特定工廠改善計畫與用地變更進度追蹤列表 (客戶名稱前新增 Checkbox)
+        // 需求 1：特定工廠改善計畫渲染時移除『分區』欄位
         function renderSpecialFactoryRow(c) {
-            const categories = ['已簽約', '優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證'];
-            if (!categories.includes(c.status)) return;
+            const categories = ['已簽約', '優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證', '土地變更'];
+            if (!categories.includes(c.status) && c.status !== '土地變更') return;
 
-            const categoryIndex = categories.indexOf(c.status);
+            // 若為土地變更，將資料呈現在特定工廠進度追蹤的第一個分類格中
+            let categoryIndex = categories.indexOf(c.status);
+            if (categoryIndex === -1 || categoryIndex > 6) categoryIndex = 0;
+
             const sfTables = document.querySelectorAll('.special-factory-table');
             if (!sfTables[categoryIndex]) return;
 
@@ -1234,13 +1242,11 @@
             const quoteFormatted = c.quoteAmount ? `NT$ ${parseInt(c.quoteAmount).toLocaleString()}` : 'NT$ 0';
             const contractFormatted = c.contractAmount ? `NT$ ${parseInt(c.contractAmount).toLocaleString()}` : 'NT$ 0';
 
-            // 客戶名稱前加入 sf-case-checkbox 方框
             tr.innerHTML = `
                 <td class="p-3 font-semibold text-slate-800 truncate">
                     <input type="checkbox" onclick="event.stopPropagation()" class="sf-case-checkbox mr-2 rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer align-middle" data-id="${c.id}">
                     <span class="align-middle">${c.clientName}</span>
                 </td>
-                <td class="p-3 truncate">${c.zone || '-'}</td>
                 <td class="p-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-700 border border-slate-200 rounded-full font-medium">${c.workProgress || '-'}</span></td>
                 <td class="p-3 truncate text-slate-500">${c.noSignReason || '-'}</td>
                 <td class="p-3 font-mono text-slate-700">${quoteFormatted}</td>
@@ -1251,7 +1257,6 @@
             targetTbody.appendChild(tr);
         }
 
-        // 需求 3：勾選案件批量拋轉功能
         function transferSelectedSpecialCases() {
             const checkedBoxes = document.querySelectorAll('.sf-case-checkbox:checked');
             if (checkedBoxes.length === 0) {
@@ -1304,11 +1309,12 @@
             document.getElementById('page-title').textContent = titles[tabId] || '睿立集團內部管理系統';
         }
 
-        function openAddCaseModal() {
+        function openAddCaseModal(defaultStatus = '案件評估') {
             document.getElementById('modal-title').textContent = '建立新案件';
             document.getElementById('btn-submit-case').textContent = '儲存';
             document.getElementById('add-case-form').reset();
             document.getElementById('input-case-id').value = '';
+            document.getElementById('select-case-status').value = defaultStatus;
 
             const now = new Date();
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
@@ -1332,6 +1338,7 @@
             document.getElementById('select-work-progress').value = c.workProgress || '潛在客戶';
             document.getElementById('select-service-item').value = c.serviceItem || '地政士';
             document.getElementById('input-service-detail').value = c.serviceDetail || '';
+            document.getElementById('select-no-sign-reason').value = c.noSignReason || '';
             document.getElementById('input-address').value = c.address || '';
             document.getElementById('input-land-number').value = c.landNumber || '';
             document.getElementById('input-case-description').value = c.caseDesc || '';
@@ -1364,7 +1371,6 @@
             element.style.height = element.scrollHeight + 'px';
         }
 
-        // 需求 1：新增案件成本報價明細行
         function addCostQuoteRow() {
             const container = document.getElementById('cost-quote-items-container');
             const rowId = 'cost-row-' + Date.now();
@@ -1794,7 +1800,7 @@
             }
 
             const idsToDelete = Array.from(checkedBoxes).map(chk => chk.dataset.id);
-            const deletedCases = casesData.filter(c => idsToDelete.includes(c.id));
+            const deletedCases = casesData.filter(c => !idsToDelete.includes(c.id));
 
             deleteHistoryStack.push(deletedCases);
 
@@ -1802,7 +1808,7 @@
             saveCasesToStorage();
             loadCasesFromStorage();
 
-            alert(`已成功刪除 ${deletedCases.length} 筆案件。`);
+            alert(`已成功刪除 ${idsToDelete.length} 筆案件。`);
         }
 
         function restoreDeletedCases() {
@@ -1820,18 +1826,23 @@
             alert(`已成功恢復 ${lastBatch.length} 筆誤刪案件！`);
         }
 
+        // 需求 4：點選案件簽約後，資料複製/拋轉至 2026案件管理的簽約案件
         function handleSaveCase(event) {
             event.preventDefault();
 
             const existingId = document.getElementById('input-case-id').value;
+            const selectedStatus = document.getElementById('select-case-status').value;
+            const workProgress = document.getElementById('select-work-progress').value;
+
             const caseObj = {
                 id: existingId || ('case_' + Date.now()),
-                status: document.getElementById('select-case-status').value,
+                status: selectedStatus,
                 createdAt: document.getElementById('input-created-at').value,
                 clientName: document.getElementById('input-client-name').value,
-                workProgress: document.getElementById('select-work-progress').value,
+                workProgress: workProgress,
                 serviceItem: document.getElementById('select-service-item').value,
                 serviceDetail: document.getElementById('input-service-detail').value,
+                noSignReason: document.getElementById('select-no-sign-reason').value,
                 address: document.getElementById('input-address').value,
                 landNumber: document.getElementById('input-land-number').value,
                 caseDesc: document.getElementById('input-case-description').value,
@@ -1850,6 +1861,11 @@
                 pay4Date: document.getElementById('input-pay4-date').value
             };
 
+            // 如果是在土地變更下點選已簽約，或設定工作進度為已簽約，自動複製至 2026 簽約案件
+            if (caseObj.noSignReason === '已簽約' || workProgress === '已簽約') {
+                caseObj.status = '簽約案件';
+            }
+
             if (existingId) {
                 const idx = casesData.findIndex(c => c.id === existingId);
                 if (idx !== -1) casesData[idx] = caseObj;
@@ -1860,7 +1876,7 @@
             saveCasesToStorage();
             loadCasesFromStorage();
             closeAddCaseModal();
-            alert(`儲存成功！案件已更新並保存。`);
+            alert(`儲存成功！案件資料已同步更新與歸類。`);
         }
     </script>
 </body>
