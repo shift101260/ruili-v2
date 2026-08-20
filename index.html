@@ -93,41 +93,60 @@
         </header>
 
         <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
+            <!-- 戰情室 -->
             <section id="tab-war-room" class="tab-content space-y-6">
                 <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                     <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
                         <i class="fa-solid fa-chart-line text-sky-600 text-sm"></i>
                         <h3 class="font-bold text-slate-800 text-sm">2026戰情室數據中心</h3>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    <!-- 核心數據卡片 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
                             <div>
-                                <p class="text-xs font-semibold text-slate-500 mb-1">總案件數</p>
+                                <p class="text-xs font-semibold text-slate-500 mb-1">當期總案件數</p>
                                 <h4 id="stat-total-cases" class="text-2xl font-black text-slate-800 font-mono">0 件</h4>
                             </div>
                             <div class="w-10 h-10 rounded-lg bg-slate-200/60 flex items-center justify-center text-slate-600">
                                 <i class="fa-solid fa-folder-open text-lg"></i>
                             </div>
                         </div>
+
                         <div class="p-4 bg-emerald-50/60 rounded-xl border border-emerald-100 flex items-center justify-between">
                             <div>
-                                <p class="text-xs font-semibold text-emerald-800 mb-1">簽約金額</p>
+                                <p class="text-xs font-semibold text-emerald-800 mb-1">當期簽約金額</p>
                                 <h4 id="stat-signed-amount" class="text-2xl font-black text-emerald-700 font-mono">NT$ 0</h4>
+                                <p id="stat-signed-count-label" class="text-[11px] text-emerald-600 font-medium mt-0.5">簽約案件：0 件</p>
                             </div>
                             <div class="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-600">
                                 <i class="fa-solid fa-sack-dollar text-lg"></i>
                             </div>
                         </div>
+
                         <div class="p-4 bg-sky-50/60 rounded-xl border border-sky-100 flex items-center justify-between">
                             <div>
-                                <p class="text-xs font-semibold text-sky-800 mb-1">簽約率</p>
+                                <p class="text-xs font-semibold text-sky-800 mb-1">當期簽約率</p>
                                 <h4 id="stat-conversion-rate" class="text-2xl font-black text-sky-700 font-mono">0.0%</h4>
                             </div>
                             <div class="w-10 h-10 rounded-lg bg-sky-100 flex items-center justify-center text-sky-600">
                                 <i class="fa-solid fa-chart-pie text-lg"></i>
                             </div>
                         </div>
+
+                        <div class="p-4 bg-purple-50/60 rounded-xl border border-purple-100 flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-semibold text-purple-800 mb-1">歷年簽約統計</p>
+                                <h4 id="stat-history-amount" class="text-xl font-black text-purple-700 font-mono">NT$ 0</h4>
+                                <p id="stat-history-count" class="text-[11px] text-purple-600 font-medium mt-0.5">歷年總數：0 件</p>
+                            </div>
+                            <div class="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600">
+                                <i class="fa-solid fa-box-archive text-lg"></i>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- 深度圖表統計 -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2">
                         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
                             <div class="flex justify-between items-center border-b border-slate-200 pb-2">
@@ -151,6 +170,7 @@
                 </div>
             </section>
 
+            <!-- 2026案件管理 -->
             <section id="tab-cases-2026" class="tab-content hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">2026案件管控面板</h3>
@@ -216,24 +236,51 @@
                 </div>
             </section>
 
+            <!-- 土地變更 -->
             <section id="tab-special-factory" class="tab-content hidden space-y-6">
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-3">
+                <!-- 土地變更戰情室 -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-2">
                         <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-chart-line text-sky-600 text-sm"></i>
-                            <h3 class="font-bold text-slate-800 text-sm">土地變更戰情室</h3>
+                            <i class="fa-solid fa-map-location-dot text-sky-600 text-sm"></i>
+                            <h3 class="font-bold text-slate-800 text-sm">土地變更戰情室數據</h3>
                         </div>
-                        <span class="text-xs text-slate-400">分析指標設定中</span>
+                        <span class="text-xs text-slate-400">土地變更專屬指標</span>
                     </div>
-                    <div class="p-6 bg-slate-50 rounded-lg border border-dashed border-slate-300 text-center text-slate-400 text-xs">
-                        戰情室分析內容待設定（預留營運數據、各區轉換率與進度儀表板）
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                        <!-- 數據卡片 1：優先處理轉已簽約率 -->
+                        <div class="p-4 bg-amber-50/60 rounded-xl border border-amber-200/80 space-y-2 flex flex-col justify-between">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-xs font-semibold text-amber-800 mb-1">『優先處理案件』拋轉『已簽約』佔比</p>
+                                    <h4 id="stat-land-conversion-rate" class="text-3xl font-black text-amber-700 font-mono">0.0%</h4>
+                                </div>
+                                <div class="w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center text-amber-600">
+                                    <i class="fa-solid fa-arrow-trend-up text-lg"></i>
+                                </div>
+                            </div>
+                            <div class="text-[11px] text-amber-700 font-medium">
+                                已簽約：<span id="stat-land-signed-cnt">0</span> 件 / 優先處理：<span id="stat-land-priority-cnt">0</span> 件
+                            </div>
+                        </div>
+
+                        <!-- 未簽約原因數據分析 -->
+                        <div class="lg:col-span-2 p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                                <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-triangle-exclamation text-rose-500"></i> 未簽約原因 數據分析
+                                </span>
+                                <span class="text-[11px] text-slate-400">全區原因分佈統計</span>
+                            </div>
+                            <div id="analytics-no-sign-reasons" class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2 text-xs"></div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="space-y-6">
                     <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                         <h3 class="font-bold text-slate-800 text-base">客戶清單</h3>
-                        
                         <div class="flex items-center gap-3">
                             <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-lg border border-slate-200">
                                 <span class="text-xs font-semibold text-slate-600 pl-1"><i class="fa-solid fa-share-from-square text-sky-600"></i> 拋轉選取案件至：</span>
@@ -264,6 +311,7 @@
                         </div>
                     </div>
 
+                    <!-- 土地變更 7 大區塊 -->
                     <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                         <div class="p-4 bg-emerald-50 border-b border-emerald-100 flex justify-between items-center">
                             <div class="flex items-center gap-2">
@@ -371,6 +419,7 @@
                 </div>
             </section>
 
+            <!-- 不動產案件資料表 -->
             <section id="tab-real-estate-table" class="tab-content hidden space-y-6">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
                     <div class="p-5 border-b border-slate-100 flex justify-between items-center">
@@ -397,6 +446,7 @@
                 </div>
             </section>
 
+            <!-- 結案 -->
             <section id="tab-closed-cases" class="tab-content hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">結案案件管理</h3>
@@ -425,6 +475,7 @@
                 </div>
             </section>
 
+            <!-- 廢件區 -->
             <section id="tab-trash-cases" class="tab-content hidden space-y-6">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">廢件區案件管理</h3>
@@ -455,6 +506,7 @@
         </div>
     </main>
 
+    <!-- 主表單 Modal：建立/編輯案件 -->
     <div id="add-case-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50">
@@ -536,18 +588,18 @@
                         <label class="block text-xs font-semibold text-slate-700 mb-1"> 未簽約原因</label>
                         <select id="select-no-sign-reason" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
                             <option value="">-- 請選擇未簽約原因 --</option>
+                            <option value="比價中">比價中</option>
                             <option value="尚未面談">尚未面談</option>
+                            <option value="讓子彈飛">讓子彈飛</option>
+                            <option value="懷疑專業">懷疑專業</option>
                             <option value="價格問題">價格問題</option>
-                            <option value="暫時沒錢">暫時沒錢</option>
-                            <option value="隔離綠帶">隔離綠帶</option>
-                            <option value="無接班人">無接班人</option>
                             <option value="法規政策">法規政策</option>
-                            <option value="事業經營不善">事業經營不善</option>
-                            <option value="企業社想賣">企業社想賣</option>
-                            <option value="有限公司想賣">有限公司想賣</option>
-                            <option value="想買工廠擴廠">想買工廠擴廠</option>
+                            <option value="財務危機">財務危機</option>
+                            <option value="想賣工廠">想賣工廠</option>
                             <option value="客戶機車">客戶機車</option>
-                            <option value="已簽約">已簽約</option>
+                            <option value="給別人做">給別人做</option>
+                            <option value="介紹人問題">介紹人問題</option>
+                            <option value="其他">其他</option>
                         </select>
                     </div>
 
@@ -605,8 +657,9 @@
                     </div>
                 </div>
 
+                <!-- 輔助評估按鈕 -->
                 <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
-                    <label class="block text-xs font-bold text-slate-800"> 案件評估</label>
+                    <label class="block text-xs font-bold text-slate-800"> 案件評估工具</label>
                     <div class="flex flex-wrap gap-2 pb-2 border-b border-slate-200">
                         <button type="button" onclick="openLandModal()" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                             <i class="fa-solid fa-plus text-sky-600"></i> 土地基本資料
@@ -619,20 +672,21 @@
                         </button>
                     </div>
 
-                    <div class="text-xs font-semibold text-slate-600 pt-1">服務項目格式</div>
+                    <div class="text-xs font-semibold text-slate-600 pt-1">服務項目格式與專屬試算</div>
                     <div class="flex flex-wrap gap-2">
                         <button type="button" onclick="openLandChangeModal()" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                            <i class="fa-solid fa-plus text-sky-600"></i> 土地變更
+                            <i class="fa-solid fa-layer-group text-sky-600"></i> 土地變更評估
                         </button>
                         <button type="button" onclick="alert('補照試算功能模組載入中...')" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                            <i class="fa-solid fa-plus text-sky-600"></i> 補照試算
+                            <i class="fa-solid fa-calculator text-sky-600"></i> 補照試算
                         </button>
-                        <button type="button" onclick="alert('太陽能試算功能模組載入中...')" class="px-3 py-1.5 bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                            <i class="fa-solid fa-plus text-sky-600"></i> 太陽能試算
+                        <button type="button" onclick="openSolarModal()" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-xs font-bold transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-sun text-yellow-200"></i> 太陽能試算
                         </button>
                     </div>
                 </div>
 
+                <!-- 案件成本計算 -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                     <div class="flex justify-between items-center border-b border-slate-200 pb-2">
                         <label class="block text-xs font-bold text-slate-800"> 案件成本</label>
@@ -675,6 +729,7 @@
                     </div>
                 </div>
 
+                <!-- 付款期程 -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                     <label class="block text-xs font-bold text-slate-800"> 付款期程</label>
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -732,6 +787,213 @@
         </div>
     </div>
 
+    <!-- 太陽能試算專屬彈跳視窗 Modal -->
+    <div id="solar-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
+            <div class="p-5 border-b border-amber-200 flex justify-between items-center bg-gradient-to-r from-amber-500 to-orange-500 text-white">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-sun text-yellow-200 text-xl"></i>
+                    <h3 class="font-bold text-base tracking-wide">太陽能發電效益試算與精算工具</h3>
+                </div>
+                <button onclick="closeSolarModal()" class="text-white/80 hover:text-white p-1 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs">
+                <!-- 一、案件評估 -->
+                <div class="bg-amber-50/50 p-4 rounded-xl border border-amber-200 space-y-4">
+                    <div class="flex justify-between items-center border-b border-amber-200 pb-2">
+                        <h4 class="font-bold text-amber-900 text-sm flex items-center gap-1.5">
+                            <i class="fa-solid fa-clipboard-list text-amber-600"></i> 一、案件評估
+                        </h4>
+                        <button type="button" onclick="toggleSolarRefModal(true)" class="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-industry"></i> 製造業每日用電參考表格
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">屋頂坪數 (坪)</label>
+                            <input type="number" id="solar-roof-ping" placeholder="0" oninput="calculateSolarAll()" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 bg-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">台電售電價格 (元/度)</label>
+                            <input type="number" step="0.01" id="solar-taipower-price" value="4.5" oninput="calculateSolarAll()" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 bg-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">工廠每度電費 (元)</label>
+                            <input type="number" step="0.1" id="solar-factory-elec-price" placeholder="例如: 3.5" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 bg-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">平均每日用電度數 (度)</label>
+                            <input type="number" id="solar-daily-kwh" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 bg-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">平均每期電費 (元)</label>
+                            <input type="number" id="solar-period-bill" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 bg-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">平均每年總電費 (元)</label>
+                            <input type="number" id="solar-annual-bill" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 bg-white font-mono">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 二、估算 (公式自動計算) -->
+                <div class="bg-sky-50/60 p-4 rounded-xl border border-sky-200 space-y-4">
+                    <h4 class="font-bold text-sky-900 text-sm border-b border-sky-200 pb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-calculator text-sky-600"></i> 二、估算（依據坪數與售電價自動計算）
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <div class="bg-white p-3 rounded-lg border border-sky-200 shadow-sm">
+                            <span class="block text-slate-500 mb-1">每日發電度數</span>
+                            <span id="res-solar-daily-gen" class="text-base font-bold text-slate-800 font-mono">0 度</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200 shadow-sm">
+                            <span class="block text-slate-500 mb-1">每月發電度數</span>
+                            <span id="res-solar-monthly-gen" class="text-base font-bold text-slate-800 font-mono">0 度</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200 shadow-sm">
+                            <span class="block text-slate-500 mb-1">每月發電收益</span>
+                            <span id="res-solar-monthly-rev" class="text-base font-bold text-emerald-700 font-mono">NT$ 0</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200 shadow-sm">
+                            <span class="block text-slate-500 mb-1">每年發電收益</span>
+                            <span id="res-solar-annual-rev" class="text-base font-bold text-emerald-700 font-mono">NT$ 0</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200 shadow-sm">
+                            <span class="block text-slate-500 mb-1">每年維護費 (10%)</span>
+                            <span id="res-solar-annual-maint" class="text-base font-bold text-rose-600 font-mono">NT$ 0</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200 shadow-sm">
+                            <span class="block text-slate-500 mb-1">屋頂出租收益 (15%)</span>
+                            <span id="res-solar-roof-rent" class="text-base font-bold text-indigo-700 font-mono">NT$ 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 三、精算 -->
+                <div class="bg-emerald-50/50 p-4 rounded-xl border border-emerald-200 space-y-4">
+                    <h4 class="font-bold text-emerald-900 text-sm border-b border-emerald-200 pb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-sliders text-emerald-600"></i> 三、精算試算
+                    </h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">模組數量 (片)</label>
+                            <input type="number" id="solar-module-count" placeholder="0" oninput="calculateSolarAll()" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-emerald-500 bg-white font-mono">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">每片瓦數 (W)</label>
+                            <input type="number" id="solar-module-watt" value="590" oninput="calculateSolarAll()" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-emerald-500 bg-white font-mono">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div class="bg-white p-3 rounded-lg border border-emerald-200 shadow-sm">
+                            <span class="block text-slate-600 font-medium mb-1">A. 每年發電收益</span>
+                            <span id="res-solar-精算-A" class="text-base font-bold text-emerald-700 font-mono">NT$ 0</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-emerald-200 shadow-sm">
+                            <span class="block text-slate-600 font-medium mb-1">B. 台製模組 6% 每年回饋</span>
+                            <span id="res-solar-精算-B" class="text-base font-bold text-emerald-700 font-mono">NT$ 0</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-white rounded-lg border border-emerald-200 space-y-2">
+                        <span class="block font-bold text-slate-700">C. 廠房租金收益</span>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
+                            <div>
+                                <label class="block text-[11px] text-slate-500 mb-0.5">坪數 (手動自填)</label>
+                                <input type="number" id="solar-rent-ping" placeholder="0" oninput="calculateSolarAll()" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg font-mono text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-500 mb-0.5">附近實價登錄單價 (元/坪)</label>
+                                <input type="number" id="solar-rent-price" placeholder="0" oninput="calculateSolarAll()" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg font-mono text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] text-slate-500 mb-0.5">預估租金收益</label>
+                                <span id="res-solar-精算-C" class="block font-mono font-bold text-emerald-700 text-sm py-1">NT$ 0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-3 rounded-lg border border-emerald-200 shadow-sm flex justify-between items-center">
+                        <span class="font-bold text-slate-700">D. 綠電園區每月售電收益 (以 5 元/度計算)</span>
+                        <span id="res-solar-精算-D" class="text-base font-bold text-emerald-700 font-mono">NT$ 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
+                <button type="button" onclick="closeSolarModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-medium hover:bg-white transition">取消</button>
+                <button type="button" onclick="applySolarResultsToCase()" class="px-5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition shadow-sm">帶入試算結果至案件說明</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 製造業每日用電度數參考 (彈跳視窗) -->
+    <div id="solar-ref-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[80] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-amber-200">
+            <div class="p-4 bg-slate-800 text-white flex justify-between items-center">
+                <h4 class="font-bold text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-industry text-amber-400"></i> 製造業每日用電度數參考對照表
+                </h4>
+                <button onclick="toggleSolarRefModal(false)" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-4 space-y-3">
+                <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                    <thead>
+                        <tr class="bg-slate-100 border-b border-slate-200 text-slate-800 font-bold">
+                            <th class="p-2.5">企業名稱</th>
+                            <th class="p-2.5">每日用電</th>
+                            <th class="p-2.5">型態 / 設備備註</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="p-2.5 font-semibold text-slate-800">龍盟</td>
+                            <td class="p-2.5 font-mono font-bold text-amber-600">30 度/日</td>
+                            <td class="p-2.5 text-slate-500">設備組裝業</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-semibold text-slate-800">詮盛</td>
+                            <td class="p-2.5 font-mono font-bold text-amber-600">60 度/日</td>
+                            <td class="p-2.5 text-slate-500">銑床</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-semibold text-slate-800">浩銘</td>
+                            <td class="p-2.5 font-mono font-bold text-amber-600">80 度/日</td>
+                            <td class="p-2.5 text-slate-500">CNC*2、鑽床*1</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-semibold text-slate-800">環境</td>
+                            <td class="p-2.5 font-mono font-bold text-amber-600">130 度/日</td>
+                            <td class="p-2.5 text-slate-500">遠紅外線安防</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-semibold text-slate-800">河洛</td>
+                            <td class="p-2.5 font-mono font-bold text-amber-600">230 度/日</td>
+                            <td class="p-2.5 text-slate-500">印刷業</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-semibold text-slate-800">阜大</td>
+                            <td class="p-2.5 font-mono font-bold text-amber-600">230 度/日</td>
+                            <td class="p-2.5 text-slate-500">機電測試</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
+                <button onclick="toggleSolarRefModal(false)" class="px-4 py-1.5 bg-slate-700 text-white rounded text-xs">關閉</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 土地變更 Modal -->
     <div id="land-change-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -782,26 +1044,7 @@
                         </button>
                     </div>
 
-                    <div id="cost-quote-items-container" class="space-y-3">
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 bg-white p-3 rounded-lg border border-slate-200 shadow-sm items-center">
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">報價項目</label>
-                                <input type="text" placeholder="例如：建築師設計費" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">填表時間/日期</label>
-                                <input type="datetime-local" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">未稅報價金額 (NT$)</label>
-                                <input type="number" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white font-mono">
-                            </div>
-                            <div>
-                                <label class="block font-semibold text-slate-700 mb-1">稅後報價金額 (NT$)</label>
-                                <input type="number" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white font-mono">
-                            </div>
-                        </div>
-                    </div>
+                    <div id="cost-quote-items-container" class="space-y-3"></div>
                 </div>
 
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
@@ -890,6 +1133,7 @@
         </div>
     </div>
 
+    <!-- 土地基本資料 Modal -->
     <div id="land-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-[96vw] max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -979,6 +1223,7 @@
         </div>
     </div>
 
+    <!-- 保存登記建物 Modal -->
     <div id="registered-building-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-[96vw] max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -1059,6 +1304,7 @@
         </div>
     </div>
 
+    <!-- 未保存登記建物 Modal -->
     <div id="unregistered-building-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
@@ -1474,6 +1720,76 @@
             }
         }
 
+        // --- 太陽能試算邏輯 ---
+        function openSolarModal() {
+            document.getElementById('solar-modal').classList.remove('hidden');
+            calculateSolarAll();
+        }
+
+        function closeSolarModal() {
+            document.getElementById('solar-modal').classList.add('hidden');
+        }
+
+        function toggleSolarRefModal(show) {
+            const el = document.getElementById('solar-ref-modal');
+            if (show) el.classList.remove('hidden');
+            else el.classList.add('hidden');
+        }
+
+        function calculateSolarAll() {
+            const roofPing = parseFloat(document.getElementById('solar-roof-ping').value || 0);
+            const taipowerPrice = parseFloat(document.getElementById('solar-taipower-price').value || 0);
+
+            // 二、估算公式
+            const dailyGen = (roofPing / 1.5) * (590 / 1000) * 4;
+            const monthlyGen = dailyGen * 30;
+            const monthlyRev = monthlyGen * taipowerPrice;
+            const annualRev = dailyGen * 365 * taipowerPrice;
+            const annualMaint = annualRev * 0.10;
+            const roofRent = annualRev * 0.15;
+
+            document.getElementById('res-solar-daily-gen').textContent = `${dailyGen.toFixed(1)} 度`;
+            document.getElementById('res-solar-monthly-gen').textContent = `${Math.round(monthlyGen).toLocaleString()} 度`;
+            document.getElementById('res-solar-monthly-rev').textContent = `NT$ ${Math.round(monthlyRev).toLocaleString()}`;
+            document.getElementById('res-solar-annual-rev').textContent = `NT$ ${Math.round(annualRev).toLocaleString()}`;
+            document.getElementById('res-solar-annual-maint').textContent = `NT$ ${Math.round(annualMaint).toLocaleString()}`;
+            document.getElementById('res-solar-roof-rent').textContent = `NT$ ${Math.round(roofRent).toLocaleString()}`;
+
+            // 三、精算公式
+            const modCount = parseFloat(document.getElementById('solar-module-count').value || 0);
+            const modWatt = parseFloat(document.getElementById('solar-module-watt').value || 590);
+
+            const 精算_A = (modCount * modWatt / 1000) * 4 * 365 * taipowerPrice;
+            const 精算_B = (modCount * modWatt / 1000) * 4 * taipowerPrice * 1.06;
+
+            const rentPing = parseFloat(document.getElementById('solar-rent-ping').value || 0);
+            const rentPrice = parseFloat(document.getElementById('solar-rent-price').value || 0);
+            const 精算_C = rentPing * rentPrice;
+
+            const 精算_D = monthlyGen * 5; // 每月售電收益 (5元)
+
+            document.getElementById('res-solar-精算-A').textContent = `NT$ ${Math.round(精算_A).toLocaleString()}`;
+            document.getElementById('res-solar-精算-B').textContent = `NT$ ${Math.round(精算_B).toLocaleString()}`;
+            document.getElementById('res-solar-精算-C').textContent = `NT$ ${Math.round(精算_C).toLocaleString()}`;
+            document.getElementById('res-solar-精算-D').textContent = `NT$ ${Math.round(精算_D).toLocaleString()}`;
+        }
+
+        function applySolarResultsToCase() {
+            const roofPing = document.getElementById('solar-roof-ping').value || 0;
+            const dailyGen = document.getElementById('res-solar-daily-gen').textContent;
+            const monthlyGen = document.getElementById('res-solar-monthly-gen').textContent;
+            const annualRev = document.getElementById('res-solar-annual-rev').textContent;
+
+            const summaryText = `【太陽能試算摘要】\n- 屋頂坪數：${roofPing} 坪\n- 預估每日發電：${dailyGen}\n- 預估每月發電：${monthlyGen}\n- 預估每年收益：${annualRev}`;
+
+            const descInput = document.getElementById('input-case-description');
+            descInput.value = (descInput.value ? descInput.value + '\n\n' : '') + summaryText;
+            autoExpandTextarea(descInput);
+
+            closeSolarModal();
+            alert('太陽能試算結果已自動帶入案件說明！');
+        }
+
         function addCostQuoteRow() {
             const container = document.getElementById('cost-quote-items-container');
             const rowId = 'cost-row-' + Date.now();
@@ -1824,6 +2140,16 @@
             });
 
             document.getElementById('stat-signed-amount').textContent = `NT$ ${totalSignedAmount.toLocaleString()}`;
+            document.getElementById('stat-signed-count-label').textContent = `簽約案件：${signedList.length} 件`;
+
+            // 歷年簽約案件數據彙整
+            let historyAmount = 0;
+            lastYearList.forEach(c => {
+                const amt = parseFloat(c.contractAmount || c.quoteAmount || 0);
+                if (!isNaN(amt)) historyAmount += amt;
+            });
+            document.getElementById('stat-history-amount').textContent = `NT$ ${historyAmount.toLocaleString()}`;
+            document.getElementById('stat-history-count').textContent = `歷年總數：${lastYearList.length} 件`;
 
             const evalAndSignedTotal = evalList.length + signedList.length;
             let conversionRate = 0;
@@ -1832,6 +2158,7 @@
             }
             document.getElementById('stat-conversion-rate').textContent = `${conversionRate.toFixed(1)}%`;
 
+            // 服務項目營收佔比
             const shareContainer = document.getElementById('analytics-service-share');
             shareContainer.innerHTML = '';
 
@@ -1855,6 +2182,7 @@
                 }
             }
 
+            // 業務與通路效益分析
             const sourceContainer = document.getElementById('analytics-source-benefit');
             sourceContainer.innerHTML = '';
 
@@ -1887,6 +2215,54 @@
                         </div>
                     `;
                     sourceContainer.insertAdjacentHTML('beforeend', html);
+                }
+            }
+
+            // --- 土地變更戰情室數據更新 ---
+            const landPriorityCases = casesData.filter(c => c.status === '優先處理' || c.status === '土地變更');
+            const landSignedCases = casesData.filter(c => (c.status === '已簽約' || c.status === '簽約案件') && c.serviceItem === '土地變更');
+            
+            const pCount = landPriorityCases.length;
+            const sCount = landSignedCases.length;
+            const landTotal = pCount + sCount;
+            const landConversionRate = landTotal > 0 ? ((sCount / landTotal) * 100).toFixed(1) : '0.0';
+
+            const landRateEl = document.getElementById('stat-land-conversion-rate');
+            if (landRateEl) landRateEl.textContent = `${landConversionRate}%`;
+            
+            const landSignedCntEl = document.getElementById('stat-land-signed-cnt');
+            if (landSignedCntEl) landSignedCntEl.textContent = sCount;
+
+            const landPriorityCntEl = document.getElementById('stat-land-priority-cnt');
+            if (landPriorityCntEl) landPriorityCntEl.textContent = pCount;
+
+            // 未簽約原因數據分析
+            const noSignContainer = document.getElementById('analytics-no-sign-reasons');
+            if (noSignContainer) {
+                noSignContainer.innerHTML = '';
+                const reasonCounts = {};
+                let totalNoSign = 0;
+
+                casesData.forEach(c => {
+                    if (c.noSignReason && c.noSignReason.trim() !== '') {
+                        reasonCounts[c.noSignReason] = (reasonCounts[c.noSignReason] || 0) + 1;
+                        totalNoSign++;
+                    }
+                });
+
+                if (totalNoSign === 0) {
+                    noSignContainer.innerHTML = '<div class="text-slate-400 py-1 col-span-2">尚無未簽約原因統計數據</div>';
+                } else {
+                    for (const [r, count] of Object.entries(reasonCounts)) {
+                        const pct = ((count / totalNoSign) * 100).toFixed(1);
+                        const html = `
+                            <div class="flex items-center justify-between bg-white p-2 rounded border border-slate-200 shadow-sm">
+                                <span class="font-medium text-slate-700">${r}</span>
+                                <span class="font-mono text-slate-600 font-bold">${count} 件 <span class="text-slate-400 text-[11px] font-normal">(${pct}%)</span></span>
+                            </div>
+                        `;
+                        noSignContainer.insertAdjacentHTML('beforeend', html);
+                    }
                 }
             }
         }
@@ -1940,7 +2316,7 @@
                 selectedStatus = '優先處理';
             }
 
-            if (selectedStatus === '簽約案件' || selectedStatus === '已簽約' || workProgress === '已簽約' || document.getElementById('select-no-sign-reason').value === '已簽約') {
+            if (selectedStatus === '簽約案件' || selectedStatus === '已簽約' || workProgress === '已簽約') {
                 selectedStatus = '簽約案件';
             }
 
