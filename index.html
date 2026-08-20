@@ -233,7 +233,6 @@
                         <div class="flex items-center gap-3">
                             <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-lg border border-slate-200">
                                 <span class="text-xs font-semibold text-slate-600 pl-1"><i class="fa-solid fa-share-from-square text-sky-600"></i> 拋轉選取案件至：</span>
-                                <!-- 需求 4：更新拋轉選項 -->
                                 <select id="select-batch-target" class="px-2 py-1 border border-slate-300 rounded text-xs focus:outline-none focus:border-sky-500 bg-white font-medium">
                                     <option value="已簽約">已簽約</option>
                                     <option value="優先處理">優先處理</option>
@@ -445,7 +444,6 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <!-- 需求 3：調整「土地變更」位於「歷年簽約案件」下方 -->
                         <label class="block text-xs font-semibold text-slate-700 mb-1"> 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span></label>
                         <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500">
                             <option value="案件評估" selected>案件評估</option>
@@ -1141,57 +1139,64 @@
         }
 
         function renderCaseRow(c) {
-            const tr = document.createElement('tr');
-            tr.className = 'hover:bg-slate-50 transition cursor-pointer';
-            tr.dataset.id = c.id;
-            tr.onclick = function() { openEditCaseModal(c.id); };
+            // 土地變更專屬狀態，不繪製在 2026 案件管理面板中
+            const landChangeOnlyStatuses = ['優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證', '土地變更'];
+            if (!landChangeOnlyStatuses.includes(c.status)) {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50 transition cursor-pointer';
+                tr.dataset.id = c.id;
+                tr.onclick = function() { openEditCaseModal(c.id); };
 
-            let targetTbodyId = 'tbody-eval';
-            switch(c.status) {
-                case '案件評估': targetTbodyId = 'tbody-eval'; break;
-                case '簽約案件':
-                case '已簽約': targetTbodyId = 'tbody-signed'; break;
-                case '歷年簽約案件':
-                case '歷年未結案':
-                case '去年度簽約未結案件': targetTbodyId = 'tbody-last-year'; break;
-                case '結案':
-                case '已結案': targetTbodyId = 'tbody-closed'; break;
-                case '廢件區': targetTbodyId = 'tbody-trash'; break;
+                let targetTbodyId = 'tbody-eval';
+                switch(c.status) {
+                    case '案件評估': targetTbodyId = 'tbody-eval'; break;
+                    case '簽約案件':
+                    case '已簽約': targetTbodyId = 'tbody-signed'; break;
+                    case '歷年簽約案件':
+                    case '歷年未結案':
+                    case '去年度簽約未結案件': targetTbodyId = 'tbody-last-year'; break;
+                    case '結案':
+                    case '已結案': targetTbodyId = 'tbody-closed'; break;
+                    case '廢件區': targetTbodyId = 'tbody-trash'; break;
+                }
+
+                const displayService = c.serviceDetail || c.serviceItem || '-';
+                const displayWorkProgress = c.workProgress || '未設定';
+                
+                const contractVal = parseFloat(c.contractAmount);
+                const quoteVal = parseFloat(c.quoteAmount || 0);
+                const displayAmount = (!isNaN(contractVal) && contractVal > 0) ? contractVal : quoteVal;
+                const amountFormatted = `NT$ ${parseInt(displayAmount).toLocaleString()}`;
+                
+                const noteText = c.salesNote || '尚未提供即時說明。';
+
+                tr.innerHTML = `
+                    <td class="p-3 font-semibold text-sky-600 hover:underline truncate">
+                        <input type="checkbox" onclick="event.stopPropagation()" class="case-checkbox mr-2 rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer align-middle" data-id="${c.id}">
+                        <span class="align-middle">${c.clientName}</span>
+                    </td>
+                    <td class="p-3 truncate">${displayService}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-700 border border-slate-200 rounded-full font-medium">${displayWorkProgress}</span></td>
+                    <td class="p-3 font-mono text-slate-700">${amountFormatted}</td>
+                    <td class="p-3 text-slate-500 truncate">${noteText}</td>
+                `;
+
+                const tbody = document.getElementById(targetTbodyId);
+                if (tbody) tbody.appendChild(tr);
             }
-
-            const displayService = c.serviceDetail || c.serviceItem || '-';
-            const displayWorkProgress = c.workProgress || '未設定';
-            
-            const contractVal = parseFloat(c.contractAmount);
-            const quoteVal = parseFloat(c.quoteAmount || 0);
-            const displayAmount = (!isNaN(contractVal) && contractVal > 0) ? contractVal : quoteVal;
-            const amountFormatted = `NT$ ${parseInt(displayAmount).toLocaleString()}`;
-            
-            const noteText = c.salesNote || '尚未提供即時說明。';
-
-            tr.innerHTML = `
-                <td class="p-3 font-semibold text-sky-600 hover:underline truncate">
-                    <input type="checkbox" onclick="event.stopPropagation()" class="case-checkbox mr-2 rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer align-middle" data-id="${c.id}">
-                    <span class="align-middle">${c.clientName}</span>
-                </td>
-                <td class="p-3 truncate">${displayService}</td>
-                <td class="p-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-700 border border-slate-200 rounded-full font-medium">${displayWorkProgress}</span></td>
-                <td class="p-3 font-mono text-slate-700">${amountFormatted}</td>
-                <td class="p-3 text-slate-500 truncate">${noteText}</td>
-            `;
-
-            const tbody = document.getElementById(targetTbodyId);
-            if (tbody) tbody.appendChild(tr);
 
             renderSpecialFactoryRow(c);
         }
 
         function renderSpecialFactoryRow(c) {
-            const categories = ['已簽約', '優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證', '土地變更'];
-            if (!categories.includes(c.status) && c.status !== '土地變更') return;
+            const categories = ['已簽約', '優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證'];
+            
+            let statusToMatch = c.status;
+            if (statusToMatch === '土地變更') statusToMatch = '優先處理';
+            if (statusToMatch === '簽約案件') statusToMatch = '已簽約';
 
-            let categoryIndex = categories.indexOf(c.status);
-            if (categoryIndex === -1 || categoryIndex > 6) categoryIndex = 0;
+            const categoryIndex = categories.indexOf(statusToMatch);
+            if (categoryIndex === -1) return;
 
             const sfTables = document.querySelectorAll('.special-factory-table');
             if (!sfTables[categoryIndex]) return;
@@ -1235,7 +1240,12 @@
             let count = 0;
             casesData.forEach(c => {
                 if (idsToTransfer.includes(c.id)) {
-                    c.status = targetStatus;
+                    if (targetStatus === '已簽約') {
+                        c.status = '簽約案件';
+                        c.workProgress = '已簽約';
+                    } else {
+                        c.status = targetStatus;
+                    }
                     count++;
                 }
             });
@@ -1793,8 +1803,18 @@
             event.preventDefault();
 
             const existingId = document.getElementById('input-case-id').value;
-            const selectedStatus = document.getElementById('select-case-status').value;
+            let selectedStatus = document.getElementById('select-case-status').value;
             const workProgress = document.getElementById('select-work-progress').value;
+
+            // 若選擇「土地變更」，預設自動歸類至「優先處理」
+            if (selectedStatus === '土地變更') {
+                selectedStatus = '優先處理';
+            }
+
+            // 判斷是否調整至簽約狀態
+            if (selectedStatus === '簽約案件' || selectedStatus === '已簽約' || workProgress === '已簽約' || document.getElementById('select-no-sign-reason').value === '已簽約') {
+                selectedStatus = '簽約案件';
+            }
 
             const caseObj = {
                 id: existingId || ('case_' + Date.now()),
@@ -1822,10 +1842,6 @@
                 pay4Amount: document.getElementById('input-pay4-amount').value,
                 pay4Date: document.getElementById('input-pay4-date').value
             };
-
-            if (caseObj.noSignReason === '已簽約' || workProgress === '已簽約') {
-                caseObj.status = '簽約案件';
-            }
 
             if (existingId) {
                 const idx = casesData.findIndex(c => c.id === existingId);
