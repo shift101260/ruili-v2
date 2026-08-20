@@ -640,10 +640,30 @@
                             <i class="fa-solid fa-plus text-xs"></i> 新增案件成本
                         </button>
                     </div>
-                    <div id="case-cost-container" class="space-y-3"></div>
-                    <div class="bg-white p-3 rounded-lg border border-slate-200 flex justify-between items-center mt-3 shadow-sm">
-                        <span class="font-bold text-slate-700 text-xs">總案件成本</span>
-                        <span id="sum-case-cost-amount" class="text-sm font-black text-emerald-700 font-mono">NT$ 0</span>
+                    
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
+                        <div class="min-w-[600px] space-y-2">
+                            <div class="grid grid-cols-[1.2fr_1.2fr_1fr_1fr_1fr_32px] gap-2 bg-slate-100 p-2 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
+                                <div>供應商名稱</div>
+                                <div>項目</div>
+                                <div>未稅報價</div>
+                                <div>睿立報價</div>
+                                <div>簽約價格</div>
+                                <div></div>
+                            </div>
+                            <div id="case-cost-container" class="space-y-2"></div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+                        <div class="bg-white p-3 rounded-lg border border-slate-200 flex justify-between items-center shadow-sm">
+                            <span class="font-bold text-slate-700 text-xs">總簽約金額</span>
+                            <span id="sum-case-cost-amount" class="text-sm font-black text-emerald-700 font-mono">NT$ 0</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-slate-200 flex justify-between items-center shadow-sm">
+                            <span class="font-bold text-slate-700 text-xs">總案件利潤</span>
+                            <span id="sum-case-profit-amount" class="text-sm font-black text-sky-700 font-mono">NT$ 0</span>
+                        </div>
                     </div>
                 </div>
 
@@ -1393,32 +1413,15 @@
             const container = document.getElementById('case-cost-container');
             const rowId = 'case-cost-row-' + Date.now();
             const html = `
-                <div id="${rowId}" class="grid grid-cols-1 md:grid-cols-5 gap-2 bg-white p-3 rounded-lg border border-slate-200 shadow-sm items-center relative group">
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">供應商名稱</label>
-                        <input type="text" placeholder="供應商名稱" class="case-cost-supplier w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">項目</label>
-                        <input type="text" placeholder="項目" class="case-cost-item w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">未稅報價</label>
-                        <input type="number" placeholder="0" oninput="calculateCaseCostTotal()" class="case-cost-untaxed w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-semibold text-slate-600 mb-1">睿立報價</label>
-                        <input type="number" placeholder="0" oninput="calculateCaseCostTotal()" class="case-cost-ruili w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="flex-1">
-                            <label class="block text-[11px] font-semibold text-slate-600 mb-1">簽約價格</label>
-                            <input type="number" placeholder="0" oninput="calculateCaseCostTotal()" class="case-cost-contract w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
-                        </div>
-                        <button type="button" onclick="document.getElementById('${rowId}').remove(); calculateCaseCostTotal();" class="mt-5 p-1.5 text-slate-400 hover:text-rose-600 transition" title="刪除此項目">
-                            <i class="fa-solid fa-trash-can text-sm"></i>
-                        </button>
-                    </div>
+                <div id="${rowId}" class="grid grid-cols-[1.2fr_1.2fr_1fr_1fr_1fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
+                    <input type="text" placeholder="供應商名稱" class="case-cost-supplier w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
+                    <input type="text" placeholder="項目" class="case-cost-item w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
+                    <input type="number" placeholder="0" oninput="calculateCaseCostTotal()" class="case-cost-untaxed w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
+                    <input type="number" placeholder="0" oninput="calculateCaseCostTotal()" class="case-cost-ruili w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
+                    <input type="number" placeholder="0" oninput="calculateCaseCostTotal()" class="case-cost-contract w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
+                    <button type="button" onclick="document.getElementById('${rowId}').remove(); calculateCaseCostTotal();" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此項目">
+                        <i class="fa-solid fa-trash-can text-sm"></i>
+                    </button>
                 </div>
             `;
             container.insertAdjacentHTML('beforeend', html);
@@ -1426,14 +1429,29 @@
         }
 
         function calculateCaseCostTotal() {
-            let total = 0;
+            let totalContract = 0;
+            let totalUntaxed = 0;
+
             document.querySelectorAll('.case-cost-contract').forEach(input => {
                 const val = parseFloat(input.value || 0);
-                if (!isNaN(val)) total += val;
+                if (!isNaN(val)) totalContract += val;
             });
+
+            document.querySelectorAll('.case-cost-untaxed').forEach(input => {
+                const val = parseFloat(input.value || 0);
+                if (!isNaN(val)) totalUntaxed += val;
+            });
+
+            const totalProfit = totalContract - totalUntaxed;
+
             const totalEl = document.getElementById('sum-case-cost-amount');
             if (totalEl) {
-                totalEl.textContent = `NT$ ${Math.round(total).toLocaleString()}`;
+                totalEl.textContent = `NT$ ${Math.round(totalContract).toLocaleString()}`;
+            }
+
+            const profitEl = document.getElementById('sum-case-profit-amount');
+            if (profitEl) {
+                profitEl.textContent = `NT$ ${Math.round(totalProfit).toLocaleString()}`;
             }
         }
 
