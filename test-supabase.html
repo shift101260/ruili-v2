@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>Supabase 雲端測試</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body style="padding: 20px; font-family: sans-serif;">
+  <h2>案件雲端存取測試</h2>
+
+  <input type="text" id="caseInput" placeholder="請輸入測試案件內容..." style="width: 300px; padding: 8px;">
+  <button onclick="handleSave()" style="padding: 8px 15px;">儲存到雲端</button>
+  <button onclick="handleLoad()" style="padding: 8px 15px;">從雲端讀取</button>
+
+  <h3>讀取結果：</h3>
+  <pre id="displayArea" style="background: #f4f4f4; padding: 15px; border-radius: 5px; min-height: 100px;"></pre>
+
+  <script>
+    const SUPABASE_URL = 'https://cksoeikllbzdihlesraa.supabase.co';
+    const SUPABASE_KEY = 'https://cksoeikllbzdihlesraa.supabase.co/rest/v1/'; // <-- 這裡請替換成您的 anon key
+
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function handleSave() {
+      const text = document.getElementById('caseInput').value;
+      if (!text) return alert('請輸入內容');
+
+      const { data, error } = await supabase
+        .from('cases')
+        .insert([{ data: { content: text } }]);
+
+      if (error) {
+        alert('儲存失敗：' + error.message);
+      } else {
+        alert('儲存成功！');
+        document.getElementById('caseInput').value = '';
+      }
+    }
+
+    async function handleLoad() {
+      const { data, error } = await supabase
+        .from('cases')
+        .select('*')
+        .order('id', { ascending: false });
+
+      if (error) {
+        alert('讀取失敗：' + error.message);
+      } else {
+        document.getElementById('displayArea').textContent = JSON.stringify(data, null, 2);
+      }
+    }
+  </script>
+</body>
+</html>
