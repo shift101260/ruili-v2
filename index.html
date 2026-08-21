@@ -25,6 +25,24 @@
             -moz-appearance: textfield;
         }
     </style>
+    <!-- 引入 Supabase SDK 與雲端同步設定 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const SUPABASE_URL = 'https://cksoeikllbzdihlesraa.supabase.co';
+    const SUPABASE_KEY = 'https://cksoeikllbzdihlesraa.supabase.co/rest/v1/'; // 貼上 anon key
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // 雲端上傳函式
+    async function syncToSupabase(data) {
+      if (!data) return;
+      try {
+        await supabaseClient.from('cases').insert([{ data: data }]);
+        console.log('雲端同步成功！');
+      } catch (err) {
+        console.error('雲端同步失敗：', err);
+      }
+    }
+  </script>
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col md:flex-row h-screen overflow-hidden">
 
