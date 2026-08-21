@@ -6,6 +6,31 @@
     <title>睿立集團內部管理系統</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+   <script>
+  // 1. 您的 Web App URL（請把裡面的網址換成您剛剛複製的 Apps Script 網址）
+  const RUILI_API_URL = "https://script.google.com/macros/s/您的AKfycb網址/exec";
+
+  // 2. 自動寫入 Google 試算表的核心函數
+  function saveToGoogleSheet(caseData) {
+    console.log("正在同步資料至 Google 試算表...", caseData);
+
+    fetch(RUILI_API_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(caseData)
+    })
+    .then(() => {
+      alert("🎉 案件資料與試算數據已成功同步存至 Google 試算表！");
+    })
+    .catch(error => {
+      console.error("同步失敗：", error);
+      alert("❌ 儲存失敗，請檢查網路連線。");
+    });
+  }
+</script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
