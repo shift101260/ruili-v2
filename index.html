@@ -584,24 +584,31 @@
                     </div>
 
                     <div class="space-y-4">
+                        <!-- 需求調整：未簽約原因放於地址上方 -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1"> 未簽約原因</label>
+                            <select id="select-no-sign-reason" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
+                                <option value="">-- 請選擇未簽約原因 --</option>
+                                <option value="比價中">比價中</option>
+                                <option value="尚未面談">尚未面談</option>
+                                <option value="讓子彈飛">讓子彈飛</option>
+                                <option value="懷疑專業">懷疑專業</option>
+                                <option value="價格問題">價格問題</option>
+                                <option value="法規政策">法規政策</option>
+                                <option value="財務危機">財務危機</option>
+                                <option value="想賣工廠">想賣工廠</option>
+                                <option value="客戶機車">客戶機車</option>
+                                <option value="給別人做">給別人做</option>
+                                <option value="介紹人問題">介紹人問題</option>
+                                <option value="其他">其他</option>
+                            </select>
+                        </div>
+
+                        <!-- 需求調整：介紹人放在案件來源左邊 -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-700 mb-1"> 未簽約原因</label>
-                                <select id="select-no-sign-reason" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
-                                    <option value="">-- 請選擇未簽約原因 --</option>
-                                    <option value="比價中">比價中</option>
-                                    <option value="尚未面談">尚未面談</option>
-                                    <option value="讓子彈飛">讓子彈飛</option>
-                                    <option value="懷疑專業">懷疑專業</option>
-                                    <option value="價格問題">價格問題</option>
-                                    <option value="法規政策">法規政策</option>
-                                    <option value="財務危機">財務危機</option>
-                                    <option value="想賣工廠">想賣工廠</option>
-                                    <option value="客戶機車">客戶機車</option>
-                                    <option value="給別人做">給別人做</option>
-                                    <option value="介紹人問題">介紹人問題</option>
-                                    <option value="其他">其他</option>
-                                </select>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1"> 介紹人</label>
+                                <input type="text" id="input-referrer" placeholder="請輸入介紹人姓名" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
                             </div>
 
                             <div>
@@ -652,11 +659,6 @@
                             <label class="block text-xs font-semibold text-slate-700 mb-1"> 簽約金額 (NT$)</label>
                             <input type="number" id="input-contract-amount" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 font-mono">
                         </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1"> 介紹人</label>
-                        <input type="text" id="input-referrer" placeholder="請輸入介紹人姓名" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500">
                     </div>
 
                     <!-- 輔助評估按鈕 -->
@@ -843,7 +845,7 @@
                     </div>
                 </div>
 
-                <!-- 需求 1：將「每月發電度數」與「每年發電度數」位置對調 -->
+                <!-- 二、估算 -->
                 <div class="bg-sky-50/60 p-4 rounded-xl border border-sky-200 space-y-4">
                     <h4 class="font-bold text-sky-900 text-sm border-b border-sky-200 pb-2 flex items-center gap-1.5">
                         <i class="fa-solid fa-calculator text-sky-600"></i> 二、估算（依據坪數與售電價自動計算）
@@ -853,12 +855,10 @@
                             <span class="block text-slate-500 mb-1">每日發電度數</span>
                             <span id="res-solar-daily-gen" class="text-base font-bold text-slate-800 font-mono">0 度</span>
                         </div>
-                        <!-- 對調位置：每月發電度數 移至第二位 -->
                         <div class="bg-white p-3 rounded-lg border border-sky-200 shadow-sm">
                             <span class="block text-slate-500 mb-1">每月發電度數</span>
                             <span id="res-solar-monthly-gen" class="text-base font-bold text-slate-800 font-mono">0 度</span>
                         </div>
-                        <!-- 對調位置：每年發電度數 移至第三位 -->
                         <div class="bg-white p-3 rounded-lg border border-sky-200 shadow-sm">
                             <span class="block text-slate-500 mb-1">每年發電度數</span>
                             <span id="res-solar-annual-gen" class="text-base font-bold text-slate-800 font-mono">0 度</span>
@@ -936,7 +936,6 @@
                 </div>
             </div>
 
-            <!-- 需求 4：底部按鈕改為 sticky 固定底部，確保手機版一定能順利操作 -->
             <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3 shrink-0 sticky bottom-0 z-10 shadow-lg">
                 <button type="button" onclick="closeSolarModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-medium hover:bg-white transition">取消</button>
                 <button type="button" onclick="applySolarResultsToCase()" class="px-5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition shadow-sm">儲存</button>
@@ -1004,7 +1003,7 @@
         </div>
     </div>
 
-    <!-- 土地變更評估與試算 Modal (改善手機直式版版型，固定底部按鈕) -->
+    <!-- 土地變更評估與試算 Modal -->
     <div id="land-change-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-[60] hidden flex items-center justify-center p-2 sm:p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] sm:max-h-[95vh] flex flex-col overflow-hidden border border-sky-100 relative">
             <div class="p-4 md:p-5 border-b border-slate-800 flex justify-between items-center bg-gradient-to-r from-slate-900 via-sky-950 to-slate-900 text-white shadow-md shrink-0">
@@ -1142,7 +1141,6 @@
                 </div>
             </div>
 
-            <!-- 需求 2 & 3：關閉按鈕改為「取消」，且改為 sticky 固定底部，確保手機版順暢點擊 -->
             <div class="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-end gap-3 shrink-0 sticky bottom-0 z-10 shadow-lg">
                 <button type="button" onclick="closeLandChangeModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-medium hover:bg-white transition text-xs">取消</button>
                 <button type="button" onclick="applyLandChangeResultsToCase()" class="px-5 py-2 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white rounded-lg font-bold transition shadow-md text-xs flex items-center gap-1.5">
