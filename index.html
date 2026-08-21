@@ -6,31 +6,31 @@
     <title>睿立集團內部管理系統</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-   <script>
-  // 1. 您的 Web App URL（請把裡面的網址換成您剛剛複製的 Apps Script 網址）
-  const RUILI_API_URL = "https://script.google.com/macros/s/AKfycbzUD61i8xZ5w1ra-gRRj0VFEILcHFRuPrqJGGqd7T9giexl7RHa2rXqaiClkVZ5m2bR/exec";
+    <script>
+    // 1. 您的 Web App URL（請把裡面的網址換成您剛剛複製的 Apps Script 網址）
+    const RUILI_API_URL = "https://script.google.com/macros/s/您的AKfycb網址/exec";
 
-  // 2. 自動寫入 Google 試算表的核心函數
-  function saveToGoogleSheet(caseData) {
-    console.log("正在同步資料至 Google 試算表...", caseData);
+    // 2. 自動寫入 Google 試算表的核心函數
+    function saveToGoogleSheet(caseData) {
+        console.log("正在同步資料至 Google 試算表...", caseData);
 
-    fetch(RUILI_API_URL, {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(caseData)
-    })
-    .then(() => {
-      alert("🎉 案件資料與試算數據已成功同步存至 Google 試算表！");
-    })
-    .catch(error => {
-      console.error("同步失敗：", error);
-      alert("❌ 儲存失敗，請檢查網路連線。");
-    });
-  }
-</script>
+        fetch(RUILI_API_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(caseData)
+        })
+        .then(() => {
+            alert("🎉 案件資料與試算數據已成功同步存至 Google 試算表！");
+        })
+        .catch(error => {
+            console.error("同步失敗：", error);
+            alert("❌ 儲存失敗，請檢查網路連線。");
+        });
+    }
+    </script>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -632,7 +632,6 @@
                             </div>
                         </div>
 
-                        <!-- 未簽約原因已調整至介紹人下方 -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1"> 未簽約原因</label>
                             <select id="select-no-sign-reason" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
@@ -816,7 +815,7 @@
         </div>
     </div>
 
-    <!-- 太陽能試算專屬彈跳視窗 Modal (改善手機直式版版型，固定底部按鈕) -->
+    <!-- 太陽能試算專屬彈跳視窗 Modal -->
     <div id="solar-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-2 sm:p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] sm:max-h-[95vh] flex flex-col overflow-hidden relative">
             <div class="p-4 md:p-5 border-b border-amber-200 flex justify-between items-center bg-gradient-to-r from-amber-500 to-orange-500 text-white shrink-0">
@@ -962,7 +961,7 @@
 
             <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3 shrink-0 sticky bottom-0 z-10 shadow-lg">
                 <button type="button" onclick="closeSolarModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-medium hover:bg-white transition">取消</button>
-                <button type="button" onclick="applySolarResultsToCase()" class="px-5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition shadow-sm">儲存</button>
+                <button type="button" onclick="applySolarResultsToCase()" class="px-5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg font-medium transition shadow-sm">帶入試算數據並同步</button>
             </div>
         </div>
     </div>
@@ -1865,8 +1864,19 @@
             descInput.value = (descInput.value ? descInput.value + '\n\n' : '') + summaryText;
             autoExpandTextarea(descInput);
 
+            // 觸發同步至 Google 試算表
+            const currentClientName = document.getElementById('input-client-name').value || "太陽能試算案件";
+            saveToGoogleSheet({
+                type: "SOLAR_CALCULATION",
+                clientName: currentClientName,
+                roofPing: roofPing,
+                dailyGen: dailyGen,
+                monthlyGen: monthlyGen,
+                annualRev: annualRev,
+                timestamp: new Date().toISOString()
+            });
+
             closeSolarModal();
-            alert('太陽能試算結果已自動帶入案件說明！');
         }
 
         // --- 土地變更 Modal 控制邏輯 ---
@@ -2396,8 +2406,11 @@
 
             saveCasesToStorage();
             loadCasesFromStorage();
+
+            // 觸發同步至 Google 試算表
+            saveToGoogleSheet(caseObj);
+
             closeAddCaseModal();
-            alert(`儲存成功！案件資料已成功拋轉與歸類至【${selectedStatus}】。`);
         }
     </script>
 </body>
