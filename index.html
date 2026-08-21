@@ -25,14 +25,14 @@
             -moz-appearance: textfield;
         }
     </style>
-    <!-- 引入 Supabase SDK 與雲端同步設定 -->
+    <!-- 引入 Supabase SDK 與雙向同步設定 -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = 'https://cksoeikllbzdihlesraa.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_V9QZLQBKv2SGrthA814LAg_x167CTRD'; // 貼上 anon key
+    const SUPABASE_KEY = 'sb_publishable_V9QZLQBKv2SGrthA814LAg_x167CTRD'; // 貼上您的 anon key
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // 雲端上傳函式
+    // 1. 儲存至雲端
     async function syncToSupabase(data) {
       if (!data) return;
       try {
@@ -42,6 +42,39 @@
         console.error('雲端同步失敗：', err);
       }
     }
+
+    // 2. 從雲端抓取最新案件資料
+    async function loadFromSupabase() {
+      try {
+        const { data, error } = await supabaseClient
+          .from('cases')
+          .select('data')
+          .order('id', { ascending: false })
+          .limit(1); // 抓取最新儲存的那一筆
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          // 將雲端資料寫回系統全域變數 casesData
+          let cloudData = data[0].data;
+          casesData = typeof cloudData === 'string' ? JSON.parse(cloudData) : cloudData;
+          
+          // 同步覆蓋本地 LocalStorage 備份
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(casesData));
+          
+          // 刷新網頁畫面
+          if (typeof updateDashboard === 'function') updateDashboard();
+          console.log('已自動同步雲端最新案件！');
+        }
+      } catch (err) {
+        console.error('載入雲端失敗，使用本地資料：', err);
+      }
+    }
+
+    // 網頁一打開，自動去雲端抓最新案件
+    window.addEventListener('DOMContentLoaded', () => {
+      loadFromSupabase();
+    });
   </script>
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col md:flex-row h-screen overflow-hidden">
