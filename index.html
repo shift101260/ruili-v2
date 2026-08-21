@@ -1464,6 +1464,7 @@
 
         function saveCasesToStorage() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(casesData));
+            syncToSupabase(casesData);
             updateDashboard();
         }
 
