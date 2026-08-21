@@ -16,6 +16,7 @@
             color: #38bdf8;
             border-left: 4px solid #38bdf8;
         }
+        /* 隱藏數字輸入框的上下箭頭 */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -26,24 +27,15 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 flex flex-col md:flex-row h-screen overflow-hidden">
+<body class="bg-slate-50 text-slate-800 flex h-screen overflow-hidden">
 
-    <!-- 手機端遮罩 -->
-    <div id="sidebar-overlay" onclick="toggleMobileSidebar(false)" class="fixed inset-0 bg-slate-900/50 z-40 hidden md:hidden"></div>
-
-    <!-- 側邊選單 -->
-    <aside id="main-sidebar" class="fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 w-64 bg-slate-900 text-slate-300 flex flex-col flex-shrink-0 shadow-lg z-50">
-        <div class="p-5 flex items-center justify-between border-b border-slate-800">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-sky-600 flex items-center justify-center text-white font-bold text-xl shadow">睿</div>
-                <div>
-                    <h1 class="font-bold text-white tracking-wide">睿立集團</h1>
-                    <p class="text-xs text-slate-400">RUILI SYSTEM</p>
-                </div>
+    <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col flex-shrink-0 shadow-lg">
+        <div class="p-5 flex items-center gap-3 border-b border-slate-800">
+            <div class="w-10 h-10 rounded-lg bg-sky-600 flex items-center justify-center text-white font-bold text-xl shadow">睿</div>
+            <div>
+                <h1 class="font-bold text-white tracking-wide">睿立集團</h1>
+                <p class="text-xs text-slate-400">RUILI SYSTEM</p>
             </div>
-            <button onclick="toggleMobileSidebar(false)" class="md:hidden text-slate-400 hover:text-white p-1">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
         </div>
 
         <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
@@ -82,38 +74,35 @@
         </div>
     </aside>
 
-    <!-- 主頁面區域 -->
     <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <header class="bg-white border-b border-slate-200 px-4 md:px-8 py-3.5 flex items-center justify-between shadow-sm">
-            <div class="flex items-center gap-3">
-                <button onclick="toggleMobileSidebar(true)" class="md:hidden p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition">
-                    <i class="fa-solid fa-bars text-lg"></i>
-                </button>
-                <div>
-                    <h2 id="page-title" class="text-lg md:text-xl font-bold text-slate-800">戰情室</h2>
-                    <p class="text-[11px] md:text-xs text-slate-500">睿立｜即時營運指標與戰情數據</p>
-                </div>
+        <header class="bg-white border-b border-slate-200 px-8 py-4 flex items-center justify-between shadow-sm">
+            <div>
+                <h2 id="page-title" class="text-xl font-bold text-slate-800">戰情室</h2>
+                <p class="text-xs text-slate-500 mt-0.5">睿立｜即時營運指標與戰情數據</p>
             </div>
-            <div class="flex items-center gap-2 md:gap-3">
-                <button onclick="clearAllData()" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md text-xs font-medium flex items-center gap-1 transition">
-                    <i class="fa-solid fa-trash-can"></i> <span class="hidden sm:inline">清空本地資料</span>
+            <div class="flex items-center gap-3">
+                <button onclick="clearAllData()" class="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md text-xs font-medium flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-trash-can"></i> 清空本地資料
                 </button>
-                <button onclick="loadCasesFromStorage(); alert('已刷新最新資料！');" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-md text-xs font-medium flex items-center gap-1 transition">
-                    <i class="fa-solid fa-rotate"></i> <span class="hidden sm:inline">重新整理</span>
+                <button onclick="loadCasesFromStorage(); alert('已刷新最新資料！');" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-md text-xs font-medium flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-rotate"></i> 重新整理
                 </button>
+                <div class="h-4 w-[1px] bg-slate-300"></div>
+                <span class="text-xs text-slate-500">權限：全系統管理員</span>
             </div>
         </header>
 
-        <div class="flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50">
+        <div class="flex-1 overflow-y-auto p-8 bg-slate-50">
             <!-- 戰情室 -->
             <section id="tab-war-room" class="tab-content space-y-6">
-                <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                     <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
                         <i class="fa-solid fa-chart-line text-sky-600 text-sm"></i>
                         <h3 class="font-bold text-slate-800 text-sm">2026戰情室數據中心</h3>
                     </div>
                     
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- 核心數據卡片 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
                             <div>
                                 <p class="text-xs font-semibold text-slate-500 mb-1">當期總案件數</p>
@@ -157,6 +146,7 @@
                         </div>
                     </div>
 
+                    <!-- 深度圖表統計 -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2">
                         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 space-y-3">
                             <div class="flex justify-between items-center border-b border-slate-200 pb-2">
@@ -182,9 +172,9 @@
 
             <!-- 2026案件管理 -->
             <section id="tab-cases-2026" class="tab-content hidden space-y-6">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                <div class="flex justify-between items-center">
                     <h3 class="text-lg font-bold text-slate-800">2026案件管控面板</h3>
-                    <div class="flex flex-wrap items-center gap-2">
+                    <div class="flex items-center gap-2">
                         <button onclick="openAddCaseModal()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                             <i class="fa-solid fa-plus"></i> 新增案件
                         </button>
@@ -207,7 +197,7 @@
                             <span id="count-eval" class="text-xs font-semibold px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">0 件</span>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="case-table w-full text-left text-xs text-slate-600 min-w-[640px]">
+                            <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
                                 <tbody id="tbody-eval" class="divide-y divide-slate-100"></tbody>
                             </table>
                         </div>
@@ -222,7 +212,7 @@
                             <span id="count-signed" class="text-xs font-semibold px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">0 件</span>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="case-table w-full text-left text-xs text-slate-600 min-w-[640px]">
+                            <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
                                 <tbody id="tbody-signed" class="divide-y divide-slate-100"></tbody>
                             </table>
                         </div>
@@ -233,12 +223,12 @@
                             <div class="flex items-center gap-2">
                                 <span class="w-3 h-3 rounded-full bg-purple-500"></span>
                                 <h4 class="font-bold text-purple-900 text-sm">歷年簽約案件</h4>
-                                <span class="text-[11px] text-purple-600 bg-purple-100/60 px-2 py-0.5 rounded font-normal hidden sm:inline">不計入2026統計數據</span>
+                                <span class="text-[11px] text-purple-600 bg-purple-100/60 px-2 py-0.5 rounded font-normal">不計入2026統計數據</span>
                             </div>
                             <span id="count-last-year" class="text-xs font-semibold px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full">0 件</span>
                         </div>
                         <div class="overflow-x-auto">
-                            <table class="case-table w-full text-left text-xs text-slate-600 min-w-[640px]">
+                            <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
                                 <tbody id="tbody-last-year" class="divide-y divide-slate-100"></tbody>
                             </table>
                         </div>
@@ -248,7 +238,8 @@
 
             <!-- 土地變更 -->
             <section id="tab-special-factory" class="tab-content hidden space-y-6">
-                <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
+                <!-- 土地變更戰情室 -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-2">
                         <div class="flex items-center gap-2">
                             <i class="fa-solid fa-map-location-dot text-sky-600 text-sm"></i>
@@ -258,6 +249,7 @@
                     </div>
                     
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                        <!-- 數據卡片 1：優先處理轉已簽約率 -->
                         <div class="p-4 bg-amber-50/60 rounded-xl border border-amber-200/80 space-y-2 flex flex-col justify-between">
                             <div class="flex justify-between items-start">
                                 <div>
@@ -273,6 +265,7 @@
                             </div>
                         </div>
 
+                        <!-- 未簽約原因數據分析 -->
                         <div class="lg:col-span-2 p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
                             <div class="flex justify-between items-center border-b border-slate-200 pb-2">
                                 <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
@@ -286,12 +279,12 @@
                 </div>
 
                 <div class="space-y-6">
-                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
                         <h3 class="font-bold text-slate-800 text-base">客戶清單</h3>
-                        <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-                            <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-lg border border-slate-200 w-full sm:w-auto">
-                                <span class="text-xs font-semibold text-slate-600 pl-1 whitespace-nowrap"><i class="fa-solid fa-share-from-square text-sky-600"></i> 拋轉至：</span>
-                                <select id="select-batch-target" class="px-2 py-1 border border-slate-300 rounded text-xs focus:outline-none focus:border-sky-500 bg-white font-medium flex-1 sm:flex-none">
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-lg border border-slate-200">
+                                <span class="text-xs font-semibold text-slate-600 pl-1"><i class="fa-solid fa-share-from-square text-sky-600"></i> 拋轉選取案件至：</span>
+                                <select id="select-batch-target" class="px-2 py-1 border border-slate-300 rounded text-xs focus:outline-none focus:border-sky-500 bg-white font-medium">
                                     <option value="已簽約">已簽約</option>
                                     <option value="優先處理">優先處理</option>
                                     <option value="總有一天">總有一天</option>
@@ -300,17 +293,18 @@
                                     <option value="已被斬件">已被斬件</option>
                                     <option value="無法領證">無法領證</option>
                                 </select>
-                                <button onclick="transferSelectedSpecialCases()" class="px-3 py-1 bg-sky-600 hover:bg-sky-700 text-white rounded text-xs font-medium transition shadow-sm whitespace-nowrap">
+                                <button onclick="transferSelectedSpecialCases()" class="px-3 py-1 bg-sky-600 hover:bg-sky-700 text-white rounded text-xs font-medium transition shadow-sm">
                                     執行拋轉
                                 </button>
                             </div>
 
                             <button onclick="deleteSelectedCases()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                                <i class="fa-solid fa-trash-can"></i> 刪除
+                                <i class="fa-solid fa-trash-can"></i> 案件刪除
                             </button>
                             <button onclick="restoreDeletedCases()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                                <i class="fa-solid fa-rotate-left"></i> 恢復
+                                <i class="fa-solid fa-rotate-left"></i> 誤刪恢復
                             </button>
+
                             <button onclick="openAddCaseModal('土地變更')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                                 <i class="fa-solid fa-plus"></i> 新增案件
                             </button>
@@ -318,47 +312,125 @@
                     </div>
 
                     <!-- 土地變更 7 大區塊 -->
-                    <script>
-                        const categories = ['已簽約', '優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證'];
-                        const bgColors = ['bg-emerald-50 border-emerald-100', 'bg-amber-50 border-amber-100', 'bg-sky-50 border-sky-100', 'bg-indigo-50 border-indigo-100', 'bg-purple-50 border-purple-100', 'bg-rose-50 border-rose-100', 'bg-slate-100 border-slate-200'];
-                        const dotColors = ['bg-emerald-500', 'bg-amber-500', 'bg-sky-500', 'bg-indigo-500', 'bg-purple-500', 'bg-rose-500', 'bg-slate-500'];
-                        const textColors = ['text-emerald-900', 'text-amber-900', 'text-sky-900', 'text-indigo-900', 'text-purple-900', 'text-rose-900', 'text-slate-800'];
-                        const badgeColors = ['bg-emerald-100 text-emerald-700', 'bg-amber-100 text-amber-700', 'bg-sky-100 text-sky-700', 'bg-indigo-100 text-indigo-700', 'bg-purple-100 text-purple-700', 'bg-rose-100 text-rose-700', 'bg-slate-200 text-slate-700'];
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-emerald-50 border-b border-emerald-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                <h4 class="font-bold text-emerald-900 text-sm">已簽約</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
 
-                        categories.forEach((cat, idx) => {
-                            document.write(`
-                                <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden mb-6">
-                                    <div class="p-4 ${bgColors[idx]} border-b flex justify-between items-center">
-                                        <div class="flex items-center gap-2">
-                                            <span class="w-3 h-3 rounded-full ${dotColors[idx]}"></span>
-                                            <h4 class="font-bold ${textColors[idx]} text-sm">${cat}</h4>
-                                        </div>
-                                        <span class="text-xs font-semibold px-2 py-0.5 ${badgeColors[idx]} rounded-full">0 件</span>
-                                    </div>
-                                    <div class="overflow-x-auto">
-                                        <table class="special-factory-table w-full text-left text-xs text-slate-600 min-w-[640px]">
-                                            <tbody class="divide-y divide-slate-100"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            `);
-                        });
-                    </script>
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-amber-50 border-b border-amber-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                                <h4 class="font-bold text-amber-900 text-sm">優先處理</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-sky-50 border-b border-sky-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-sky-500"></span>
+                                <h4 class="font-bold text-sky-900 text-sm">總有一天</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-sky-100 text-sky-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-indigo-50 border-b border-indigo-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-indigo-500"></span>
+                                <h4 class="font-bold text-indigo-900 text-sm">租客案件</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-purple-50 border-b border-purple-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-purple-500"></span>
+                                <h4 class="font-bold text-purple-900 text-sm">同業案件</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-rose-50 border-b border-rose-100 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                                <h4 class="font-bold text-rose-900 text-sm">已被斬件</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                        <div class="p-4 bg-slate-100 border-b border-slate-200 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-slate-500"></span>
+                                <h4 class="font-bold text-slate-800 text-sm">無法領證</h4>
+                            </div>
+                            <span class="text-xs font-semibold px-2 py-0.5 bg-slate-200 text-slate-700 rounded-full">0 件</span>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="special-factory-table w-full text-left text-xs text-slate-600 table-fixed">
+                                <tbody class="divide-y divide-slate-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <!-- 不動產案件資料表 -->
             <section id="tab-real-estate-table" class="tab-content hidden space-y-6">
                 <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                    <div class="p-4 md:p-5 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div class="p-5 border-b border-slate-100 flex justify-between items-center">
                         <h3 class="font-bold text-slate-800">不動產案件總表</h3>
-                        <div class="flex gap-2 w-full sm:w-auto">
-                            <input type="text" placeholder="搜尋不動產案件..." class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs w-full sm:w-48 focus:outline-none focus:border-sky-500">
-                            <button class="px-3 py-1.5 bg-slate-800 text-white rounded-lg text-xs font-medium whitespace-nowrap">匯出 EXCEL</button>
+                        <div class="flex gap-2">
+                            <input type="text" placeholder="搜尋不動產案件..." class="px-3 py-1.5 border border-slate-300 rounded-lg text-xs w-48 focus:outline-none focus:border-sky-500">
+                            <button class="px-3 py-1.5 bg-slate-800 text-white rounded-lg text-xs font-medium">匯出 EXCEL</button>
                         </div>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-xs text-slate-600 min-w-[600px]">
+                        <table class="w-full text-left text-xs text-slate-600">
                             <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
                                 <tr>
                                     <th class="p-3 font-semibold">案件編號</th>
@@ -380,10 +452,10 @@
                     <h3 class="text-lg font-bold text-slate-800">結案案件管理</h3>
                     <div class="flex items-center gap-2">
                         <button onclick="deleteSelectedCases()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                            <i class="fa-solid fa-trash-can"></i> 刪除
+                            <i class="fa-solid fa-trash-can"></i> 案件刪除
                         </button>
                         <button onclick="restoreDeletedCases()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                            <i class="fa-solid fa-rotate-left"></i> 恢復
+                            <i class="fa-solid fa-rotate-left"></i> 誤刪恢復
                         </button>
                     </div>
                 </div>
@@ -396,7 +468,7 @@
                         <span id="count-closed" class="text-xs font-semibold px-2 py-0.5 bg-slate-200 text-slate-700 rounded-full">0 件</span>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="case-table w-full text-left text-xs text-slate-600 min-w-[640px]">
+                        <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
                             <tbody id="tbody-closed" class="divide-y divide-slate-100"></tbody>
                         </table>
                     </div>
@@ -409,10 +481,10 @@
                     <h3 class="text-lg font-bold text-slate-800">廢件區案件管理</h3>
                     <div class="flex items-center gap-2">
                         <button onclick="deleteSelectedCases()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                            <i class="fa-solid fa-trash-can"></i> 刪除
+                            <i class="fa-solid fa-trash-can"></i> 案件刪除
                         </button>
                         <button onclick="restoreDeletedCases()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
-                            <i class="fa-solid fa-rotate-left"></i> 恢復
+                            <i class="fa-solid fa-rotate-left"></i> 誤刪恢復
                         </button>
                     </div>
                 </div>
@@ -425,7 +497,7 @@
                         <span id="count-trash" class="text-xs font-semibold px-2 py-0.5 bg-rose-100 text-rose-700 rounded-full">0 件</span>
                     </div>
                     <div class="overflow-x-auto">
-                        <table class="case-table w-full text-left text-xs text-slate-600 min-w-[640px]">
+                        <table class="case-table w-full text-left text-xs text-slate-600 table-fixed">
                             <tbody id="tbody-trash" class="divide-y divide-slate-100"></tbody>
                         </table>
                     </div>
@@ -637,7 +709,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
                         <div class="bg-white p-3 rounded-lg border border-slate-200 flex justify-between items-center shadow-sm">
                             <span class="font-bold text-slate-700 text-xs">總案件成本</span>
                             <span id="sum-case-untaxed-amount" class="text-sm font-black text-slate-800 font-mono">NT$ 0</span>
@@ -660,7 +732,7 @@
                 <!-- 付款期程 -->
                 <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
                     <label class="block text-xs font-bold text-slate-800"> 付款期程</label>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
                         <div class="bg-white p-2.5 rounded-lg border border-slate-200 space-y-2">
                             <div>
                                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">第一期款 (NT$)</label>
@@ -715,7 +787,7 @@
         </div>
     </div>
 
-    <!-- 太陽能試算專屬 Modal -->
+    <!-- 太陽能試算專屬彈跳視窗 Modal -->
     <div id="solar-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
             <div class="p-5 border-b border-amber-200 flex justify-between items-center bg-gradient-to-r from-amber-500 to-orange-500 text-white">
@@ -736,11 +808,11 @@
                             <i class="fa-solid fa-clipboard-list text-amber-600"></i> 一、案件評估
                         </h4>
                         <button type="button" onclick="toggleSolarRefModal(true)" class="px-3 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded-lg font-medium transition flex items-center gap-1 shadow-sm">
-                            <i class="fa-solid fa-industry"></i> 用電參考表格
+                            <i class="fa-solid fa-industry"></i> 製造業每日用電參考表格
                         </button>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">屋頂坪數 (坪)</label>
                             <input type="number" id="solar-roof-ping" placeholder="0" oninput="calculateSolarAll()" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-amber-500 bg-white font-mono">
@@ -768,12 +840,12 @@
                     </div>
                 </div>
 
-                <!-- 二、估算 -->
+                <!-- 二、估算 (公式自動計算) -->
                 <div class="bg-sky-50/60 p-4 rounded-xl border border-sky-200 space-y-4">
                     <h4 class="font-bold text-sky-900 text-sm border-b border-sky-200 pb-2 flex items-center gap-1.5">
                         <i class="fa-solid fa-calculator text-sky-600"></i> 二、估算（依據坪數與售電價自動計算）
                     </h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                         <div class="bg-white p-3 rounded-lg border border-sky-200 shadow-sm">
                             <span class="block text-slate-500 mb-1">每日發電度數</span>
                             <span id="res-solar-daily-gen" class="text-base font-bold text-slate-800 font-mono">0 度</span>
@@ -807,7 +879,7 @@
                         <i class="fa-solid fa-sliders text-emerald-600"></i> 三、精算試算
                     </h4>
                     
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">模組數量 (片)</label>
                             <input type="number" id="solar-module-count" placeholder="0" oninput="calculateSolarAll()" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-emerald-500 bg-white font-mono">
@@ -818,20 +890,20 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                         <div class="bg-white p-3 rounded-lg border border-emerald-200 shadow-sm">
                             <span class="block text-slate-600 font-medium mb-1">A. 每年發電收益</span>
                             <span id="res-solar-精算-A" class="text-base font-bold text-emerald-700 font-mono">NT$ 0</span>
                         </div>
                         <div class="bg-white p-3 rounded-lg border border-emerald-200 shadow-sm">
-                            <span class="block text-slate-600 font-medium mb-1">B. 台製模組 6% 每年回饋 (每年發電收益 * 1.06)</span>
+                            <span class="block text-slate-600 font-medium mb-1">B. 台製模組 6% 每年回饋</span>
                             <span id="res-solar-精算-B" class="text-base font-bold text-emerald-700 font-mono">NT$ 0</span>
                         </div>
                     </div>
 
                     <div class="p-3 bg-white rounded-lg border border-emerald-200 space-y-2">
                         <span class="block font-bold text-slate-700">C. 廠房租金收益</span>
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 items-center">
                             <div>
                                 <label class="block text-[11px] text-slate-500 mb-0.5">坪數 (手動自填)</label>
                                 <input type="number" id="solar-rent-ping" placeholder="0" oninput="calculateSolarAll()" class="w-full px-2.5 py-1.5 border border-slate-300 rounded-lg font-mono text-xs">
@@ -847,7 +919,7 @@
                         </div>
                     </div>
 
-                    <div class="bg-white p-3 rounded-lg border border-emerald-200 shadow-sm flex flex-col sm:flex-row justify-between items-start sm:items-center gap-1">
+                    <div class="bg-white p-3 rounded-lg border border-emerald-200 shadow-sm flex justify-between items-center">
                         <span class="font-bold text-slate-700">D. 綠電園區每月售電收益 (以 5 元/度計算)</span>
                         <span id="res-solar-精算-D" class="text-base font-bold text-emerald-700 font-mono">NT$ 0</span>
                     </div>
@@ -861,7 +933,7 @@
         </div>
     </div>
 
-    <!-- 用電度數對照 Modal -->
+    <!-- 製造業每日用電度數參考 (彈跳視窗) -->
     <div id="solar-ref-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[80] hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden border border-amber-200">
             <div class="p-4 bg-slate-800 text-white flex justify-between items-center">
@@ -882,12 +954,36 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
-                        <tr><td class="p-2.5 font-semibold text-slate-800">龍盟</td><td class="p-2.5 font-mono font-bold text-amber-600">30 度/日</td><td class="p-2.5 text-slate-500">設備組裝業</td></tr>
-                        <tr><td class="p-2.5 font-semibold text-slate-800">詮盛</td><td class="p-2.5 font-mono font-bold text-amber-600">60 度/日</td><td class="p-2.5 text-slate-500">銑床</td></tr>
-                        <tr><td class="p-2.5 font-semibold text-slate-800">浩銘</td><td class="p-2.5 font-mono font-bold text-amber-600">80 度/日</td><td class="p-2.5 text-slate-500">CNC*2、鑽床*1</td></tr>
-                        <tr><td class="p-2.5 font-semibold text-slate-800">環境</td><td class="p-2.5 font-mono font-bold text-amber-600">130 度/日</td><td class="p-2.5 text-slate-500">遠紅外線安防</td></tr>
-                        <tr><td class="p-2.5 font-semibold text-slate-800">河洛</td><td class="p-2.5 font-mono font-bold text-amber-600">230 度/日</td><td class="p-2.5 text-slate-500">印刷業</td></tr>
-                        <tr><td class="p-2.5 font-semibold text-slate-800">阜大</td><td class="p-2.5 font-mono font-bold text-amber-600">230 度/日</td><td class="p-2.5 text-slate-500">機電測試</td></tr>
+                        <tr>
+                            <td class="p-2.5 font-semibold text-slate-800">龍盟</td>
+                            <td class="p-2.5 font-mono font-bold text-amber-600">30 度/日</td>
+                            <td class="p-2.5 text-slate-500">設備組裝業</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-semibold text-slate-800">詮盛</td>
+                            <td class="p-2.5 font-mono font-bold text-amber-600">60 度/日</td>
+                            <td class="p-2.5 text-slate-500">銑床</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-semibold text-slate-800">浩銘</td>
+                            <td class="p-2.5 font-mono font-bold text-amber-600">80 度/日</td>
+                            <td class="p-2.5 text-slate-500">CNC*2、鑽床*1</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-semibold text-slate-800">環境</td>
+                            <td class="p-2.5 font-mono font-bold text-amber-600">130 度/日</td>
+                            <td class="p-2.5 text-slate-500">遠紅外線安防</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-semibold text-slate-800">河洛</td>
+                            <td class="p-2.5 font-mono font-bold text-amber-600">230 度/日</td>
+                            <td class="p-2.5 text-slate-500">印刷業</td>
+                        </tr>
+                        <tr>
+                            <td class="p-2.5 font-semibold text-slate-800">阜大</td>
+                            <td class="p-2.5 font-mono font-bold text-amber-600">230 度/日</td>
+                            <td class="p-2.5 text-slate-500">機電測試</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -897,29 +993,427 @@
         </div>
     </div>
 
-    <!-- 核心 JS 邏輯 -->
+    <!-- 精美土地變更評估與試算 Modal (專屬高級介面) -->
+    <div id="land-change-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden border border-sky-100">
+            <!-- Modal Header -->
+            <div class="p-5 border-b border-slate-800 flex justify-between items-center bg-gradient-to-r from-slate-900 via-sky-950 to-slate-900 text-white shadow-md">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400/30 flex items-center justify-center text-sky-400 text-lg shadow-inner">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-base tracking-wide text-white">土地變更專屬評估與回饋金試算</h3>
+                        <p class="text-[11px] text-sky-300/80 font-normal">Ruili Land Alteration & Feedback Fee Evaluation Tool</p>
+                    </div>
+                </div>
+                <button onclick="closeLandChangeModal()" class="text-slate-400 hover:text-white hover:bg-white/10 w-8 h-8 rounded-lg flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content (Scrollable) -->
+            <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs bg-slate-50/50">
+                <!-- 一、基本條件評估 -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                    <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                        <span class="w-2.5 h-2.5 rounded-full bg-sky-500"></span>
+                        <h4 class="font-bold text-slate-800 text-sm">一、基本條件評估</h4>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1.5">組織型態</label>
+                            <select id="lc-org-type" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white font-medium text-slate-700 shadow-sm">
+                                <option value="企業社">企業社</option>
+                                <option value="有限公司">有限公司</option>
+                                <option value="股份有限公司">股份有限公司</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1.5">鄰路幾米</label>
+                            <div class="relative">
+                                <input type="text" id="lc-road-width" placeholder="例：8米或12米" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white font-medium shadow-sm">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1.5">用地計劃送件前三年內，是否因違反環保法規停工</label>
+                        <select id="lc-env-violation" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white font-medium text-slate-700 shadow-sm">
+                            <option value="否">否（符合申請規定）</option>
+                            <option value="是">是（請提早評估改善）</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1.5">隔離綠帶說明</label>
+                        <textarea id="lc-green-belt" rows="2" placeholder="請輸入隔離綠帶規劃與說明..." class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white leading-relaxed resize-none shadow-sm"></textarea>
+                    </div>
+                </div>
+
+                <!-- 二、案件成本評估 -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
+                            <h4 class="font-bold text-slate-800 text-sm">二、案件報價與成本評估</h4>
+                        </div>
+                        <button type="button" onclick="addCostQuoteRow()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-plus text-xs"></i> 新增報價項目
+                        </button>
+                    </div>
+
+                    <div id="cost-quote-items-container" class="space-y-3"></div>
+                </div>
+
+                <!-- 三、面積與建築規格 -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                    <div class="flex items-center gap-2 border-b border-slate-100 pb-3">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                        <h4 class="font-bold text-slate-800 text-sm">三、面積與建築規格計算</h4>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-50/70 p-3.5 rounded-xl border border-slate-200/80 space-y-2">
+                            <span class="font-bold text-slate-700 block">廠地面積</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="number" id="lc-factory-site-sqm" placeholder="面積 (㎡)" oninput="calcPing(this, 'ping-factory-site')" class="px-3 py-1.5 border border-slate-300 rounded-lg font-mono bg-white">
+                                <input type="text" id="ping-factory-site" readonly placeholder="坪數" class="px-3 py-1.5 bg-emerald-50/80 border border-emerald-200/80 rounded-lg font-mono text-emerald-800 font-bold">
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50/70 p-3.5 rounded-xl border border-slate-200/80 space-y-2">
+                            <span class="font-bold text-slate-700 block">廠房面積</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="number" id="lc-factory-bldg-sqm" placeholder="面積 (㎡)" oninput="calcPing(this, 'ping-factory-bldg')" class="px-3 py-1.5 border border-slate-300 rounded-lg font-mono bg-white">
+                                <input type="text" id="ping-factory-bldg" readonly placeholder="坪數" class="px-3 py-1.5 bg-emerald-50/80 border border-emerald-200/80 rounded-lg font-mono text-emerald-800 font-bold">
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50/70 p-3.5 rounded-xl border border-slate-200/80 space-y-2">
+                            <span class="font-bold text-slate-700 block">建物面積</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="number" id="lc-bldg-sqm" placeholder="面積 (㎡)" oninput="calcPing(this, 'ping-bldg')" class="px-3 py-1.5 border border-slate-300 rounded-lg font-mono bg-white">
+                                <input type="text" id="ping-bldg" readonly placeholder="坪數" class="px-3 py-1.5 bg-emerald-50/80 border border-emerald-200/80 rounded-lg font-mono text-emerald-800 font-bold">
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-50/70 p-3.5 rounded-xl border border-slate-200/80 space-y-2">
+                            <span class="font-bold text-slate-700 block">建物及廠房面積合計</span>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="number" id="lc-total-sqm" placeholder="面積 (㎡)" oninput="calcPing(this, 'ping-total')" class="px-3 py-1.5 border border-slate-300 rounded-lg font-mono bg-white">
+                                <input type="text" id="ping-total" readonly placeholder="坪數" class="px-3 py-1.5 bg-emerald-50/80 border border-emerald-200/80 rounded-lg font-mono text-emerald-800 font-bold">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1.5">建蔽率 70%（土地及建物佔比說明）</label>
+                            <input type="text" id="lc-coverage-ratio" placeholder="手動填入說明或比例" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white shadow-sm">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1.5">容積率 180%（總樓地板面積說明）</label>
+                            <input type="text" id="lc-volume-ratio" placeholder="手動填入說明或總樓地板面積" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white shadow-sm">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 四、回饋金試算 -->
+                <div class="bg-gradient-to-br from-sky-50/80 via-white to-blue-50/50 p-5 rounded-2xl border border-sky-200/80 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center border-b border-sky-100 pb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                            <h4 class="font-bold text-sky-950 text-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-calculator text-sky-600"></i> 四、回饋金試算
+                            </h4>
+                        </div>
+                        <button type="button" onclick="addFeedbackLandRow()" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-plus text-xs"></i> ＋新增地號
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto border border-sky-200/80 rounded-xl bg-white p-3 shadow-sm">
+                        <div class="min-w-[650px] space-y-2">
+                            <div class="grid grid-cols-[1.2fr_1fr_1.2fr_1.2fr_1.5fr_32px] gap-2 bg-slate-100 p-2.5 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
+                                <div>地號</div>
+                                <div>面積 (㎡)</div>
+                                <div>公告現值 (NT$)</div>
+                                <div>分區</div>
+                                <div>回饋金試算 (NT$)</div>
+                                <div></div>
+                            </div>
+                            <div id="feedback-land-container" class="space-y-2"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-xl border border-sky-200 flex justify-between items-center shadow-sm">
+                        <span class="font-bold text-slate-800 text-sm">回饋金估算總額</span>
+                        <span id="sum-feedback-amount" class="text-xl font-black text-emerald-600 font-mono">NT$ 0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between">
+                <span class="text-xs text-slate-400 pl-2"><i class="fa-solid fa-circle-info text-sky-500"></i> 評估數據可即時儲存並帶入主案件說明欄位</span>
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeLandChangeModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-medium hover:bg-white transition text-xs">關閉</button>
+                    <button type="button" onclick="applyLandChangeResultsToCase()" class="px-5 py-2 bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 text-white rounded-lg font-bold transition shadow-md text-xs flex items-center gap-1.5">
+                        <i class="fa-solid fa-file-import"></i> 帶入評估結果至案件說明
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 土地基本資料 Modal -->
+    <div id="land-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-[96vw] max-h-[92vh] flex flex-col overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-map-location-dot text-sky-400 text-lg"></i>
+                    <h3 class="font-bold text-base">土地基本資料</h3>
+                </div>
+                <button onclick="closeLandModal()" class="text-slate-400 hover:text-white p-1 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">所有權人</label>
+                            <input type="text" id="land-owner" placeholder="請輸入所有權人姓名" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">縣市</label>
+                            <input type="text" id="land-city" placeholder="例如：彰化縣" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">區域</label>
+                            <input type="text" id="land-district" placeholder="例如：鹿港鎮" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">地段</label>
+                            <input type="text" id="land-section" placeholder="例如：頂番段" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <div></div>
+                        <button type="button" onclick="addLandRow()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-plus"></i> ＋新增地號
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
+                        <div class="min-w-[1150px] space-y-2">
+                            <div class="grid grid-cols-[1fr_1fr_1.2fr_0.9fr_0.9fr_1.2fr_0.9fr_0.9fr_1fr_32px] gap-2 bg-slate-100 p-2.5 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
+                                <div>地號</div>
+                                <div>登記日期</div>
+                                <div>使用分區</div>
+                                <div>用地</div>
+                                <div>面積 (㎡)</div>
+                                <div>權利範圍</div>
+                                <div>平方公尺</div>
+                                <div>坪數</div>
+                                <div>他項權利</div>
+                                <div></div>
+                            </div>
+                            <div id="land-rows-container" class="space-y-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                    <h4 class="font-bold text-sky-900 mb-3 flex items-center gap-1.5">
+                        <i class="fa-solid fa-calculator text-sky-600"></i> 自動加總
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div class="bg-white p-3 rounded-lg border border-sky-200">
+                            <span class="block text-slate-500 font-semibold mb-1">總地號面積</span>
+                            <span id="sum-area" class="text-base font-bold text-slate-800 font-mono">0.00 ㎡</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200">
+                            <span class="block text-slate-500 font-semibold mb-1">總持有平方公尺</span>
+                            <span id="sum-sqm" class="text-base font-bold text-sky-700 font-mono">0.00 ㎡</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200">
+                            <span class="block text-slate-500 font-semibold mb-1">總持有坪數</span>
+                            <span id="sum-ping" class="text-base font-bold text-emerald-700 font-mono">0.00 坪</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
+                <button type="button" onclick="closeLandModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-medium hover:bg-white transition">取消</button>
+                <button type="button" onclick="saveLandModalData()" class="px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition shadow-sm">確認儲存土地資料</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 保存登記建物 Modal -->
+    <div id="registered-building-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-[96vw] max-h-[92vh] flex flex-col overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-house-chimney-crack text-sky-400 text-lg"></i>
+                    <h3 class="font-bold text-base">保存登記建物</h3>
+                </div>
+                <button onclick="closeRegisteredBuildingModal()" class="text-slate-400 hover:text-white p-1 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">建物所有權人</label>
+                            <input type="text" id="reg-building-owner" placeholder="請輸入所有權人" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 mb-1">建物門牌</label>
+                            <input type="text" id="reg-building-address" placeholder="請輸入建物門牌地址" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-slate-700">建號詳細列表</span>
+                        <button type="button" onclick="addRegBuildingRow()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-plus"></i> ＋新增建號
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
+                        <div class="min-w-[1150px] space-y-2">
+                            <div class="grid grid-cols-[1fr_1.2fr_1fr_1.1fr_0.9fr_1.2fr_0.9fr_0.9fr_32px] gap-2 bg-slate-100 p-2.5 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
+                                <div>建號</div>
+                                <div>坐落地號</div>
+                                <div>主要用途</div>
+                                <div>登記日期</div>
+                                <div>面積 (㎡)</div>
+                                <div>權利範圍</div>
+                                <div>平方公尺</div>
+                                <div>坪數</div>
+                                <div></div>
+                            </div>
+                            <div id="reg-building-rows-container" class="space-y-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                    <h4 class="font-bold text-sky-900 mb-3 flex items-center gap-1.5">
+                        <i class="fa-solid fa-calculator text-sky-600"></i> 自動加總
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                        <div class="bg-white p-3 rounded-lg border border-sky-200">
+                            <span class="block text-slate-500 font-semibold mb-1">總面積</span>
+                            <span id="reg-sum-area" class="text-base font-bold text-slate-800 font-mono">0.00 ㎡</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200">
+                            <span class="block text-slate-500 font-semibold mb-1">總持有平方公尺</span>
+                            <span id="reg-sum-sqm" class="text-base font-bold text-sky-700 font-mono">0.00 ㎡</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200">
+                            <span class="block text-slate-500 font-semibold mb-1">總持有坪數</span>
+                            <span id="reg-sum-ping" class="text-base font-bold text-emerald-700 font-mono">0.00 坪</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
+                <button type="button" onclick="closeRegisteredBuildingModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-medium hover:bg-white transition">取消</button>
+                <button type="button" onclick="closeRegisteredBuildingModal(); alert('保存登記建物資料已儲存！');" class="px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition shadow-sm">確認儲存建物資料</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 未保存登記建物 Modal -->
+    <div id="unregistered-building-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[92vh] flex flex-col overflow-hidden">
+            <div class="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-800 text-white">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-house-circle-exclamation text-amber-400 text-lg"></i>
+                    <h3 class="font-bold text-base">未保存登記建物</h3>
+                </div>
+                <button onclick="closeUnregisteredBuildingModal()" class="text-slate-400 hover:text-white p-1 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="p-6 space-y-6 overflow-y-auto flex-1 text-xs">
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <label class="block font-semibold text-slate-700 mb-1">起造人</label>
+                    <input type="text" id="unreg-building-builder" placeholder="請輸入起造人姓名" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-slate-700">未保存登記建物列表</span>
+                        <button type="button" onclick="addUnregBuildingRow()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-medium transition flex items-center gap-1 shadow-sm">
+                            <i class="fa-solid fa-plus"></i> ＋新增筆數
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
+                        <div class="min-w-[600px] space-y-2">
+                            <div class="grid grid-cols-[1.5fr_1fr_1.2fr_1.2fr_32px] gap-2 bg-slate-100 p-2.5 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
+                                <div>主要用途</div>
+                                <div>起造年份</div>
+                                <div>平方公尺 (㎡)</div>
+                                <div>坪數</div>
+                                <div></div>
+                            </div>
+                            <div id="unreg-building-rows-container" class="space-y-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                    <h4 class="font-bold text-sky-900 mb-3 flex items-center gap-1.5">
+                        <i class="fa-solid fa-calculator text-sky-600"></i> 自動加總
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                        <div class="bg-white p-3 rounded-lg border border-sky-200">
+                            <span class="block text-slate-500 font-semibold mb-1">總平方公尺</span>
+                            <span id="unreg-sum-sqm" class="text-base font-bold text-sky-700 font-mono">0.00 ㎡</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg border border-sky-200">
+                            <span class="block text-slate-500 font-semibold mb-1">總坪數</span>
+                            <span id="unreg-sum-ping" class="text-base font-bold text-emerald-700 font-mono">0.00 坪</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 border-t border-slate-200 bg-slate-50 flex justify-end gap-3">
+                <button type="button" onclick="closeUnregisteredBuildingModal()" class="px-4 py-2 border border-slate-300 text-slate-600 rounded-lg font-medium hover:bg-white transition">取消</button>
+                <button type="button" onclick="closeUnregisteredBuildingModal(); alert('未保存登記建物資料已儲存！');" class="px-5 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg font-medium transition shadow-sm">確認儲存建物資料</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const STORAGE_KEY = 'RUILI_SYSTEM_CASES_2026';
         let casesData = [];
         let deleteHistoryStack = [];
+        let landRowCount = 0;
+        let regBuildingRowCount = 0;
+        let unregBuildingRowCount = 0;
+        let feedbackLandRowCount = 0;
 
         document.addEventListener('DOMContentLoaded', () => {
             initTableHeaders();
             initStorage();
             loadCasesFromStorage();
         });
-
-        function toggleMobileSidebar(show) {
-            const sidebar = document.getElementById('main-sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            if (show) {
-                sidebar.classList.remove('-translate-x-full');
-                overlay.classList.remove('hidden');
-            } else {
-                sidebar.classList.add('-translate-x-full');
-                overlay.classList.add('hidden');
-            }
-        }
 
         function initTableHeaders() {
             const caseTableHeader = `
@@ -933,7 +1427,9 @@
                     </tr>
                 </thead>
             `;
-            document.querySelectorAll('.case-table').forEach(table => table.insertAdjacentHTML('afterbegin', caseTableHeader));
+            document.querySelectorAll('.case-table').forEach(table => {
+                table.insertAdjacentHTML('afterbegin', caseTableHeader);
+            });
 
             const specialFactoryHeader = `
                 <thead class="bg-slate-50 text-slate-700 border-b border-slate-200">
@@ -947,7 +1443,9 @@
                     </tr>
                 </thead>
             `;
-            document.querySelectorAll('.special-factory-table').forEach(table => table.insertAdjacentHTML('afterbegin', specialFactoryHeader));
+            document.querySelectorAll('.special-factory-table').forEach(table => {
+                table.insertAdjacentHTML('afterbegin', specialFactoryHeader);
+            });
         }
 
         function initStorage() {
@@ -970,6 +1468,7 @@
             document.getElementById('tbody-last-year').innerHTML = '';
             document.getElementById('tbody-closed').innerHTML = '';
             document.getElementById('tbody-trash').innerHTML = '';
+
             document.querySelectorAll('.special-factory-table tbody').forEach(tb => tb.innerHTML = '');
 
             casesData.forEach(c => renderCaseRow(c));
@@ -1008,10 +1507,12 @@
 
                 const displayService = c.serviceDetail || c.serviceItem || '-';
                 const displayWorkProgress = c.workProgress || '未設定';
+                
                 const contractVal = parseFloat(c.contractAmount);
                 const quoteVal = parseFloat(c.quoteAmount || 0);
                 const displayAmount = (!isNaN(contractVal) && contractVal > 0) ? contractVal : quoteVal;
                 const amountFormatted = `NT$ ${parseInt(displayAmount).toLocaleString()}`;
+                
                 const noteText = c.salesNote || '尚未提供即時說明。';
 
                 tr.innerHTML = `
@@ -1028,11 +1529,13 @@
                 const tbody = document.getElementById(targetTbodyId);
                 if (tbody) tbody.appendChild(tr);
             }
+
             renderSpecialFactoryRow(c);
         }
 
         function renderSpecialFactoryRow(c) {
             const categories = ['已簽約', '優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證'];
+            
             let statusToMatch = c.status;
             if (statusToMatch === '土地變更') statusToMatch = '優先處理';
             if (statusToMatch === '簽約案件') statusToMatch = '已簽約';
@@ -1122,8 +1625,6 @@
                 'trash-cases': '廢件區'
             };
             document.getElementById('page-title').textContent = titles[tabId] || '睿立集團內部管理系統';
-            
-            toggleMobileSidebar(false);
         }
 
         function openAddCaseModal(defaultStatus = '案件評估') {
@@ -1213,11 +1714,14 @@
         }
 
         function calculateCaseCostTotal() {
-            let totalContract = 0, totalUntaxed = 0;
+            let totalContract = 0;
+            let totalUntaxed = 0;
+
             document.querySelectorAll('.case-cost-contract').forEach(input => {
                 const val = parseFloat(input.value || 0);
                 if (!isNaN(val)) totalContract += val;
             });
+
             document.querySelectorAll('.case-cost-untaxed').forEach(input => {
                 const val = parseFloat(input.value || 0);
                 if (!isNaN(val)) totalUntaxed += val;
@@ -1226,10 +1730,25 @@
             const totalProfit = totalContract - totalUntaxed;
             const afterTax5Amount = totalUntaxed * 1.05;
 
-            document.getElementById('sum-case-untaxed-amount').textContent = `NT$ ${Math.round(totalUntaxed).toLocaleString()}`;
-            document.getElementById('sum-case-after-tax-amount').textContent = `NT$ ${Math.round(afterTax5Amount).toLocaleString()}`;
-            document.getElementById('sum-case-cost-amount').textContent = `NT$ ${Math.round(totalContract).toLocaleString()}`;
-            document.getElementById('sum-case-profit-amount').textContent = `NT$ ${Math.round(totalProfit).toLocaleString()}`;
+            const untaxedEl = document.getElementById('sum-case-untaxed-amount');
+            if (untaxedEl) {
+                untaxedEl.textContent = `NT$ ${Math.round(totalUntaxed).toLocaleString()}`;
+            }
+
+            const afterTaxEl = document.getElementById('sum-case-after-tax-amount');
+            if (afterTaxEl) {
+                afterTaxEl.textContent = `NT$ ${Math.round(afterTax5Amount).toLocaleString()}`;
+            }
+
+            const totalEl = document.getElementById('sum-case-cost-amount');
+            if (totalEl) {
+                totalEl.textContent = `NT$ ${Math.round(totalContract).toLocaleString()}`;
+            }
+
+            const profitEl = document.getElementById('sum-case-profit-amount');
+            if (profitEl) {
+                profitEl.textContent = `NT$ ${Math.round(totalProfit).toLocaleString()}`;
+            }
         }
 
         // --- 太陽能試算邏輯 ---
@@ -1267,17 +1786,18 @@
             document.getElementById('res-solar-annual-maint').textContent = `NT$ ${Math.round(annualMaint).toLocaleString()}`;
             document.getElementById('res-solar-roof-rent').textContent = `NT$ ${Math.round(roofRent).toLocaleString()}`;
 
-            // 三、精算公式 (台製模組 6% 每年回饋：每年發電收益 * 1.06)
+            // 三、精算公式
             const modCount = parseFloat(document.getElementById('solar-module-count').value || 0);
             const modWatt = parseFloat(document.getElementById('solar-module-watt').value || 590);
 
             const 精算_A = (modCount * modWatt / 1000) * 4 * 365 * taipowerPrice;
-            const 精算_B = 精算_A * 1.06; // 重下公式：每年發電收益 * 1.06
+            const 精算_B = (modCount * modWatt / 1000) * 4 * taipowerPrice * 1.06;
 
             const rentPing = parseFloat(document.getElementById('solar-rent-ping').value || 0);
             const rentPrice = parseFloat(document.getElementById('solar-rent-price').value || 0);
             const 精算_C = rentPing * rentPrice;
-            const 精算_D = monthlyGen * 5;
+
+            const 精算_D = monthlyGen * 5; // 每月售電收益 (5元)
 
             document.getElementById('res-solar-精算-A').textContent = `NT$ ${Math.round(精算_A).toLocaleString()}`;
             document.getElementById('res-solar-精算-B').textContent = `NT$ ${Math.round(精算_B).toLocaleString()}`;
@@ -1299,6 +1819,345 @@
 
             closeSolarModal();
             alert('太陽能試算結果已自動帶入案件說明！');
+        }
+
+        function addCostQuoteRow() {
+            const container = document.getElementById('cost-quote-items-container');
+            const rowId = 'cost-row-' + Date.now();
+            const html = `
+                <div id="${rowId}" class="grid grid-cols-1 md:grid-cols-4 gap-3 bg-white p-3 rounded-lg border border-slate-200 shadow-sm items-center relative group">
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">報價項目</label>
+                        <input type="text" placeholder="例如：技師簽證費" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">填表時間/日期</label>
+                        <input type="datetime-local" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white">
+                    </div>
+                    <div>
+                        <label class="block font-semibold text-slate-700 mb-1">未稅報價金額 (NT$)</label>
+                        <input type="number" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white font-mono">
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="flex-1">
+                            <label class="block font-semibold text-slate-700 mb-1">稅後報價金額 (NT$)</label>
+                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white font-mono">
+                        </div>
+                        <button type="button" onclick="document.getElementById('${rowId}').remove()" class="mt-5 p-2 text-slate-400 hover:text-rose-600 transition" title="刪除此項目">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function openLandModal() {
+            document.getElementById('land-rows-container').innerHTML = '';
+            landRowCount = 0;
+            addLandRow();
+            calculateLandTotals();
+            document.getElementById('land-modal').classList.remove('hidden');
+        }
+
+        function closeLandModal() {
+            document.getElementById('land-modal').classList.add('hidden');
+        }
+
+        function addLandRow() {
+            landRowCount++;
+            const rowId = `land-row-${landRowCount}`;
+            const html = `
+                <div id="${rowId}" class="grid grid-cols-[1fr_1fr_1.2fr_0.9fr_0.9fr_1.2fr_0.9fr_0.9fr_1fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
+                    <input type="text" placeholder="例：0899-0000" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" placeholder="例：112/05/20" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <select class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white text-xs">
+                        <option value="都計使用分區">都計使用分區</option>
+                        <option value="非都使用地類別">非都使用地類別</option>
+                    </select>
+                    <input type="text" placeholder="例：建築用地" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateLandTotals()" class="land-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <div class="flex items-center gap-0.5">
+                        <input type="number" min="1" value="1" oninput="calculateLandTotals()" class="land-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                        <span class="text-slate-400 font-bold">/</span>
+                        <input type="number" min="1" value="1" oninput="calculateLandTotals()" class="land-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                    </div>
+                    <input type="text" readonly placeholder="0.00" class="land-sqm-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-lg font-mono font-bold text-xs">
+                    <input type="text" readonly placeholder="0.00" class="land-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 rounded-lg font-mono font-bold text-xs">
+                    <input type="text" placeholder="例：最高限額抵押" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <button type="button" onclick="removeLandRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆地號">
+                        <i class="fa-solid fa-trash-can text-sm"></i>
+                    </button>
+                </div>
+            `;
+            document.getElementById('land-rows-container').insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeLandRow(rowId) {
+            const row = document.getElementById(rowId);
+            if (row) row.remove();
+            calculateLandTotals();
+        }
+
+        function calculateLandTotals() {
+            let totalArea = 0;
+            let totalSqm = 0;
+
+            document.querySelectorAll('#land-rows-container > div').forEach(row => {
+                const areaVal = parseFloat(row.querySelector('.land-area-input')?.value || 0);
+                const numVal = parseFloat(row.querySelector('.land-num-input')?.value || 1);
+                const denVal = parseFloat(row.querySelector('.land-den-input')?.value || 1);
+
+                const validDen = denVal <= 0 ? 1 : denVal;
+                const sqm = areaVal * (numVal / validDen);
+                const ping = sqm * 0.3025;
+
+                const sqmOutput = row.querySelector('.land-sqm-output');
+                if (sqmOutput) sqmOutput.value = sqm.toFixed(2);
+
+                const pingOutput = row.querySelector('.land-ping-output');
+                if (pingOutput) pingOutput.value = ping.toFixed(2);
+
+                totalArea += areaVal;
+                totalSqm += sqm;
+            });
+
+            const totalPing = totalSqm * 0.3025;
+
+            document.getElementById('sum-area').textContent = `${totalArea.toFixed(2)} ㎡`;
+            document.getElementById('sum-sqm').textContent = `${totalSqm.toFixed(2)} ㎡`;
+            document.getElementById('sum-ping').textContent = `${totalPing.toFixed(2)} 坪`;
+        }
+
+        function saveLandModalData() {
+            const city = document.getElementById('land-city').value;
+            const district = document.getElementById('land-district').value;
+            const section = document.getElementById('land-section').value;
+            const pingText = document.getElementById('sum-ping').textContent;
+
+            if (city || section) {
+                document.getElementById('input-land-number').value = `${city}${district}${section} (共計 ${pingText})`;
+            }
+            closeLandModal();
+            alert('土地基本資料已成功帶入！');
+        }
+
+        // --- 土地變更 Modal 控制邏輯 ---
+        function openLandChangeModal() {
+            document.getElementById('feedback-land-container').innerHTML = '';
+            feedbackLandRowCount = 0;
+            addFeedbackLandRow();
+            document.getElementById('land-change-modal').classList.remove('hidden');
+        }
+
+        function closeLandChangeModal() {
+            document.getElementById('land-change-modal').classList.add('hidden');
+        }
+
+        function calcPing(inputEl, outputId) {
+            const val = parseFloat(inputEl.value || 0);
+            const ping = val * 0.3025;
+            document.getElementById(outputId).value = `${ping.toFixed(2)} 坪`;
+        }
+
+        function addFeedbackLandRow() {
+            feedbackLandRowCount++;
+            const rowId = `fb-land-row-${feedbackLandRowCount}`;
+            const html = `
+                <div id="${rowId}" class="grid grid-cols-[1.2fr_1fr_1.2fr_1.2fr_1.5fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
+                    <input type="text" placeholder="例：頂番段123地號" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="number" step="0.01" min="0" placeholder="面積(㎡)" oninput="calcFeedbackRow('${rowId}')" class="fb-area w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <input type="number" step="0.1" min="0" placeholder="公告現值" oninput="calcFeedbackRow('${rowId}')" class="fb-value w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <select onchange="calcFeedbackRow('${rowId}')" class="fb-zone w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white text-xs">
+                        <option value="都內">都內 (0.1)</option>
+                        <option value="非都">非都 (0.5)</option>
+                    </select>
+                    <input type="text" readonly placeholder="0" class="fb-result w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 font-bold font-mono text-xs">
+                    <button type="button" onclick="removeFeedbackLandRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆試算">
+                        <i class="fa-solid fa-trash-can text-sm"></i>
+                    </button>
+                </div>
+            `;
+            document.getElementById('feedback-land-container').insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeFeedbackLandRow(rowId) {
+            const row = document.getElementById(rowId);
+            if (row) row.remove();
+            calcFeedbackTotals();
+        }
+
+        function calcFeedbackRow(rowId) {
+            const row = document.getElementById(rowId);
+            if (!row) return;
+
+            const area = parseFloat(row.querySelector('.fb-area')?.value || 0);
+            const value = parseFloat(row.querySelector('.fb-value')?.value || 0);
+            const zone = row.querySelector('.fb-zone')?.value || '都內';
+
+            let rate = zone === '都內' ? 0.1 : 0.5;
+            let result = value * area * rate;
+
+            const resInput = row.querySelector('.fb-result');
+            if (resInput) {
+                resInput.value = `NT$ ${Math.round(result).toLocaleString()}`;
+                resInput.dataset.amount = result;
+            }
+
+            calcFeedbackTotals();
+        }
+
+        function calcFeedbackTotals() {
+            let sum = 0;
+            document.querySelectorAll('#feedback-land-container .fb-result').forEach(input => {
+                const amt = parseFloat(input.dataset.amount || 0);
+                sum += amt;
+            });
+            document.getElementById('sum-feedback-amount').textContent = `NT$ ${Math.round(sum).toLocaleString()}`;
+        }
+
+        function applyLandChangeResultsToCase() {
+            const orgType = document.getElementById('lc-org-type').value;
+            const roadWidth = document.getElementById('lc-road-width').value || '未填寫';
+            const envViol = document.getElementById('lc-env-violation').value;
+            const factorySitePing = document.getElementById('ping-factory-site').value || '0 坪';
+            const feedbackAmt = document.getElementById('sum-feedback-amount').textContent;
+
+            const summaryText = `【土地變更評估摘要】\n- 組織型態：${orgType}\n- 鄰路寬度：${roadWidth}\n- 三年內環保違規停工：${envViol}\n- 廠地預估坪數：${factorySitePing}\n- 預估回饋金總額：${feedbackAmt}`;
+
+            const descInput = document.getElementById('input-case-description');
+            descInput.value = (descInput.value ? descInput.value + '\n\n' : '') + summaryText;
+            autoExpandTextarea(descInput);
+
+            closeLandChangeModal();
+            alert('土地變更評估結果已成功帶入案件說明！');
+        }
+
+        function openRegisteredBuildingModal() {
+            document.getElementById('reg-building-rows-container').innerHTML = '';
+            regBuildingRowCount = 0;
+            addRegBuildingRow();
+            calculateRegBuildingTotals();
+            document.getElementById('registered-building-modal').classList.remove('hidden');
+        }
+
+        function closeRegisteredBuildingModal() {
+            document.getElementById('registered-building-modal').classList.add('hidden');
+        }
+
+        function addRegBuildingRow() {
+            regBuildingRowCount++;
+            const rowId = `reg-bldg-row-${regBuildingRowCount}`;
+            const html = `
+                <div id="${rowId}" class="grid grid-cols-[1fr_1.2fr_1fr_1.1fr_0.9fr_1.2fr_0.9fr_0.9fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
+                    <input type="text" placeholder="例：01234-000" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" placeholder="例：大肚段123地號" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" placeholder="例：住家用" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" placeholder="例：112/05/20" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateRegBuildingTotals()" class="reg-bldg-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <div class="flex items-center gap-0.5">
+                        <input type="number" min="1" value="1" oninput="calculateRegBuildingTotals()" class="reg-bldg-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                        <span class="text-slate-400 font-bold">/</span>
+                        <input type="number" min="1" value="1" oninput="calculateRegBuildingTotals()" class="reg-bldg-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                    </div>
+                    <input type="text" readonly placeholder="0.00" class="reg-bldg-sqm-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-lg font-mono font-bold text-xs">
+                    <input type="text" readonly placeholder="0.00" class="reg-bldg-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 rounded-lg font-mono font-bold text-xs">
+                    <button type="button" onclick="removeRegBuildingRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆建號">
+                        <i class="fa-solid fa-trash-can text-sm"></i>
+                    </button>
+                </div>
+            `;
+            document.getElementById('reg-building-rows-container').insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeRegBuildingRow(rowId) {
+            const row = document.getElementById(rowId);
+            if (row) row.remove();
+            calculateRegBuildingTotals();
+        }
+
+        function calculateRegBuildingTotals() {
+            let totalArea = 0;
+            let totalSqm = 0;
+
+            document.querySelectorAll('#reg-building-rows-container > div').forEach(row => {
+                const areaVal = parseFloat(row.querySelector('.reg-bldg-area-input')?.value || 0);
+                const numVal = parseFloat(row.querySelector('.reg-bldg-num-input')?.value || 1);
+                const denVal = parseFloat(row.querySelector('.reg-bldg-den-input')?.value || 1);
+
+                const validDen = denVal <= 0 ? 1 : denVal;
+                const sqm = areaVal * (numVal / validDen);
+                const ping = sqm * 0.3025;
+
+                const sqmOutput = row.querySelector('.reg-bldg-sqm-output');
+                if (sqmOutput) sqmOutput.value = sqm.toFixed(2);
+
+                const pingOutput = row.querySelector('.reg-bldg-ping-output');
+                if (pingOutput) pingOutput.value = ping.toFixed(2);
+
+                totalArea += areaVal;
+                totalSqm += sqm;
+            });
+
+            const totalPing = totalSqm * 0.3025;
+
+            document.getElementById('reg-sum-area').textContent = `${totalArea.toFixed(2)} ㎡`;
+            document.getElementById('reg-sum-sqm').textContent = `${totalSqm.toFixed(2)} ㎡`;
+            document.getElementById('reg-sum-ping').textContent = `${totalPing.toFixed(2)} 坪`;
+        }
+
+        function openUnregisteredBuildingModal() {
+            document.getElementById('unreg-building-rows-container').innerHTML = '';
+            unregBuildingRowCount = 0;
+            addUnregBuildingRow();
+            calculateUnregBuildingTotals();
+            document.getElementById('unregistered-building-modal').classList.remove('hidden');
+        }
+
+        function closeUnregisteredBuildingModal() {
+            document.getElementById('unregistered-building-modal').classList.add('hidden');
+        }
+
+        function addUnregBuildingRow() {
+            unregBuildingRowCount++;
+            const rowId = `unreg-bldg-row-${unregBuildingRowCount}`;
+            const html = `
+                <div id="${rowId}" class="grid grid-cols-[1.5fr_1fr_1.2fr_1.2fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
+                    <input type="text" placeholder="例：農舍/廠房" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" placeholder="例：2015年" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateUnregBuildingTotals()" class="unreg-bldg-sqm-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <input type="text" readonly placeholder="0.00" class="unreg-bldg-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 font-mono font-bold text-xs">
+                    <button type="button" onclick="removeUnregBuildingRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆資料">
+                        <i class="fa-solid fa-trash-can text-sm"></i>
+                    </button>
+                </div>
+            `;
+            document.getElementById('unreg-building-rows-container').insertAdjacentHTML('beforeend', html);
+        }
+
+        function removeUnregBuildingRow(rowId) {
+            const row = document.getElementById(rowId);
+            if (row) row.remove();
+            calculateUnregBuildingTotals();
+        }
+
+        function calculateUnregBuildingTotals() {
+            let totalSqm = 0;
+
+            document.querySelectorAll('#unreg-building-rows-container > div').forEach(row => {
+                const sqmVal = parseFloat(row.querySelector('.unreg-bldg-sqm-input')?.value || 0);
+                const ping = sqmVal * 0.3025;
+
+                const pingOutput = row.querySelector('.unreg-bldg-ping-output');
+                if (pingOutput) pingOutput.value = ping.toFixed(2);
+
+                totalSqm += sqmVal;
+            });
+
+            const totalPing = totalSqm * 0.3025;
+
+            document.getElementById('unreg-sum-sqm').textContent = `${totalSqm.toFixed(2)} ㎡`;
+            document.getElementById('unreg-sum-ping').textContent = `${totalPing.toFixed(2)} 坪`;
         }
 
         function updateDashboard() {
@@ -1332,6 +2191,7 @@
             document.getElementById('stat-signed-amount').textContent = `NT$ ${totalSignedAmount.toLocaleString()}`;
             document.getElementById('stat-signed-count-label').textContent = `簽約案件：${signedList.length} 件`;
 
+            // 歷年簽約案件數據彙整
             let historyAmount = 0;
             lastYearList.forEach(c => {
                 const amt = parseFloat(c.contractAmount || c.quoteAmount || 0);
@@ -1350,6 +2210,7 @@
             // 服務項目營收佔比
             const shareContainer = document.getElementById('analytics-service-share');
             shareContainer.innerHTML = '';
+
             if (totalSignedAmount === 0 || Object.keys(signedServiceMap).length === 0) {
                 shareContainer.innerHTML = '<div class="text-slate-400 py-1">無簽約案件數據</div>';
             } else {
@@ -1370,9 +2231,10 @@
                 }
             }
 
-            // 通路效益分析
+            // 業務與通路效益分析
             const sourceContainer = document.getElementById('analytics-source-benefit');
             sourceContainer.innerHTML = '';
+
             const sourceMap = {};
             const all2026Cases = [...evalList, ...signedList, ...closedList, ...trashList];
 
@@ -1405,7 +2267,7 @@
                 }
             }
 
-            // 土地變更指標
+            // --- 土地變更戰情室數據更新 ---
             const landPriorityCases = casesData.filter(c => c.status === '優先處理' || c.status === '土地變更');
             const landSignedCases = casesData.filter(c => (c.status === '已簽約' || c.status === '簽約案件') && c.serviceItem === '土地變更');
             
@@ -1414,11 +2276,16 @@
             const landTotal = pCount + sCount;
             const landConversionRate = landTotal > 0 ? ((sCount / landTotal) * 100).toFixed(1) : '0.0';
 
-            document.getElementById('stat-land-conversion-rate').textContent = `${landConversionRate}%`;
-            document.getElementById('stat-land-signed-cnt').textContent = sCount;
-            document.getElementById('stat-land-priority-cnt').textContent = pCount;
+            const landRateEl = document.getElementById('stat-land-conversion-rate');
+            if (landRateEl) landRateEl.textContent = `${landConversionRate}%`;
+            
+            const landSignedCntEl = document.getElementById('stat-land-signed-cnt');
+            if (landSignedCntEl) landSignedCntEl.textContent = sCount;
 
-            // 未簽約原因分析
+            const landPriorityCntEl = document.getElementById('stat-land-priority-cnt');
+            if (landPriorityCntEl) landPriorityCntEl.textContent = pCount;
+
+            // 未簽約原因數據分析
             const noSignContainer = document.getElementById('analytics-no-sign-reasons');
             if (noSignContainer) {
                 noSignContainer.innerHTML = '';
@@ -1456,15 +2323,19 @@
                 return;
             }
 
-            if (!confirm(`確定要徹底刪除選取的 ${checkedBoxes.length} 筆案件嗎？`)) return;
+            if (!confirm(`確定要徹底刪除選取的 ${checkedBoxes.length} 筆案件嗎？`)) {
+                return;
+            }
 
             const idsToDelete = Array.from(checkedBoxes).map(chk => chk.dataset.id);
             const deletedCases = casesData.filter(c => idsToDelete.includes(c.id));
+
             deleteHistoryStack.push(deletedCases);
 
             casesData = casesData.filter(c => !idsToDelete.includes(c.id));
             saveCasesToStorage();
             loadCasesFromStorage();
+
             alert(`已成功刪除 ${idsToDelete.length} 筆案件。`);
         }
 
@@ -1479,6 +2350,7 @@
 
             saveCasesToStorage();
             loadCasesFromStorage();
+
             alert(`已成功恢復 ${lastBatch.length} 筆誤刪案件！`);
         }
 
@@ -1489,8 +2361,13 @@
             let selectedStatus = document.getElementById('select-case-status').value;
             const workProgress = document.getElementById('select-work-progress').value;
 
-            if (selectedStatus === '土地變更') selectedStatus = '優先處理';
-            if (selectedStatus === '簽約案件' || selectedStatus === '已簽約' || workProgress === '已簽約') selectedStatus = '簽約案件';
+            if (selectedStatus === '土地變更') {
+                selectedStatus = '優先處理';
+            }
+
+            if (selectedStatus === '簽約案件' || selectedStatus === '已簽約' || workProgress === '已簽約') {
+                selectedStatus = '簽約案件';
+            }
 
             const caseObj = {
                 id: existingId || ('case_' + Date.now()),
