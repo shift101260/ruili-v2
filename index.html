@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-    // 1. 您的 Web App URL（請把裡面的網址換成您剛剛複製的 Apps Script 網址）
+    // 1. 您的 Web App URL
     const RUILI_API_URL = "https://script.google.com/macros/s/AKfycbzUD61i8xZ5w1ra-gRRj0VFEILcHFRuPrqJGGqd7T9giexl7RHa2rXqaiClkVZ5m2bR/exec";
 
     // 2. 自動寫入 Google 試算表的核心函數
@@ -29,6 +29,15 @@
             console.error("同步失敗：", error);
             alert("❌ 儲存失敗，請檢查網路連線。");
         });
+    }
+
+    // 3. 自動從 Google 試算表讀取資料 Core Function
+    function fetchFromGoogleSheet() {
+        return fetch(RUILI_API_URL)
+            .then(response => {
+                if (!response.ok) throw new Error("網路回應不成功");
+                return response.json();
+            });
     }
     </script>
     <style>
@@ -111,7 +120,7 @@
                 <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
                 <span>身分：<strong class="text-slate-200">管理者</strong></span>
             </div>
-            <span class="bg-slate-800 px-2 py-1 rounded text-slate-400">已連線</span>
+            <span id="sync-status-badge" class="bg-slate-800 px-2 py-1 rounded text-slate-400">同步中...</span>
         </div>
     </aside>
 
@@ -125,8 +134,8 @@
                 <button onclick="clearAllData()" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md text-xs font-medium flex items-center gap-1.5 transition">
                     <i class="fa-solid fa-trash-can"></i> 清空本地資料
                 </button>
-                <button onclick="loadCasesFromStorage(); alert('已刷新最新資料！');" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-md text-xs font-medium flex items-center gap-1.5 transition">
-                    <i class="fa-solid fa-rotate"></i> 重新整理
+                <button onclick="loadCasesFromCloud(true)" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-md text-xs font-medium flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-rotate"></i> 重新整理雲端資料
                 </button>
             </div>
         </header>
@@ -1421,7 +1430,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             initTableHeaders();
             initStorage();
-            loadCasesFromStorage();
+            // 頁面開啟時優先從 Google 雲端抓取最新試算表資料
+            loadCasesFromCloud();
         });
 
         function toggleSidebar() {
@@ -1468,6 +1478,43 @@
             }
         }
 
+        function updateSyncBadge(statusText, isSuccess = true) {
+            const badge = document.getElementById('sync-status-badge');
+            if (badge) {
+                badge.textContent = statusText;
+                if (isSuccess) {
+                    badge.className = "bg-emerald-900/40 text-emerald-300 border border-emerald-700 px-2 py-1 rounded";
+                } else {
+                    badge.className = "bg-amber-900/40 text-amber-300 border border-amber-700 px-2 py-1 rounded";
+                }
+            }
+        }
+
+        // 從雲端 Google 試算表載入資料
+        function loadCasesFromCloud(showAlert = false) {
+            updateSyncBadge("雲端讀取中...");
+            fetchFromGoogleSheet()
+                .then(data => {
+                    if (Array.isArray(data) && data.length > 0) {
+                        casesData = data;
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(casesData));
+                        updateSyncBadge("已連線 (雲端同步)");
+                    } else {
+                        // 若雲端回傳空陣列，則沿用本地
+                        loadCasesFromStorage();
+                        updateSyncBadge("已連線 (本地備份)");
+                    }
+                    renderAllTables();
+                    if (showAlert) alert('已成功重新整理並更新為最新雲端資料！');
+                })
+                .catch(err => {
+                    console.warn("無法連接至 Google Apps Script 雲端，自動轉為讀取本地快照：", err);
+                    loadCasesFromStorage();
+                    updateSyncBadge("離線 (本地備份)", false);
+                    if (showAlert) alert('無法獲取雲端最新資料，已為您讀取本地快照。');
+                });
+        }
+
         function saveCasesToStorage() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(casesData));
             updateDashboard();
@@ -1476,7 +1523,10 @@
         function loadCasesFromStorage() {
             const raw = localStorage.getItem(STORAGE_KEY);
             casesData = raw ? JSON.parse(raw) : [];
+            renderAllTables();
+        }
 
+        function renderAllTables() {
             document.getElementById('tbody-eval').innerHTML = '';
             document.getElementById('tbody-signed').innerHTML = '';
             document.getElementById('tbody-last-year').innerHTML = '';
@@ -1493,8 +1543,8 @@
             if (confirm('確定要清空瀏覽器中的所有案件紀錄嗎？此操作無法恢復。')) {
                 localStorage.removeItem(STORAGE_KEY);
                 casesData = [];
-                loadCasesFromStorage();
-                alert('已成功清空所有案件！');
+                renderAllTables();
+                alert('已成功清空所有本地案件！');
             }
         }
 
@@ -1608,7 +1658,7 @@
             });
 
             saveCasesToStorage();
-            loadCasesFromStorage();
+            renderAllTables();
             alert(`已成功將 ${count} 筆案件拋轉至【${targetStatus}】！`);
         }
 
@@ -1636,7 +1686,7 @@
             });
 
             saveCasesToStorage();
-            loadCasesFromStorage();
+            renderAllTables();
             alert(`已成功將 ${count} 筆案件拋轉至【${targetStatus}】！`);
         }
 
@@ -2339,7 +2389,7 @@
 
             casesData = casesData.filter(c => !idsToDelete.includes(c.id));
             saveCasesToStorage();
-            loadCasesFromStorage();
+            renderAllTables();
 
             alert(`已成功刪除 ${idsToDelete.length} 筆案件。`);
         }
@@ -2354,7 +2404,7 @@
             casesData.push(...lastBatch);
 
             saveCasesToStorage();
-            loadCasesFromStorage();
+            renderAllTables();
 
             alert(`已成功恢復 ${lastBatch.length} 筆誤刪案件！`);
         }
@@ -2405,7 +2455,7 @@
             }
 
             saveCasesToStorage();
-            loadCasesFromStorage();
+            renderAllTables();
 
             // 觸發同步至 Google 試算表
             saveToGoogleSheet(caseObj);
