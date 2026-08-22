@@ -26,56 +26,53 @@
         }
     </style>
     <!-- 引入 Supabase SDK 與雙向同步設定 -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = 'https://cksoeikllbzdihlesraa.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_V9QZLQBKv2SGrthA814LAg_x167CTRD'; // 貼上您的 anon key
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const SUPABASE_URL = 'https://cksoeikllbzdihlesraa.supabase.co';
+      const SUPABASE_KEY = 'sb_publishable_V9QZLQBKv2SGrthA814LAg_x167CTRD'; 
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // 1. 儲存至雲端
-    async function syncToSupabase(data) {
-      if (!data) return;
-      try {
-        await supabaseClient.from('cases').insert([{ data: data }]);
-        console.log('雲端同步成功！');
-      } catch (err) {
-        console.error('雲端同步失敗：', err);
-      }
-    }
-
-    // 2. 從雲端抓取最新案件資料
-    async function loadFromSupabase() {
-      try {
-        const { data, error } = await supabaseClient
-          .from('cases')
-          .select('data')
-          .order('id', { ascending: false })
-          .limit(1); // 抓取最新儲存的那一筆
-
-        if (error) throw error;
-
-        if (data && data.length > 0) {
-          // 將雲端資料寫回系統全域變數 casesData
-          let cloudData = data[0].data;
-          casesData = typeof cloudData === 'string' ? JSON.parse(cloudData) : cloudData;
-          
-          // 同步覆蓋本地 LocalStorage 備份
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(casesData));
-          
-          // 刷新網頁畫面
-          if (typeof updateDashboard === 'function') updateDashboard();
-          console.log('已自動同步雲端最新案件！');
+      // 1. 儲存至雲端
+      async function syncToSupabase(data) {
+        if (!data) return;
+        try {
+          await supabaseClient.from('cases').insert([{ data: data }]);
+          console.log('雲端同步成功！');
+        } catch (err) {
+          console.error('雲端同步失敗：', err);
         }
-      } catch (err) {
-        console.error('載入雲端失敗，使用本地資料：', err);
       }
-    }
 
-    // 網頁一打開，自動去雲端抓最新案件
-    window.addEventListener('DOMContentLoaded', () => {
-      loadFromSupabase();
-    });
-  </script>
+      // 2. 從雲端抓取最新案件資料
+      async function loadFromSupabase() {
+        try {
+          const { data, error } = await supabaseClient
+            .from('cases')
+            .select('data')
+            .order('id', { ascending: false })
+            .limit(1);
+
+          if (error) throw error;
+
+          if (data && data.length > 0) {
+            let cloudData = data[0].data;
+            casesData = typeof cloudData === 'string' ? JSON.parse(cloudData) : cloudData;
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(casesData));
+            
+            if (typeof updateDashboard === 'function') updateDashboard();
+            if (typeof loadCasesFromStorage === 'function') loadCasesFromStorage();
+            console.log('已自動同步雲端最新案件！');
+          }
+        } catch (err) {
+          console.error('載入雲端失敗，使用本地資料：', err);
+        }
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        loadFromSupabase();
+      });
+    </script>
 </head>
 <body class="bg-slate-50 text-slate-800 flex flex-col md:flex-row h-screen overflow-hidden">
 
@@ -658,7 +655,6 @@
                             </div>
                         </div>
 
-                        <!-- 未簽約原因已調整至介紹人下方 -->
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1"> 未簽約原因</label>
                             <select id="select-no-sign-reason" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
@@ -842,7 +838,7 @@
         </div>
     </div>
 
-    <!-- 太陽能試算專屬彈跳視窗 Modal (改善手機直式版版型，固定底部按鈕) -->
+    <!-- 太陽能試算專屬彈跳視窗 Modal -->
     <div id="solar-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[70] hidden flex items-center justify-center p-2 sm:p-4">
         <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] sm:max-h-[95vh] flex flex-col overflow-hidden relative">
             <div class="p-4 md:p-5 border-b border-amber-200 flex justify-between items-center bg-gradient-to-r from-amber-500 to-orange-500 text-white shrink-0">
@@ -1423,7 +1419,7 @@
                         </div>
                         <div class="bg-white p-3 rounded-lg border border-sky-200">
                             <span class="block text-slate-500 font-semibold mb-1">總坪數</span>
-                            <span id="sum-ping" class="text-base font-bold text-emerald-700 font-mono">0.00 坪</span>
+                            <span id="unreg-sum-ping-total" class="text-base font-bold text-emerald-700 font-mono">0.00 坪</span>
                         </div>
                     </div>
                 </div>
@@ -1705,8 +1701,9 @@
             document.getElementById('add-case-form').reset();
             document.getElementById('input-case-id').value = '';
             document.getElementById('select-case-status').value = defaultStatus;
-            document.getElementById('case-cost-container').innerHTML = '';
-            addCaseCostRow();
+            
+            // 清空子 Modal 並重置預設欄位
+            resetSubModalFields();
 
             const now = new Date();
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
@@ -1714,6 +1711,36 @@
 
             document.querySelectorAll('#add-case-modal textarea').forEach(ta => ta.style.height = 'auto');
             document.getElementById('add-case-modal').classList.remove('hidden');
+        }
+
+        function resetSubModalFields() {
+            // 清空案件成本
+            document.getElementById('case-cost-container').innerHTML = '';
+            addCaseCostRow();
+
+            // 清空土地基本資料
+            document.getElementById('land-owner').value = '';
+            document.getElementById('land-city').value = '';
+            document.getElementById('land-district').value = '';
+            document.getElementById('land-section').value = '';
+            document.getElementById('land-rows-container').innerHTML = '';
+            addLandRow();
+
+            // 清空保存登記建物
+            document.getElementById('reg-building-owner').value = '';
+            document.getElementById('reg-building-address').value = '';
+            document.getElementById('reg-building-rows-container').innerHTML = '';
+            addRegBuildingRow();
+
+            // 清空未保存登記建物
+            document.getElementById('unreg-building-builder').value = '';
+            document.getElementById('unreg-building-rows-container').innerHTML = '';
+            addUnregBuildingRow();
+
+            // 清空土地變更回饋金
+            document.getElementById('feedback-land-container').innerHTML = '';
+            feedbackLandRowCount = 0;
+            addFeedbackLandRow();
         }
 
         function openEditCaseModal(id) {
@@ -1749,8 +1776,59 @@
             document.getElementById('input-pay4-amount').value = c.pay4Amount || '';
             document.getElementById('input-pay4-date').value = c.pay4Date || '';
 
+            // 1. 還原案件成本
             document.getElementById('case-cost-container').innerHTML = '';
-            addCaseCostRow();
+            if (c.caseCosts && c.caseCosts.length > 0) {
+                c.caseCosts.forEach(item => addCaseCostRow(item));
+            } else {
+                addCaseCostRow();
+            }
+
+            // 2. 還原土地基本資料
+            if (c.landMaster) {
+                document.getElementById('land-owner').value = c.landMaster.owner || '';
+                document.getElementById('land-city').value = c.landMaster.city || '';
+                document.getElementById('land-district').value = c.landMaster.district || '';
+                document.getElementById('land-section').value = c.landMaster.section || '';
+            }
+            document.getElementById('land-rows-container').innerHTML = '';
+            if (c.landDetails && c.landDetails.length > 0) {
+                c.landDetails.forEach(item => addLandRow(item));
+            } else {
+                addLandRow();
+            }
+
+            // 3. 還原保存登記建物
+            if (c.registeredBuildingMaster) {
+                document.getElementById('reg-building-owner').value = c.registeredBuildingMaster.owner || '';
+                document.getElementById('reg-building-address').value = c.registeredBuildingMaster.address || '';
+            }
+            document.getElementById('reg-building-rows-container').innerHTML = '';
+            if (c.registeredBuildings && c.registeredBuildings.length > 0) {
+                c.registeredBuildings.forEach(item => addRegBuildingRow(item));
+            } else {
+                addRegBuildingRow();
+            }
+
+            // 4. 還原未保存登記建物
+            if (c.unregisteredBuildingMaster) {
+                document.getElementById('unreg-building-builder').value = c.unregisteredBuildingMaster.builder || '';
+            }
+            document.getElementById('unreg-building-rows-container').innerHTML = '';
+            if (c.unregisteredBuildings && c.unregisteredBuildings.length > 0) {
+                c.unregisteredBuildings.forEach(item => addUnregBuildingRow(item));
+            } else {
+                addUnregBuildingRow();
+            }
+
+            // 5. 還原土地變更回饋金
+            document.getElementById('feedback-land-container').innerHTML = '';
+            feedbackLandRowCount = 0;
+            if (c.feedbackLands && c.feedbackLands.length > 0) {
+                c.feedbackLands.forEach(item => addFeedbackLandRow(item));
+            } else {
+                addFeedbackLandRow();
+            }
 
             document.querySelectorAll('#add-case-modal textarea').forEach(ta => autoExpandTextarea(ta));
             document.getElementById('add-case-modal').classList.remove('hidden');
@@ -1766,16 +1844,16 @@
             element.style.height = element.scrollHeight + 'px';
         }
 
-        function addCaseCostRow() {
+        function addCaseCostRow(data = {}) {
             const container = document.getElementById('case-cost-container');
-            const rowId = 'case-cost-row-' + Date.now();
+            const rowId = 'case-cost-row-' + Date.now() + Math.random().toString(36).substr(2, 4);
             const html = `
                 <div id="${rowId}" class="grid grid-cols-[1.2fr_1.2fr_1fr_1fr_1fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
-                    <input type="text" placeholder="供應商名稱" class="case-cost-supplier w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
-                    <input type="text" placeholder="項目" class="case-cost-item w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
-                    <input type="number" placeholder="0" oninput="calculateCaseCostTotal()" class="case-cost-untaxed w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
-                    <input type="number" placeholder="0" oninput="calculateCaseCostTotal()" class="case-cost-ruili w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
-                    <input type="number" placeholder="0" oninput="calculateCaseCostTotal()" class="case-cost-contract w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
+                    <input type="text" value="${data.supplier || ''}" placeholder="供應商名稱" class="case-cost-supplier w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
+                    <input type="text" value="${data.item || ''}" placeholder="項目" class="case-cost-item w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white">
+                    <input type="number" value="${data.untaxed || ''}" placeholder="0" oninput="calculateCaseCostTotal()" class="case-cost-untaxed w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
+                    <input type="number" value="${data.ruili || ''}" placeholder="0" oninput="calculateCaseCostTotal()" class="case-cost-ruili w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
+                    <input type="number" value="${data.contract || ''}" placeholder="0" oninput="calculateCaseCostTotal()" class="case-cost-contract w-full px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 bg-white font-mono">
                     <button type="button" onclick="document.getElementById('${rowId}').remove(); calculateCaseCostTotal();" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此項目">
                         <i class="fa-solid fa-trash-can text-sm"></i>
                     </button>
@@ -1898,9 +1976,6 @@
 
         // --- 土地變更 Modal 控制邏輯 ---
         function openLandChangeModal() {
-            document.getElementById('feedback-land-container').innerHTML = '';
-            feedbackLandRowCount = 0;
-            addFeedbackLandRow();
             document.getElementById('land-change-modal').classList.remove('hidden');
         }
 
@@ -1914,17 +1989,17 @@
             document.getElementById(outputId).value = `${ping.toFixed(2)} 坪`;
         }
 
-        function addFeedbackLandRow() {
+        function addFeedbackLandRow(data = {}) {
             feedbackLandRowCount++;
             const rowId = `fb-land-row-${feedbackLandRowCount}`;
             const html = `
                 <div id="${rowId}" class="grid grid-cols-[1.2fr_1fr_1.2fr_1.2fr_1.5fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
-                    <input type="text" placeholder="例：頂番段123地號" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="number" step="0.01" min="0" placeholder="面積(㎡)" oninput="calcFeedbackRow('${rowId}')" class="fb-area w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
-                    <input type="number" step="0.1" min="0" placeholder="公告現值" oninput="calcFeedbackRow('${rowId}')" class="fb-value w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <input type="text" value="${data.number || ''}" placeholder="例：頂番段123地號" class="fb-number w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="number" value="${data.area || ''}" step="0.01" min="0" placeholder="面積(㎡)" oninput="calcFeedbackRow('${rowId}')" class="fb-area w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <input type="number" value="${data.value || ''}" step="0.1" min="0" placeholder="公告現值" oninput="calcFeedbackRow('${rowId}')" class="fb-value w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
                     <select onchange="calcFeedbackRow('${rowId}')" class="fb-zone w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white text-xs">
-                        <option value="都內">都內 (0.1)</option>
-                        <option value="非都">非都 (0.5)</option>
+                        <option value="都內" ${data.zone === '都內' ? 'selected' : ''}>都內 (0.1)</option>
+                        <option value="非都" ${data.zone === '非都' ? 'selected' : ''}>非都 (0.5)</option>
                     </select>
                     <input type="text" readonly placeholder="0" class="fb-result w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 font-bold font-mono text-xs">
                     <button type="button" onclick="removeFeedbackLandRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆試算">
@@ -1933,6 +2008,7 @@
                 </div>
             `;
             document.getElementById('feedback-land-container').insertAdjacentHTML('beforeend', html);
+            calcFeedbackRow(rowId);
         }
 
         function removeFeedbackLandRow(rowId) {
@@ -1988,10 +2064,6 @@
         }
 
         function openLandModal() {
-            document.getElementById('land-rows-container').innerHTML = '';
-            landRowCount = 0;
-            addLandRow();
-            calculateLandTotals();
             document.getElementById('land-modal').classList.remove('hidden');
         }
 
@@ -1999,33 +2071,34 @@
             document.getElementById('land-modal').classList.add('hidden');
         }
 
-        function addLandRow() {
+        function addLandRow(data = {}) {
             landRowCount++;
             const rowId = `land-row-${landRowCount}`;
             const html = `
                 <div id="${rowId}" class="grid grid-cols-[1fr_1fr_1.2fr_0.9fr_0.9fr_1.2fr_0.9fr_0.9fr_1fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
-                    <input type="text" placeholder="例：0899-0000" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="text" placeholder="例：112/05/20" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <select class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white text-xs">
-                        <option value="都計使用分區">都計使用分區</option>
-                        <option value="非都使用地類別">非都使用地類別</option>
+                    <input type="text" value="${data.number || ''}" placeholder="例：0899-0000" class="land-number w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" value="${data.regDate || ''}" placeholder="例：112/05/20" class="land-reg-date w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <select class="land-zone-type w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white text-xs">
+                        <option value="都計使用分區" ${data.zoneType === '都計使用分區' ? 'selected' : ''}>都計使用分區</option>
+                        <option value="非都使用地類別" ${data.zoneType === '非都使用地類別' ? 'selected' : ''}>非都使用地類別</option>
                     </select>
-                    <input type="text" placeholder="例：建築用地" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateLandTotals()" class="land-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <input type="text" value="${data.landType || ''}" placeholder="例：建築用地" class="land-type w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="number" value="${data.area || ''}" step="0.01" min="0" placeholder="0.00" oninput="calculateLandTotals()" class="land-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
                     <div class="flex items-center gap-0.5">
-                        <input type="number" min="1" value="1" oninput="calculateLandTotals()" class="land-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                        <input type="number" value="${data.num || 1}" min="1" oninput="calculateLandTotals()" class="land-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
                         <span class="text-slate-400 font-bold">/</span>
-                        <input type="number" min="1" value="1" oninput="calculateLandTotals()" class="land-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                        <input type="number" value="${data.den || 1}" min="1" oninput="calculateLandTotals()" class="land-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
                     </div>
                     <input type="text" readonly placeholder="0.00" class="land-sqm-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-lg font-mono font-bold text-xs">
                     <input type="text" readonly placeholder="0.00" class="land-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 rounded-lg font-mono font-bold text-xs">
-                    <input type="text" placeholder="例：最高限額抵押" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" value="${data.rights || ''}" placeholder="例：最高限額抵押" class="land-rights w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
                     <button type="button" onclick="removeLandRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆地號">
                         <i class="fa-solid fa-trash-can text-sm"></i>
                     </button>
                 </div>
             `;
             document.getElementById('land-rows-container').insertAdjacentHTML('beforeend', html);
+            calculateLandTotals();
         }
 
         function removeLandRow(rowId) {
@@ -2078,10 +2151,6 @@
         }
 
         function openRegisteredBuildingModal() {
-            document.getElementById('reg-building-rows-container').innerHTML = '';
-            regBuildingRowCount = 0;
-            addRegBuildingRow();
-            calculateRegBuildingTotals();
             document.getElementById('registered-building-modal').classList.remove('hidden');
         }
 
@@ -2089,20 +2158,20 @@
             document.getElementById('registered-building-modal').classList.add('hidden');
         }
 
-        function addRegBuildingRow() {
+        function addRegBuildingRow(data = {}) {
             regBuildingRowCount++;
             const rowId = `reg-bldg-row-${regBuildingRowCount}`;
             const html = `
                 <div id="${rowId}" class="grid grid-cols-[1fr_1.2fr_1fr_1.1fr_0.9fr_1.2fr_0.9fr_0.9fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
-                    <input type="text" placeholder="例：01234-000" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="text" placeholder="例：大肚段123地號" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="text" placeholder="例：住家用" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="text" placeholder="例：112/05/20" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateRegBuildingTotals()" class="reg-bldg-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <input type="text" value="${data.number || ''}" placeholder="例：01234-000" class="reg-bldg-number w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" value="${data.landNumber || ''}" placeholder="例：大肚段123地號" class="reg-bldg-land-number w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" value="${data.use || ''}" placeholder="例：住家用" class="reg-bldg-use w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" value="${data.regDate || ''}" placeholder="例：112/05/20" class="reg-bldg-reg-date w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="number" value="${data.area || ''}" step="0.01" min="0" placeholder="0.00" oninput="calculateRegBuildingTotals()" class="reg-bldg-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
                     <div class="flex items-center gap-0.5">
-                        <input type="number" min="1" value="1" oninput="calculateRegBuildingTotals()" class="reg-bldg-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                        <input type="number" value="${data.num || 1}" min="1" oninput="calculateRegBuildingTotals()" class="reg-bldg-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
                         <span class="text-slate-400 font-bold">/</span>
-                        <input type="number" min="1" value="1" oninput="calculateRegBuildingTotals()" class="reg-bldg-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                        <input type="number" value="${data.den || 1}" min="1" oninput="calculateRegBuildingTotals()" class="reg-bldg-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
                     </div>
                     <input type="text" readonly placeholder="0.00" class="reg-bldg-sqm-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-lg font-mono font-bold text-xs">
                     <input type="text" readonly placeholder="0.00" class="reg-bldg-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 rounded-lg font-mono font-bold text-xs">
@@ -2112,6 +2181,7 @@
                 </div>
             `;
             document.getElementById('reg-building-rows-container').insertAdjacentHTML('beforeend', html);
+            calculateRegBuildingTotals();
         }
 
         function removeRegBuildingRow(rowId) {
@@ -2151,10 +2221,6 @@
         }
 
         function openUnregisteredBuildingModal() {
-            document.getElementById('unreg-building-rows-container').innerHTML = '';
-            unregBuildingRowCount = 0;
-            addUnregBuildingRow();
-            calculateUnregBuildingTotals();
             document.getElementById('unregistered-building-modal').classList.remove('hidden');
         }
 
@@ -2162,14 +2228,14 @@
             document.getElementById('unregistered-building-modal').classList.add('hidden');
         }
 
-        function addUnregBuildingRow() {
+        function addUnregBuildingRow(data = {}) {
             unregBuildingRowCount++;
             const rowId = `unreg-bldg-row-${unregBuildingRowCount}`;
             const html = `
                 <div id="${rowId}" class="grid grid-cols-[1.5fr_1fr_1.2fr_1.2fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
-                    <input type="text" placeholder="例：農舍/廠房" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="text" placeholder="例：2015年" class="w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="number" step="0.01" min="0" placeholder="0.00" oninput="calculateUnregBuildingTotals()" class="unreg-bldg-sqm-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <input type="text" value="${data.use || ''}" placeholder="例：農舍/廠房" class="unreg-bldg-use w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" value="${data.year || ''}" placeholder="例：2015年" class="unreg-bldg-year w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="number" value="${data.sqm || ''}" step="0.01" min="0" placeholder="0.00" oninput="calculateUnregBuildingTotals()" class="unreg-bldg-sqm-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
                     <input type="text" readonly placeholder="0.00" class="unreg-bldg-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 font-mono font-bold text-xs">
                     <button type="button" onclick="removeUnregBuildingRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆資料">
                         <i class="fa-solid fa-trash-can text-sm"></i>
@@ -2177,6 +2243,7 @@
                 </div>
             `;
             document.getElementById('unreg-building-rows-container').insertAdjacentHTML('beforeend', html);
+            calculateUnregBuildingTotals();
         }
 
         function removeUnregBuildingRow(rowId) {
@@ -2201,7 +2268,7 @@
             const totalPing = totalSqm * 0.3025;
 
             document.getElementById('unreg-sum-sqm').textContent = `${totalSqm.toFixed(2)} ㎡`;
-            document.getElementById('sum-ping').textContent = `${totalPing.toFixed(2)} 坪`;
+            document.getElementById('unreg-sum-ping-total').textContent = `${totalPing.toFixed(2)} 坪`;
         }
 
         function updateDashboard() {
@@ -2387,6 +2454,87 @@
                 selectedStatus = '優先處理';
             }
 
+            // 1. 擷取案件成本資料列
+            const caseCosts = [];
+            document.querySelectorAll('#case-cost-container > div').forEach(row => {
+                caseCosts.push({
+                    supplier: row.querySelector('.case-cost-supplier')?.value || '',
+                    item: row.querySelector('.case-cost-item')?.value || '',
+                    untaxed: row.querySelector('.case-cost-untaxed')?.value || '',
+                    ruili: row.querySelector('.case-cost-ruili')?.value || '',
+                    contract: row.querySelector('.case-cost-contract')?.value || ''
+                });
+            });
+
+            // 2. 擷取土地基本資料與明細
+            const landMaster = {
+                owner: document.getElementById('land-owner').value,
+                city: document.getElementById('land-city').value,
+                district: document.getElementById('land-district').value,
+                section: document.getElementById('land-section').value
+            };
+            const landDetails = [];
+            document.querySelectorAll('#land-rows-container > div').forEach(row => {
+                landDetails.push({
+                    number: row.querySelector('.land-number')?.value || '',
+                    regDate: row.querySelector('.land-reg-date')?.value || '',
+                    zoneType: row.querySelector('.land-zone-type')?.value || '',
+                    landType: row.querySelector('.land-type')?.value || '',
+                    area: row.querySelector('.land-area-input')?.value || '',
+                    num: row.querySelector('.land-num-input')?.value || '',
+                    den: row.querySelector('.land-den-input')?.value || '',
+                    sqm: row.querySelector('.land-sqm-output')?.value || '',
+                    ping: row.querySelector('.land-ping-output')?.value || '',
+                    rights: row.querySelector('.land-rights')?.value || ''
+                });
+            });
+
+            // 3. 擷取保存登記建物資料與明細
+            const registeredBuildingMaster = {
+                owner: document.getElementById('reg-building-owner').value,
+                address: document.getElementById('reg-building-address').value
+            };
+            const registeredBuildings = [];
+            document.querySelectorAll('#reg-building-rows-container > div').forEach(row => {
+                registeredBuildings.push({
+                    number: row.querySelector('.reg-bldg-number')?.value || '',
+                    landNumber: row.querySelector('.reg-bldg-land-number')?.value || '',
+                    use: row.querySelector('.reg-bldg-use')?.value || '',
+                    regDate: row.querySelector('.reg-bldg-reg-date')?.value || '',
+                    area: row.querySelector('.reg-bldg-area-input')?.value || '',
+                    num: row.querySelector('.reg-bldg-num-input')?.value || '',
+                    den: row.querySelector('.reg-bldg-den-input')?.value || '',
+                    sqm: row.querySelector('.reg-bldg-sqm-output')?.value || '',
+                    ping: row.querySelector('.reg-bldg-ping-output')?.value || ''
+                });
+            });
+
+            // 4. 擷取未保存登記建物資料與明細
+            const unregisteredBuildingMaster = {
+                builder: document.getElementById('unreg-building-builder').value
+            };
+            const unregisteredBuildings = [];
+            document.querySelectorAll('#unreg-building-rows-container > div').forEach(row => {
+                unregisteredBuildings.push({
+                    use: row.querySelector('.unreg-bldg-use')?.value || '',
+                    year: row.querySelector('.unreg-bldg-year')?.value || '',
+                    sqm: row.querySelector('.unreg-bldg-sqm-input')?.value || '',
+                    ping: row.querySelector('.unreg-bldg-ping-output')?.value || ''
+                });
+            });
+
+            // 5. 擷取土地變更回饋金明細
+            const feedbackLands = [];
+            document.querySelectorAll('#feedback-land-container > div').forEach(row => {
+                feedbackLands.push({
+                    number: row.querySelector('.fb-number')?.value || '',
+                    area: row.querySelector('.fb-area')?.value || '',
+                    value: row.querySelector('.fb-value')?.value || '',
+                    zone: row.querySelector('.fb-zone')?.value || '',
+                    result: row.querySelector('.fb-result')?.value || ''
+                });
+            });
+
             const caseObj = {
                 id: existingId || ('case_' + Date.now()),
                 status: selectedStatus,
@@ -2411,7 +2559,17 @@
                 pay3Amount: document.getElementById('input-pay3-amount').value,
                 pay3Date: document.getElementById('input-pay3-date').value,
                 pay4Amount: document.getElementById('input-pay4-amount').value,
-                pay4Date: document.getElementById('input-pay4-date').value
+                pay4Date: document.getElementById('input-pay4-date').value,
+                
+                // 儲存延伸物件與詳細陣列
+                caseCosts: caseCosts,
+                landMaster: landMaster,
+                landDetails: landDetails,
+                registeredBuildingMaster: registeredBuildingMaster,
+                registeredBuildings: registeredBuildings,
+                unregisteredBuildingMaster: unregisteredBuildingMaster,
+                unregisteredBuildings: unregisteredBuildings,
+                feedbackLands: feedbackLands
             };
 
             if (existingId) {
@@ -2429,4 +2587,3 @@
     </script>
 </body>
 </html>
-
