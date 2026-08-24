@@ -155,9 +155,6 @@
                 <p class="text-xs text-slate-500 mt-0.5">睿立｜即時營運指標與戰情數據</p>
             </div>
             <div class="flex flex-wrap items-center gap-2 md:gap-3">
-                <button onclick="clearAllData()" class="px-2.5 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 rounded-md text-xs font-medium flex items-center gap-1.5 transition">
-                    <i class="fa-solid fa-trash-can"></i> 清空本地資料
-                </button>
                 <button onclick="loadCasesFromStorage(); alert('已刷新最新資料！');" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-md text-xs font-medium flex items-center gap-1.5 transition">
                     <i class="fa-solid fa-rotate"></i> 重新整理
                 </button>
@@ -1525,15 +1522,6 @@
 
             casesData.forEach(c => renderCaseRow(c));
             updateDashboard();
-        }
-
-        function clearAllData() {
-            if (confirm('確定要清空瀏覽器中的所有案件紀錄嗎？此操作無法恢復。')) {
-                localStorage.removeItem(STORAGE_KEY);
-                casesData = [];
-                loadCasesFromStorage();
-                alert('已成功清空所有案件！');
-            }
         }
 
         // 輔助函式：限制字數顯示 18 字
