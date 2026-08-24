@@ -2,15 +2,15 @@
 <html lang="zh-TW">
 <head>
     <!-- PWA & 手機 APP 體驗設定 -->
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="睿立作業系統">
-<meta name="theme-color" content="#0f172a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="睿立作業系統">
+    <meta name="theme-color" content="#0f172a">
 
-<!-- 設定 App 主畫面圖示 (可替換為您公司 Logo 的圖片網址) -->
-<link rel="apple-touch-icon" href="logo.png">
-<link rel="icon" type="image/png" href="logo.png">
+    <!-- 設定 App 主畫面圖示 -->
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>睿立作業系統</title>
@@ -576,14 +576,17 @@
                 </button>
             </div>
 
-            <form id="add-case-form" onsubmit="handleSaveCase(event)" class="flex flex-col flex-1 min-h-0">
+            <form id="add-case-form" onsubmit="handleSaveCase(event)" class="flex flex-col flex-1 min-h-0 overflow-hidden">
                 <div class="p-4 md:p-6 space-y-4 overflow-y-auto flex-1 text-xs">
                     <input type="hidden" id="input-case-id">
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1"> 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span></label>
-                            <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">
+                                案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span>
+                                <span id="status-hint" class="text-[10px] text-slate-400 font-normal hidden">(編輯時固定，拋轉請使用列表中勾選)</span>
+                            </label>
+                            <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500 disabled:bg-slate-100 disabled:text-slate-500 disabled:border-slate-300">
                                 <option value="案件評估" selected>案件評估</option>
                                 <option value="簽約案件">簽約案件</option>
                                 <option value="廢件區">廢件區</option>
@@ -697,12 +700,12 @@
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1"> 案件說明</label>
-                        <textarea id="input-case-description" rows="2" placeholder="請輸入詳細案件說明..." oninput="autoExpandTextarea(this)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 resize-none overflow-hidden leading-relaxed"></textarea>
+                        <textarea id="input-case-description" placeholder="請輸入詳細案件說明..." oninput="autoExpandTextarea(this)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 resize-y min-h-[100px] leading-relaxed"></textarea>
                     </div>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1"> 案件即時說明</label>
-                        <textarea id="input-sales-note" rows="2" placeholder="請輸入案件最新進度說明..." oninput="autoExpandTextarea(this)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 resize-none overflow-hidden leading-relaxed"></textarea>
+                        <textarea id="input-sales-note" placeholder="請輸入案件最新進度說明..." oninput="autoExpandTextarea(this)" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-sky-500 resize-y min-h-[100px] leading-relaxed"></textarea>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1532,6 +1535,12 @@
             }
         }
 
+        // 輔助函式：限制字數顯示 18 字
+        function truncateText(str, maxLen = 18) {
+            if (!str) return '尚未提供即時說明。';
+            return str.length > maxLen ? str.substring(0, maxLen) + '...' : str;
+        }
+
         function renderCaseRow(c) {
             const landChangeOnlyStatuses = ['優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證', '土地變更'];
             if (!landChangeOnlyStatuses.includes(c.status)) {
@@ -1561,7 +1570,8 @@
                 const displayAmount = (!isNaN(contractVal) && contractVal > 0) ? contractVal : quoteVal;
                 const amountFormatted = `NT$ ${parseInt(displayAmount).toLocaleString()}`;
                 
-                const noteText = c.salesNote || '尚未提供即時說明。';
+                // 案件即時說明顯示字數 18 字
+                const noteText = truncateText(c.salesNote, 18);
 
                 tr.innerHTML = `
                     <td class="p-3 font-semibold text-sky-600 hover:underline truncate">
@@ -1571,7 +1581,7 @@
                     <td class="p-3 truncate">${displayService}</td>
                     <td class="p-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-700 border border-slate-200 rounded-full font-medium whitespace-nowrap">${displayWorkProgress}</span></td>
                     <td class="p-3 font-mono text-slate-700">${amountFormatted}</td>
-                    <td class="p-3 text-slate-500 truncate">${noteText}</td>
+                    <td class="p-3 text-slate-500 truncate" title="${c.salesNote || ''}">${noteText}</td>
                 `;
 
                 const tbody = document.getElementById(targetTbodyId);
@@ -1605,6 +1615,9 @@
             const quoteFormatted = c.quoteAmount ? `NT$ ${parseInt(c.quoteAmount).toLocaleString()}` : 'NT$ 0';
             const contractFormatted = c.contractAmount ? `NT$ ${parseInt(c.contractAmount).toLocaleString()}` : 'NT$ 0';
 
+            // 客戶清單的「案件即時說明」顯示字數 18 字
+            const noteText = truncateText(c.salesNote, 18);
+
             tr.innerHTML = `
                 <td class="p-3 font-semibold text-slate-800 truncate">
                     <input type="checkbox" onclick="event.stopPropagation()" class="sf-case-checkbox mr-2 rounded border-slate-300 text-sky-600 focus:ring-sky-500 w-4 h-4 cursor-pointer align-middle" data-id="${c.id}">
@@ -1614,7 +1627,7 @@
                 <td class="p-3 truncate text-slate-500">${c.noSignReason || '-'}</td>
                 <td class="p-3 font-mono text-slate-700">${quoteFormatted}</td>
                 <td class="p-3 font-mono text-emerald-700 font-bold">${contractFormatted}</td>
-                <td class="p-3 text-slate-500 truncate">${c.salesNote || '無即時說明'}</td>
+                <td class="p-3 text-slate-500 truncate" title="${c.salesNote || ''}">${noteText}</td>
             `;
 
             targetTbody.appendChild(tr);
@@ -1710,25 +1723,28 @@
             document.getElementById('btn-submit-case').textContent = '儲存';
             document.getElementById('add-case-form').reset();
             document.getElementById('input-case-id').value = '';
-            document.getElementById('select-case-status').value = defaultStatus;
-            
-            // 清空子 Modal 並重置預設欄位
+
+            const statusSelect = document.getElementById('select-case-status');
+            statusSelect.disabled = false;
+            statusSelect.value = defaultStatus;
+            document.getElementById('status-hint').classList.add('hidden');
+
             resetSubModalFields();
 
             const now = new Date();
             now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
             document.getElementById('input-created-at').value = now.toISOString().slice(0, 16);
 
-            document.querySelectorAll('#add-case-modal textarea').forEach(ta => ta.style.height = 'auto');
+            document.querySelectorAll('#add-case-modal textarea').forEach(ta => {
+                autoExpandTextarea(ta);
+            });
             document.getElementById('add-case-modal').classList.remove('hidden');
         }
 
         function resetSubModalFields() {
-            // 清空案件成本
             document.getElementById('case-cost-container').innerHTML = '';
             addCaseCostRow();
 
-            // 清空土地基本資料
             document.getElementById('land-owner').value = '';
             document.getElementById('land-city').value = '';
             document.getElementById('land-district').value = '';
@@ -1736,18 +1752,15 @@
             document.getElementById('land-rows-container').innerHTML = '';
             addLandRow();
 
-            // 清空保存登記建物
             document.getElementById('reg-building-owner').value = '';
             document.getElementById('reg-building-address').value = '';
             document.getElementById('reg-building-rows-container').innerHTML = '';
             addRegBuildingRow();
 
-            // 清空未保存登記建物
             document.getElementById('unreg-building-builder').value = '';
             document.getElementById('unreg-building-rows-container').innerHTML = '';
             addUnregBuildingRow();
 
-            // 清空土地變更回饋金
             document.getElementById('feedback-land-container').innerHTML = '';
             feedbackLandRowCount = 0;
             addFeedbackLandRow();
@@ -1761,7 +1774,11 @@
             document.getElementById('btn-submit-case').textContent = '儲存變更';
             document.getElementById('input-case-id').value = c.id;
 
-            document.getElementById('select-case-status').value = c.status || '案件評估';
+            const statusSelect = document.getElementById('select-case-status');
+            statusSelect.value = c.status || '案件評估';
+            statusSelect.disabled = true;
+            document.getElementById('status-hint').classList.remove('hidden');
+
             document.getElementById('input-created-at').value = c.createdAt || '';
             document.getElementById('input-client-name').value = c.clientName || '';
             document.getElementById('select-work-progress').value = c.workProgress || '潛在客戶';
@@ -1786,7 +1803,6 @@
             document.getElementById('input-pay4-amount').value = c.pay4Amount || '';
             document.getElementById('input-pay4-date').value = c.pay4Date || '';
 
-            // 1. 還原案件成本
             document.getElementById('case-cost-container').innerHTML = '';
             if (c.caseCosts && c.caseCosts.length > 0) {
                 c.caseCosts.forEach(item => addCaseCostRow(item));
@@ -1794,7 +1810,6 @@
                 addCaseCostRow();
             }
 
-            // 2. 還原土地基本資料
             if (c.landMaster) {
                 document.getElementById('land-owner').value = c.landMaster.owner || '';
                 document.getElementById('land-city').value = c.landMaster.city || '';
@@ -1808,7 +1823,6 @@
                 addLandRow();
             }
 
-            // 3. 還原保存登記建物
             if (c.registeredBuildingMaster) {
                 document.getElementById('reg-building-owner').value = c.registeredBuildingMaster.owner || '';
                 document.getElementById('reg-building-address').value = c.registeredBuildingMaster.address || '';
@@ -1820,7 +1834,6 @@
                 addRegBuildingRow();
             }
 
-            // 4. 還原未保存登記建物
             if (c.unregisteredBuildingMaster) {
                 document.getElementById('unreg-building-builder').value = c.unregisteredBuildingMaster.builder || '';
             }
@@ -1831,7 +1844,6 @@
                 addUnregBuildingRow();
             }
 
-            // 5. 還原土地變更回饋金
             document.getElementById('feedback-land-container').innerHTML = '';
             feedbackLandRowCount = 0;
             if (c.feedbackLands && c.feedbackLands.length > 0) {
@@ -1840,18 +1852,23 @@
                 addFeedbackLandRow();
             }
 
-            document.querySelectorAll('#add-case-modal textarea').forEach(ta => autoExpandTextarea(ta));
+            setTimeout(() => {
+                document.querySelectorAll('#add-case-modal textarea').forEach(ta => autoExpandTextarea(ta));
+            }, 50);
+
             document.getElementById('add-case-modal').classList.remove('hidden');
         }
 
         function closeAddCaseModal() {
             document.getElementById('add-case-modal').classList.add('hidden');
             document.getElementById('add-case-form').reset();
+            document.getElementById('select-case-status').disabled = false;
         }
 
         function autoExpandTextarea(element) {
+            if (!element) return;
             element.style.height = 'auto';
-            element.style.height = element.scrollHeight + 'px';
+            element.style.height = Math.max(element.scrollHeight, 100) + 'px';
         }
 
         function addCaseCostRow(data = {}) {
@@ -1931,7 +1948,6 @@
             const roofPing = parseFloat(document.getElementById('solar-roof-ping').value || 0);
             const taipowerPrice = parseFloat(document.getElementById('solar-taipower-price').value || 0);
 
-            // 估算部分
             const dailyGen = (roofPing / 1.5) * (590 / 1000) * 4;
             const monthlyGen = dailyGen * 30;
             const annualGen = (roofPing / 1.5) * (590 / 1000) * 4 * 365;
@@ -1946,7 +1962,6 @@
             document.getElementById('res-solar-annual-rev').textContent = `NT$ ${Math.round(annualRev).toLocaleString()}`;
             document.getElementById('res-solar-roof-rent').textContent = `NT$ ${Math.round(roofRent).toLocaleString()}`;
 
-            // 精算部分
             const modCount = parseFloat(document.getElementById('solar-module-count').value || 0);
             const modWatt = parseFloat(document.getElementById('solar-module-watt').value || 590);
 
@@ -2464,7 +2479,6 @@
                 selectedStatus = '優先處理';
             }
 
-            // 1. 擷取案件成本資料列
             const caseCosts = [];
             document.querySelectorAll('#case-cost-container > div').forEach(row => {
                 caseCosts.push({
@@ -2476,7 +2490,6 @@
                 });
             });
 
-            // 2. 擷取土地基本資料與明細
             const landMaster = {
                 owner: document.getElementById('land-owner').value,
                 city: document.getElementById('land-city').value,
@@ -2499,7 +2512,6 @@
                 });
             });
 
-            // 3. 擷取保存登記建物資料與明細
             const registeredBuildingMaster = {
                 owner: document.getElementById('reg-building-owner').value,
                 address: document.getElementById('reg-building-address').value
@@ -2519,7 +2531,6 @@
                 });
             });
 
-            // 4. 擷取未保存登記建物資料與明細
             const unregisteredBuildingMaster = {
                 builder: document.getElementById('unreg-building-builder').value
             };
@@ -2533,7 +2544,6 @@
                 });
             });
 
-            // 5. 擷取土地變更回饋金明細
             const feedbackLands = [];
             document.querySelectorAll('#feedback-land-container > div').forEach(row => {
                 feedbackLands.push({
@@ -2571,7 +2581,6 @@
                 pay4Amount: document.getElementById('input-pay4-amount').value,
                 pay4Date: document.getElementById('input-pay4-date').value,
                 
-                // 儲存延伸物件與詳細陣列
                 caseCosts: caseCosts,
                 landMaster: landMaster,
                 landDetails: landDetails,
@@ -2592,7 +2601,7 @@
             saveCasesToStorage();
             loadCasesFromStorage();
             closeAddCaseModal();
-            alert(`儲存成功！案件資料已成功拋轉與歸類至【${selectedStatus}】。`);
+            alert(`儲存成功！案件資料已成功儲存。`);
         }
     </script>
 </body>
