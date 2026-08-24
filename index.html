@@ -2071,105 +2071,119 @@
                 const amt = parseFloat(input.dataset.amount || 0);
                 sum += amt;
             });
-            const sumEl = document.getElementById('sum-feedback-amount');
-            if (sumEl) sumEl.textContent = `NT$ ${Math.round(sum).toLocaleString()}`;
+            document.getElementById('sum-feedback-amount').textContent = `NT$ ${Math.round(sum).toLocaleString()}`;
         }
 
         function applyLandChangeResultsToCase() {
             const orgType = document.getElementById('lc-org-type').value;
-            const roadWidth = document.getElementById('lc-road-width').value;
-            const envViolation = document.getElementById('lc-env-violation').value;
-            const greenBelt = document.getElementById('lc-green-belt').value;
-            const totalFeedback = document.getElementById('sum-feedback-amount').textContent;
+            const roadWidth = document.getElementById('lc-road-width').value || '未填寫';
+            const envViol = document.getElementById('lc-env-violation').value;
+            const factorySitePing = document.getElementById('ping-factory-site').value || '0 坪';
+            const feedbackAmt = document.getElementById('sum-feedback-amount').textContent;
 
-            const summaryText = `【土地變更評估摘要】\n- 組織型態：${orgType}\n- 鄰路：${roadWidth || '未填'}\n- 三年內環保違規停工：${envViolation}\n- 隔離綠帶：${greenBelt || '無'}\n- 估算回饋金總額：${totalFeedback}`;
+            const summaryText = `【土地變更評估摘要】\n- 組織型態：${orgType}\n- 鄰路寬度：${roadWidth}\n- 三年內環保違規停工：${envViol}\n- 廠地預估坪數：${factorySitePing}\n- 預估回饋金總額：${feedbackAmt}`;
 
             const descInput = document.getElementById('input-case-description');
             descInput.value = (descInput.value ? descInput.value + '\n\n' : '') + summaryText;
             autoExpandTextarea(descInput);
 
             closeLandChangeModal();
-            alert('土地變更評估與回饋金試算已自動帶入案件說明！');
+            alert('土地變更評估結果已成功帶入案件說明！');
         }
 
-        // --- 土地基本資料與建物 Modal 相依邏輯 ---
-        function openLandModal() { document.getElementById('land-modal').classList.remove('hidden'); }
-        function closeLandModal() { document.getElementById('land-modal').classList.add('hidden'); }
-        function openRegisteredBuildingModal() { document.getElementById('registered-building-modal').classList.remove('hidden'); }
-        function closeRegisteredBuildingModal() { document.getElementById('registered-building-modal').classList.add('hidden'); }
-        function openUnregisteredBuildingModal() { document.getElementById('unregistered-building-modal').classList.remove('hidden'); }
-        function closeUnregisteredBuildingModal() { document.getElementById('unregistered-building-modal').classList.add('hidden'); }
+        function openLandModal() {
+            document.getElementById('land-modal').classList.remove('hidden');
+        }
+
+        function closeLandModal() {
+            document.getElementById('land-modal').classList.add('hidden');
+        }
 
         function addLandRow(data = {}) {
             landRowCount++;
             const rowId = `land-row-${landRowCount}`;
             const html = `
                 <div id="${rowId}" class="grid grid-cols-[1fr_1fr_1.2fr_0.9fr_0.9fr_1.2fr_0.9fr_0.9fr_1fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
-                    <input type="text" value="${data.number || ''}" placeholder="地號" class="land-num w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="date" value="${data.date || ''}" class="land-date w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="text" value="${data.zone || ''}" placeholder="分區" class="land-zone w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="text" value="${data.use || ''}" placeholder="用地" class="land-use w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="number" value="${data.area || ''}" step="0.01" min="0" placeholder="0" oninput="calcLandRow('${rowId}')" class="land-area w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
-                    <input type="text" value="${data.rights || '1分之1'}" placeholder="權利" oninput="calcLandRow('${rowId}')" class="land-rights w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="text" readonly placeholder="0.00" class="land-sqm w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-700 font-mono text-xs">
-                    <input type="text" readonly placeholder="0.00" class="land-ping w-full px-2 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 font-bold font-mono text-xs">
-                    <input type="text" value="${data.otherRights || ''}" placeholder="他項權利" class="land-other w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <button type="button" onclick="document.getElementById('${rowId}').remove(); calcLandTotals();" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full">
+                    <input type="text" value="${data.number || ''}" placeholder="例：0899-0000" class="land-number w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" value="${data.regDate || ''}" placeholder="例：112/05/20" class="land-reg-date w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <select class="land-zone-type w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 bg-white text-xs">
+                        <option value="都計使用分區" ${data.zoneType === '都計使用分區' ? 'selected' : ''}>都計使用分區</option>
+                        <option value="非都使用地類別" ${data.zoneType === '非都使用地類別' ? 'selected' : ''}>非都使用地類別</option>
+                    </select>
+                    <input type="text" value="${data.landType || ''}" placeholder="例：建築用地" class="land-type w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="number" value="${data.area || ''}" step="0.01" min="0" placeholder="0.00" oninput="calculateLandTotals()" class="land-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <div class="flex items-center gap-0.5">
+                        <input type="number" value="${data.num || 1}" min="1" oninput="calculateLandTotals()" class="land-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                        <span class="text-slate-400 font-bold">/</span>
+                        <input type="number" value="${data.den || 1}" min="1" oninput="calculateLandTotals()" class="land-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                    </div>
+                    <input type="text" readonly placeholder="0.00" class="land-sqm-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-lg font-mono font-bold text-xs">
+                    <input type="text" readonly placeholder="0.00" class="land-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 rounded-lg font-mono font-bold text-xs">
+                    <input type="text" value="${data.rights || ''}" placeholder="例：最高限額抵押" class="land-rights w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <button type="button" onclick="removeLandRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆地號">
                         <i class="fa-solid fa-trash-can text-sm"></i>
                     </button>
                 </div>
             `;
             document.getElementById('land-rows-container').insertAdjacentHTML('beforeend', html);
-            calcLandRow(rowId);
+            calculateLandTotals();
         }
 
-        function calcLandRow(rowId) {
+        function removeLandRow(rowId) {
             const row = document.getElementById(rowId);
-            if (!row) return;
-
-            const area = parseFloat(row.querySelector('.land-area')?.value || 0);
-            const rightsStr = row.querySelector('.land-rights')?.value || '1分之1';
-
-            let ratio = 1;
-            if (rightsStr.includes('分之')) {
-                const parts = rightsStr.split('分之');
-                const denom = parseFloat(parts[0]);
-                const num = parseFloat(parts[1]);
-                if (!isNaN(denom) && !isNaN(num) && denom !== 0) ratio = num / denom;
-            }
-
-            const sqm = area * ratio;
-            const ping = sqm * 0.3025;
-
-            const sqmInput = row.querySelector('.land-sqm');
-            const pingInput = row.querySelector('.land-ping');
-
-            if (sqmInput) sqmInput.value = sqm.toFixed(2);
-            if (pingInput) pingInput.value = ping.toFixed(2);
-
-            calcLandTotals();
+            if (row) row.remove();
+            calculateLandTotals();
         }
 
-        function calcLandTotals() {
-            let totalArea = 0, totalSqm = 0, totalPing = 0;
+        function calculateLandTotals() {
+            let totalArea = 0;
+            let totalSqm = 0;
+
             document.querySelectorAll('#land-rows-container > div').forEach(row => {
-                totalArea += parseFloat(row.querySelector('.land-area')?.value || 0);
-                totalSqm += parseFloat(row.querySelector('.land-sqm')?.value || 0);
-                totalPing += parseFloat(row.querySelector('.land-ping')?.value || 0);
+                const areaVal = parseFloat(row.querySelector('.land-area-input')?.value || 0);
+                const numVal = parseFloat(row.querySelector('.land-num-input')?.value || 1);
+                const denVal = parseFloat(row.querySelector('.land-den-input')?.value || 1);
+
+                const validDen = denVal <= 0 ? 1 : denVal;
+                const sqm = areaVal * (numVal / validDen);
+                const ping = sqm * 0.3025;
+
+                const sqmOutput = row.querySelector('.land-sqm-output');
+                if (sqmOutput) sqmOutput.value = sqm.toFixed(2);
+
+                const pingOutput = row.querySelector('.land-ping-output');
+                if (pingOutput) pingOutput.value = ping.toFixed(2);
+
+                totalArea += areaVal;
+                totalSqm += sqm;
             });
 
-            const sa = document.getElementById('sum-area');
-            const ss = document.getElementById('sum-sqm');
-            const sp = document.getElementById('sum-ping');
+            const totalPing = totalSqm * 0.3025;
 
-            if (sa) sa.textContent = `${totalArea.toFixed(2)} ㎡`;
-            if (ss) ss.textContent = `${totalSqm.toFixed(2)} ㎡`;
-            if (sp) sp.textContent = `${totalPing.toFixed(2)} 坪`;
+            document.getElementById('sum-area').textContent = `${totalArea.toFixed(2)} ㎡`;
+            document.getElementById('sum-sqm').textContent = `${totalSqm.toFixed(2)} ㎡`;
+            document.getElementById('sum-ping').textContent = `${totalPing.toFixed(2)} 坪`;
         }
 
         function saveLandModalData() {
+            const city = document.getElementById('land-city').value;
+            const district = document.getElementById('land-district').value;
+            const section = document.getElementById('land-section').value;
+            const pingText = document.getElementById('sum-ping').textContent;
+
+            if (city || section) {
+                document.getElementById('input-land-number').value = `${city}${district}${section} (共計 ${pingText})`;
+            }
             closeLandModal();
-            alert('土地基本資料已成功儲存！');
+            alert('土地基本資料已成功帶入！');
+        }
+
+        function openRegisteredBuildingModal() {
+            document.getElementById('registered-building-modal').classList.remove('hidden');
+        }
+
+        function closeRegisteredBuildingModal() {
+            document.getElementById('registered-building-modal').classList.add('hidden');
         }
 
         function addRegBuildingRow(data = {}) {
@@ -2177,200 +2191,417 @@
             const rowId = `reg-bldg-row-${regBuildingRowCount}`;
             const html = `
                 <div id="${rowId}" class="grid grid-cols-[1fr_1.2fr_1fr_1.1fr_0.9fr_1.2fr_0.9fr_0.9fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
-                    <input type="text" value="${data.number || ''}" placeholder="建號" class="reg-num w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="text" value="${data.landNumber || ''}" placeholder="坐落地號" class="reg-land-num w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="text" value="${data.use || ''}" placeholder="主要用途" class="reg-use w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="date" value="${data.date || ''}" class="reg-date w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="number" value="${data.area || ''}" step="0.01" min="0" placeholder="0" oninput="calcRegBuildingRow('${rowId}')" class="reg-area w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
-                    <input type="text" value="${data.rights || '1分之1'}" placeholder="權利" oninput="calcRegBuildingRow('${rowId}')" class="reg-rights w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
-                    <input type="text" readonly placeholder="0.00" class="reg-sqm w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-700 font-mono text-xs">
-                    <input type="text" readonly placeholder="0.00" class="reg-ping w-full px-2 py-1 bg-emerald-50 border border-emerald-200 text-emerald-800 font-bold font-mono text-xs">
-                    <button type="button" onclick="document.getElementById('${rowId}').remove(); calcRegBuildingTotals();" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full">
+                    <input type="text" value="${data.number || ''}" placeholder="例：01234-000" class="reg-bldg-number w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" value="${data.landNumber || ''}" placeholder="例：大肚段123地號" class="reg-bldg-land-number w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" value="${data.use || ''}" placeholder="例：住家用" class="reg-bldg-use w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" value="${data.regDate || ''}" placeholder="例：112/05/20" class="reg-bldg-reg-date w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="number" value="${data.area || ''}" step="0.01" min="0" placeholder="0.00" oninput="calculateRegBuildingTotals()" class="reg-bldg-area-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <div class="flex items-center gap-0.5">
+                        <input type="number" value="${data.num || 1}" min="1" oninput="calculateRegBuildingTotals()" class="reg-bldg-num-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                        <span class="text-slate-400 font-bold">/</span>
+                        <input type="number" value="${data.den || 1}" min="1" oninput="calculateRegBuildingTotals()" class="reg-bldg-den-input w-full px-1 py-1 border border-slate-300 rounded-lg text-center font-mono text-xs">
+                    </div>
+                    <input type="text" readonly placeholder="0.00" class="reg-bldg-sqm-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-slate-600 rounded-lg font-mono font-bold text-xs">
+                    <input type="text" readonly placeholder="0.00" class="reg-bldg-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 rounded-lg font-mono font-bold text-xs">
+                    <button type="button" onclick="removeRegBuildingRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆建號">
                         <i class="fa-solid fa-trash-can text-sm"></i>
                     </button>
                 </div>
             `;
             document.getElementById('reg-building-rows-container').insertAdjacentHTML('beforeend', html);
-            calcRegBuildingRow(rowId);
+            calculateRegBuildingTotals();
         }
 
-        function calcRegBuildingRow(rowId) {
+        function removeRegBuildingRow(rowId) {
             const row = document.getElementById(rowId);
-            if (!row) return;
-
-            const area = parseFloat(row.querySelector('.reg-area')?.value || 0);
-            const rightsStr = row.querySelector('.reg-rights')?.value || '1分之1';
-
-            let ratio = 1;
-            if (rightsStr.includes('分之')) {
-                const parts = rightsStr.split('分之');
-                const denom = parseFloat(parts[0]);
-                const num = parseFloat(parts[1]);
-                if (!isNaN(denom) && !isNaN(num) && denom !== 0) ratio = num / denom;
-            }
-
-            const sqm = area * ratio;
-            const ping = sqm * 0.3025;
-
-            const sqmInput = row.querySelector('.reg-sqm');
-            const pingInput = row.querySelector('.reg-ping');
-
-            if (sqmInput) sqmInput.value = sqm.toFixed(2);
-            if (pingInput) pingInput.value = ping.toFixed(2);
-
-            calcRegBuildingTotals();
+            if (row) row.remove();
+            calculateRegBuildingTotals();
         }
 
-        function calcRegBuildingTotals() {
-            let totalArea = 0, totalSqm = 0, totalPing = 0;
+        function calculateRegBuildingTotals() {
+            let totalArea = 0;
+            let totalSqm = 0;
+
             document.querySelectorAll('#reg-building-rows-container > div').forEach(row => {
-                totalArea += parseFloat(row.querySelector('.reg-area')?.value || 0);
-                totalSqm += parseFloat(row.querySelector('.reg-sqm')?.value || 0);
-                totalPing += parseFloat(row.querySelector('.reg-ping')?.value || 0);
+                const areaVal = parseFloat(row.querySelector('.reg-bldg-area-input')?.value || 0);
+                const numVal = parseFloat(row.querySelector('.reg-bldg-num-input')?.value || 1);
+                const denVal = parseFloat(row.querySelector('.reg-bldg-den-input')?.value || 1);
+
+                const validDen = denVal <= 0 ? 1 : denVal;
+                const sqm = areaVal * (numVal / validDen);
+                const ping = sqm * 0.3025;
+
+                const sqmOutput = row.querySelector('.reg-bldg-sqm-output');
+                if (sqmOutput) sqmOutput.value = sqm.toFixed(2);
+
+                const pingOutput = row.querySelector('.reg-bldg-ping-output');
+                if (pingOutput) pingOutput.value = ping.toFixed(2);
+
+                totalArea += areaVal;
+                totalSqm += sqm;
             });
 
-            const sa = document.getElementById('reg-sum-area');
-            const ss = document.getElementById('reg-sum-sqm');
-            const sp = document.getElementById('reg-sum-ping');
+            const totalPing = totalSqm * 0.3025;
 
-            if (sa) sa.textContent = `${totalArea.toFixed(2)} ㎡`;
-            if (ss) ss.textContent = `${totalSqm.toFixed(2)} ㎡`;
-            if (sp) sp.textContent = `${totalPing.toFixed(2)} 坪`;
+            document.getElementById('reg-sum-area').textContent = `${totalArea.toFixed(2)} ㎡`;
+            document.getElementById('reg-sum-sqm').textContent = `${totalSqm.toFixed(2)} ㎡`;
+            document.getElementById('reg-sum-ping').textContent = `${totalPing.toFixed(2)} 坪`;
+        }
+
+        function openUnregisteredBuildingModal() {
+            document.getElementById('unregistered-building-modal').classList.remove('hidden');
+        }
+
+        function closeUnregisteredBuildingModal() {
+            document.getElementById('unregistered-building-modal').classList.add('hidden');
         }
 
         function addUnregBuildingRow(data = {}) {
             unregBuildingRowCount++;
             const rowId = `unreg-bldg-row-${unregBuildingRowCount}`;
             const html = `
-已為您修改完成，更新後的完整 HTML 原始碼如下：
-
-```html
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <!-- PWA & 手機 APP 體驗設定 -->
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="睿立作業系統">
-    <meta name="theme-color" content="#0f172a">
-
-    <!-- 設定 App 主畫面圖示 -->
-    <link rel="apple-touch-icon" href="logo.png">
-    <link rel="icon" type="image/png" href="logo.png">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>睿立作業系統</title>
-    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-    <link rel="stylesheet" href="[https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css](https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css)">
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f8fafc;
-        }
-        .sidebar-item-active {
-            background-color: #1e293b;
-            color: #38bdf8;
-            border-left: 4px solid #38bdf8;
-        }
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-    </style>
-    <!-- 引入 Supabase SDK 與雙向同步設定 -->
-    <script src="[https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2](https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2)"></script>
-    <script>
-      const SUPABASE_URL = '[https://cksoeikllbzdihlesraa.supabase.co](https://cksoeikllbzdihlesraa.supabase.co)';
-      const SUPABASE_KEY = 'sb_publishable_V9QZLQBKv2SGrthA814LAg_x167CTRD'; 
-      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-      // 1. 儲存至雲端
-      async function syncToSupabase(data) {
-        if (!data) return;
-        try {
-          await supabaseClient.from('cases').insert([{ data: data }]);
-          console.log('雲端同步成功！');
-        } catch (err) {
-          console.error('雲端同步失敗：', err);
-        }
-      }
-
-      // 2. 從雲端抓取最新案件資料
-      async function loadFromSupabase() {
-        try {
-          const { data, error } = await supabaseClient
-            .from('cases')
-            .select('data')
-            .order('id', { ascending: false })
-            .limit(1);
-
-          if (error) throw error;
-
-          if (data && data.length > 0) {
-            let cloudData = data[0].data;
-            casesData = typeof cloudData === 'string' ? JSON.parse(cloudData) : cloudData;
-            
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(casesData));
-            
-            if (typeof updateDashboard === 'function') updateDashboard();
-            if (typeof loadCasesFromStorage === 'function') loadCasesFromStorage();
-            console.log('已自動同步雲端最新案件！');
-          }
-        } catch (err) {
-          console.error('載入雲端失敗，使用本地資料：', err);
-        }
-      }
-
-      window.addEventListener('DOMContentLoaded', () => {
-        loadFromSupabase();
-      });
-    </script>
-</head>
-<body class="bg-slate-50 text-slate-800 flex flex-col md:flex-row h-screen overflow-hidden">
-
-    <!-- 手機版頂部導覽列 -->
-    <div class="md:hidden bg-slate-900 text-white flex items-center justify-between p-4 shadow-md z-20">
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-lg bg-sky-600 flex items-center justify-center font-bold text-lg">睿</div>
-            <span class="font-bold tracking-wide">睿立集團</span>
-        </div>
-        <button onclick="toggleSidebar()" class="text-slate-300 hover:text-white p-2">
-            <i class="fa-solid fa-bars text-xl"></i>
-        </button>
-    </div>
-
-    <!-- 側邊欄 -->
-    <aside id="sidebar" class="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col flex-shrink-0 shadow-lg absolute md:relative inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out z-30">
-        <div class="p-5 flex items-center justify-between border-b border-slate-800">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-lg bg-sky-600 flex items-center justify-center text-white font-bold text-xl shadow">睿</div>
-                <div>
-                    <h1 class="font-bold text-white tracking-wide">睿立集團</h1>
-                    <p class="text-xs text-slate-400">RUILI SYSTEM</p>
+                <div id="${rowId}" class="grid grid-cols-[1.5fr_1fr_1.2fr_1.2fr_32px] gap-2 bg-white p-2 rounded-lg border border-slate-200 shadow-sm items-center hover:border-sky-300 transition">
+                    <input type="text" value="${data.use || ''}" placeholder="例：農舍/廠房" class="unreg-bldg-use w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="text" value="${data.year || ''}" placeholder="例：2015年" class="unreg-bldg-year w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 text-xs">
+                    <input type="number" value="${data.sqm || ''}" step="0.01" min="0" placeholder="0.00" oninput="calculateUnregBuildingTotals()" class="unreg-bldg-sqm-input w-full px-2 py-1 border border-slate-300 rounded-lg focus:outline-none focus:border-sky-500 font-mono text-xs">
+                    <input type="text" readonly placeholder="0.00" class="unreg-bldg-ping-output w-full px-2 py-1 bg-slate-100 border border-slate-200 text-emerald-700 font-mono font-bold text-xs">
+                    <button type="button" onclick="removeUnregBuildingRow('${rowId}')" class="text-slate-400 hover:text-rose-600 transition text-center flex items-center justify-center h-full" title="刪除此筆資料">
+                        <i class="fa-solid fa-trash-can text-sm"></i>
+                    </button>
                 </div>
-            </div>
-            <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-        </div>
+            `;
+            document.getElementById('unreg-building-rows-container').insertAdjacentHTML('beforeend', html);
+            calculateUnregBuildingTotals();
+        }
 
-        <nav class="flex-1 p-4 space-y-2 overflow-y-auto">
-            <button onclick="switchTab('war-room')" id="btn-war-room" class="sidebar-btn sidebar-item-active w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all hover:bg-slate-800 hover:text-white">
-                <i class="fa-solid fa-chart-line text-lg w-5 text-center"></i>
-                <span>戰情室</span>
-            </button>
-            <button onclick="switchTab('cases-2026')" id="btn-cases-2026" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
-                <i class="fa-solid fa-list-check text-lg w-5 text-center"></i>
-                <span>2026案件管理</span>
-            </button>
-            <button onclick="switchTab('special-factory')" id="btn-special-factory" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
-                <i class="fa-solid fa-industry text-lg w-5 text-center"></i>
-                <span>土地變更</span>
-            </button>
-            <button onclick="switchTab('closed-cases')" id="btn-closed-cases" class="sidebar-btn w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 transition-all hover:bg-slate-800 hover:text-white">
-                <i class="fa-solid fa-box-archive text-lg w-5 text
+        function removeUnregBuildingRow(rowId) {
+            const row = document.getElementById(rowId);
+            if (row) row.remove();
+            calculateUnregBuildingTotals();
+        }
+
+        function calculateUnregBuildingTotals() {
+            let totalSqm = 0;
+
+            document.querySelectorAll('#unreg-building-rows-container > div').forEach(row => {
+                const sqmVal = parseFloat(row.querySelector('.unreg-bldg-sqm-input')?.value || 0);
+                const ping = sqmVal * 0.3025;
+
+                const pingOutput = row.querySelector('.unreg-bldg-ping-output');
+                if (pingOutput) pingOutput.value = ping.toFixed(2);
+
+                totalSqm += sqmVal;
+            });
+
+            const totalPing = totalSqm * 0.3025;
+
+            document.getElementById('unreg-sum-sqm').textContent = `${totalSqm.toFixed(2)} ㎡`;
+            document.getElementById('unreg-sum-ping-total').textContent = `${totalPing.toFixed(2)} 坪`;
+        }
+
+        function updateDashboard() {
+            const evalList = casesData.filter(c => c.status === '案件評估');
+            const signedList = casesData.filter(c => c.status === '簽約案件' || c.status === '已簽約');
+            const lastYearList = casesData.filter(c => c.status === '歷年簽約案件' || c.status === '歷年未結案' || c.status === '去年度簽約未結案件');
+            const closedList = casesData.filter(c => c.status === '結案' || c.status === '已結案');
+            const trashList = casesData.filter(c => c.status === '廢件區');
+
+            document.getElementById('count-eval').textContent = `${evalList.length} 件`;
+            document.getElementById('count-signed').textContent = `${signedList.length} 件`;
+            document.getElementById('count-last-year').textContent = `${lastYearList.length} 件`;
+            document.getElementById('count-closed').textContent = `${closedList.length} 件`;
+            document.getElementById('count-trash').textContent = `${trashList.length} 件`;
+
+            document.getElementById('stat-signed-count').textContent = `${signedList.length} 件`;
+
+            let totalSignedAmount = 0;
+            const signedServiceMap = {};
+
+            signedList.forEach(c => {
+                const amt = parseFloat(c.contractAmount || c.quoteAmount || 0);
+                const validAmt = isNaN(amt) ? 0 : amt;
+                totalSignedAmount += validAmt;
+
+                const item = c.serviceItem || '其他';
+                signedServiceMap[item] = (signedServiceMap[item] || 0) + validAmt;
+            });
+
+            document.getElementById('stat-signed-amount').textContent = `NT$ ${totalSignedAmount.toLocaleString()}`;
+
+            const shareContainer = document.getElementById('analytics-service-share');
+            shareContainer.innerHTML = '';
+
+            if (totalSignedAmount === 0 || Object.keys(signedServiceMap).length === 0) {
+                shareContainer.innerHTML = '<div class="text-slate-400 py-1">無簽約案件數據</div>';
+            } else {
+                for (const [item, amt] of Object.entries(signedServiceMap)) {
+                    const pct = ((amt / totalSignedAmount) * 100).toFixed(1);
+                    const html = `
+                        <div>
+                            <div class="flex justify-between text-slate-600 mb-1">
+                                <span class="font-medium">${item}</span>
+                                <span class="font-mono">NT$ ${amt.toLocaleString()} (${pct}%)</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+                                <div class="bg-sky-500 h-full" style="width: ${pct}%"></div>
+                            </div>
+                        </div>
+                    `;
+                    shareContainer.insertAdjacentHTML('beforeend', html);
+                }
+            }
+
+            const sourceContainer = document.getElementById('analytics-source-benefit');
+            sourceContainer.innerHTML = '';
+
+            const sourceMap = {};
+            const all2026Cases = [...evalList, ...signedList, ...closedList, ...trashList];
+
+            all2026Cases.forEach(c => {
+                const src = c.caseSource || '其他';
+                const amt = parseFloat(c.contractAmount || c.quoteAmount || 0);
+                const validAmt = isNaN(amt) ? 0 : amt;
+
+                if (!sourceMap[src]) {
+                    sourceMap[src] = { count: 0, amount: 0 };
+                }
+                sourceMap[src].count += 1;
+                sourceMap[src].amount += validAmt;
+            });
+
+            if (all2026Cases.length === 0) {
+                sourceContainer.innerHTML = '<div class="text-slate-400 py-1">無案件來源數據</div>';
+            } else {
+                for (const [src, data] of Object.entries(sourceMap)) {
+                    const html = `
+                        <div class="flex justify-between items-center bg-white p-2 rounded border border-slate-200">
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 font-semibold rounded text-[11px]">${src}</span>
+                                <span class="text-slate-500">${data.count} 件</span>
+                            </div>
+                            <span class="font-mono font-medium text-slate-700">NT$ ${data.amount.toLocaleString()}</span>
+                        </div>
+                    `;
+                    sourceContainer.insertAdjacentHTML('beforeend', html);
+                }
+            }
+
+            const landPriorityCases = casesData.filter(c => c.status === '優先處理' || c.status === '土地變更');
+            const landSignedCases = casesData.filter(c => (c.status === '已簽約' || c.status === '簽約案件') && c.serviceItem === '土地變更');
+            
+            const pCount = landPriorityCases.length;
+            const sCount = landSignedCases.length;
+            const landTotal = pCount + sCount;
+            const landConversionRate = landTotal > 0 ? ((sCount / landTotal) * 100).toFixed(1) : '0.0';
+
+            const landRateEl = document.getElementById('stat-land-conversion-rate');
+            if (landRateEl) landRateEl.textContent = `${landConversionRate}%`;
+            
+            const landSignedCntEl = document.getElementById('stat-land-signed-cnt');
+            if (landSignedCntEl) landSignedCntEl.textContent = sCount;
+
+            const landPriorityCntEl = document.getElementById('stat-land-priority-cnt');
+            if (landPriorityCntEl) landPriorityCntEl.textContent = pCount;
+
+            const noSignContainer = document.getElementById('analytics-no-sign-reasons');
+            if (noSignContainer) {
+                noSignContainer.innerHTML = '';
+                const reasonCounts = {};
+                let totalNoSign = 0;
+
+                casesData.forEach(c => {
+                    if (c.noSignReason && c.noSignReason.trim() !== '') {
+                        reasonCounts[c.noSignReason] = (reasonCounts[c.noSignReason] || 0) + 1;
+                        totalNoSign++;
+                    }
+                });
+
+                if (totalNoSign === 0) {
+                    noSignContainer.innerHTML = '<div class="text-slate-400 py-1 col-span-2">尚無未簽約原因統計數據</div>';
+                } else {
+                    for (const [r, count] of Object.entries(reasonCounts)) {
+                        const pct = ((count / totalNoSign) * 100).toFixed(1);
+                        const html = `
+                            <div class="flex items-center justify-between bg-white p-2 rounded border border-slate-200 shadow-sm">
+                                <span class="font-medium text-slate-700">${r}</span>
+                                <span class="font-mono text-slate-600 font-bold">${count} 件 <span class="text-slate-400 text-[11px] font-normal">(${pct}%)</span></span>
+                            </div>
+                        `;
+                        noSignContainer.insertAdjacentHTML('beforeend', html);
+                    }
+                }
+            }
+        }
+
+        function deleteSelectedCases() {
+            const checkedBoxes = document.querySelectorAll('.case-checkbox:checked, .sf-case-checkbox:checked');
+            if (checkedBoxes.length === 0) {
+                alert('請先勾選欲刪除的案件！');
+                return;
+            }
+
+            if (!confirm(`確定要徹底刪除選取的 ${checkedBoxes.length} 筆案件嗎？`)) {
+                return;
+            }
+
+            const idsToDelete = Array.from(checkedBoxes).map(chk => chk.dataset.id);
+            const deletedCases = casesData.filter(c => idsToDelete.includes(c.id));
+
+            deleteHistoryStack.push(deletedCases);
+
+            casesData = casesData.filter(c => !idsToDelete.includes(c.id));
+            saveCasesToStorage();
+            loadCasesFromStorage();
+
+            alert(`已成功刪除 ${idsToDelete.length} 筆案件。`);
+        }
+
+        function restoreDeletedCases() {
+            if (deleteHistoryStack.length === 0) {
+                alert('目前沒有可恢復的刪除紀錄！');
+                return;
+            }
+
+            const lastBatch = deleteHistoryStack.pop();
+            casesData.push(...lastBatch);
+
+            saveCasesToStorage();
+            loadCasesFromStorage();
+
+            alert(`已成功恢復 ${lastBatch.length} 筆誤刪案件！`);
+        }
+
+        function handleSaveCase(event) {
+            event.preventDefault();
+
+            const existingId = document.getElementById('input-case-id').value;
+            let selectedStatus = document.getElementById('select-case-status').value;
+            const workProgress = document.getElementById('select-work-progress').value;
+
+            const caseCosts = [];
+            document.querySelectorAll('#case-cost-container > div').forEach(row => {
+                caseCosts.push({
+                    supplier: row.querySelector('.case-cost-supplier')?.value || '',
+                    item: row.querySelector('.case-cost-item')?.value || '',
+                    untaxed: row.querySelector('.case-cost-untaxed')?.value || '',
+                    ruili: row.querySelector('.case-cost-ruili')?.value || '',
+                    contract: row.querySelector('.case-cost-contract')?.value || ''
+                });
+            });
+
+            const landMaster = {
+                owner: document.getElementById('land-owner').value,
+                city: document.getElementById('land-city').value,
+                district: document.getElementById('land-district').value,
+                section: document.getElementById('land-section').value
+            };
+            const landDetails = [];
+            document.querySelectorAll('#land-rows-container > div').forEach(row => {
+                landDetails.push({
+                    number: row.querySelector('.land-number')?.value || '',
+                    regDate: row.querySelector('.land-reg-date')?.value || '',
+                    zoneType: row.querySelector('.land-zone-type')?.value || '',
+                    landType: row.querySelector('.land-type')?.value || '',
+                    area: row.querySelector('.land-area-input')?.value || '',
+                    num: row.querySelector('.land-num-input')?.value || '',
+                    den: row.querySelector('.land-den-input')?.value || '',
+                    sqm: row.querySelector('.land-sqm-output')?.value || '',
+                    ping: row.querySelector('.land-ping-output')?.value || '',
+                    rights: row.querySelector('.land-rights')?.value || ''
+                });
+            });
+
+            const registeredBuildingMaster = {
+                owner: document.getElementById('reg-building-owner').value,
+                address: document.getElementById('reg-building-address').value
+            };
+            const registeredBuildings = [];
+            document.querySelectorAll('#reg-building-rows-container > div').forEach(row => {
+                registeredBuildings.push({
+                    number: row.querySelector('.reg-bldg-number')?.value || '',
+                    landNumber: row.querySelector('.reg-bldg-land-number')?.value || '',
+                    use: row.querySelector('.reg-bldg-use')?.value || '',
+                    regDate: row.querySelector('.reg-bldg-reg-date')?.value || '',
+                    area: row.querySelector('.reg-bldg-area-input')?.value || '',
+                    num: row.querySelector('.reg-bldg-num-input')?.value || '',
+                    den: row.querySelector('.reg-bldg-den-input')?.value || '',
+                    sqm: row.querySelector('.reg-bldg-sqm-output')?.value || '',
+                    ping: row.querySelector('.reg-bldg-ping-output')?.value || ''
+                });
+            });
+
+            const unregisteredBuildingMaster = {
+                builder: document.getElementById('unreg-building-builder').value
+            };
+            const unregisteredBuildings = [];
+            document.querySelectorAll('#unreg-building-rows-container > div').forEach(row => {
+                unregisteredBuildings.push({
+                    use: row.querySelector('.unreg-bldg-use')?.value || '',
+                    year: row.querySelector('.unreg-bldg-year')?.value || '',
+                    sqm: row.querySelector('.unreg-bldg-sqm-input')?.value || '',
+                    ping: row.querySelector('.unreg-bldg-ping-output')?.value || ''
+                });
+            });
+
+            const feedbackLands = [];
+            document.querySelectorAll('#feedback-land-container > div').forEach(row => {
+                feedbackLands.push({
+                    number: row.querySelector('.fb-number')?.value || '',
+                    area: row.querySelector('.fb-area')?.value || '',
+                    value: row.querySelector('.fb-value')?.value || '',
+                    zone: row.querySelector('.fb-zone')?.value || '',
+                    result: row.querySelector('.fb-result')?.value || ''
+                });
+            });
+
+            const caseObj = {
+                id: existingId || ('case_' + Date.now()),
+                status: selectedStatus,
+                createdAt: document.getElementById('input-created-at').value,
+                clientName: document.getElementById('input-client-name').value,
+                workProgress: workProgress,
+                serviceItem: document.getElementById('select-service-item').value,
+                serviceDetail: document.getElementById('input-service-detail').value,
+                noSignReason: document.getElementById('select-no-sign-reason').value,
+                address: document.getElementById('input-address').value,
+                landNumber: document.getElementById('input-land-number').value,
+                caseDesc: document.getElementById('input-case-description').value,
+                salesNote: document.getElementById('input-sales-note').value || '尚未提供即時說明。',
+                quoteAmount: parseFloat(document.getElementById('input-quote-amount').value || 0),
+                caseSource: document.getElementById('select-case-source').value,
+                contractAmount: parseFloat(document.getElementById('input-contract-amount').value || 0),
+                referrer: document.getElementById('input-referrer').value,
+                pay1Amount: document.getElementById('input-pay1-amount').value,
+                pay1Date: document.getElementById('input-pay1-date').value,
+                pay2Amount: document.getElementById('input-pay2-amount').value,
+                pay2Date: document.getElementById('input-pay2-date').value,
+                pay3Amount: document.getElementById('input-pay3-amount').value,
+                pay3Date: document.getElementById('input-pay3-date').value,
+                pay4Amount: document.getElementById('input-pay4-amount').value,
+                pay4Date: document.getElementById('input-pay4-date').value,
+                
+                caseCosts: caseCosts,
+                landMaster: landMaster,
+                landDetails: landDetails,
+                registeredBuildingMaster: registeredBuildingMaster,
+                registeredBuildings: registeredBuildings,
+                unregisteredBuildingMaster: unregisteredBuildingMaster,
+                unregisteredBuildings: unregisteredBuildings,
+                feedbackLands: feedbackLands
+            };
+
+            if (existingId) {
+                const idx = casesData.findIndex(c => c.id === existingId);
+                if (idx !== -1) casesData[idx] = caseObj;
+            } else {
+                casesData.unshift(caseObj);
+            }
+
+            saveCasesToStorage();
+            loadCasesFromStorage();
+            closeAddCaseModal();
+            alert(`儲存成功！案件資料已成功儲存。`);
+        }
+    </script>
+</body>
+</html>
