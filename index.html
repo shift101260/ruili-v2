@@ -360,7 +360,7 @@
                             <button onclick="restoreDeletedCases()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                                 <i class="fa-solid fa-rotate-left"></i> 恢復
                             </button>
-                            <button onclick="openAddCaseModal('土地變更')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
+                            <button onclick="openAddCaseModal('優先處理')" class="px-3 py-1.5 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-xs font-medium transition flex items-center gap-1 shadow-sm">
                                 <i class="fa-solid fa-plus"></i> 新增
                             </button>
                         </div>
@@ -586,12 +586,17 @@
                                 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span>
                             </label>
                             <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500">
-                                <option value="案件評估" selected>案件評估</option>
+                                <option value="案件評估">案件評估</option>
                                 <option value="簽約案件">簽約案件</option>
                                 <option value="廢件區">廢件區</option>
                                 <option value="結案">結案</option>
                                 <option value="歷年簽約案件">歷年簽約案件</option>
-                                <option value="土地變更">土地變更</option>
+                                <option value="優先處理">優先處理</option>
+                                <option value="總有一天">總有一天</option>
+                                <option value="租客案件">租客案件</option>
+                                <option value="同業案件">同業案件</option>
+                                <option value="已被斬件">已被斬件</option>
+                                <option value="無法領證">無法領證</option>
                             </select>
                         </div>
 
@@ -1771,8 +1776,15 @@
             document.getElementById('btn-submit-case').textContent = '儲存變更';
             document.getElementById('input-case-id').value = c.id;
 
+            // 自動回填並選取該案件目前的「案件狀態 (拋轉歸類區)」
             const statusSelect = document.getElementById('select-case-status');
-            statusSelect.value = c.status || '案件評估';
+            if (c.status) {
+                let matchedStatus = c.status;
+                if (matchedStatus === '土地變更') matchedStatus = '優先處理';
+                statusSelect.value = matchedStatus;
+            } else {
+                statusSelect.value = '案件評估';
+            }
 
             document.getElementById('input-created-at').value = c.createdAt || '';
             document.getElementById('input-client-name').value = c.clientName || '';
@@ -2468,10 +2480,6 @@
             const existingId = document.getElementById('input-case-id').value;
             let selectedStatus = document.getElementById('select-case-status').value;
             const workProgress = document.getElementById('select-work-progress').value;
-
-            if (selectedStatus === '土地變更') {
-                selectedStatus = '優先處理';
-            }
 
             const caseCosts = [];
             document.querySelectorAll('#case-cost-container > div').forEach(row => {
