@@ -586,12 +586,13 @@
                                 案件狀態 (拋轉歸類區) <span class="text-rose-500">*</span>
                             </label>
                             <select id="select-case-status" required class="w-full px-3 py-2 border border-sky-300 bg-sky-50 text-sky-900 font-semibold rounded-lg text-xs focus:outline-none focus:border-sky-500">
-                                <option value="案件評估">案件評估</option>
-                                <option value="簽約案件">簽約案件</option>
-                                <option value="歷年簽約案件">歷年簽約案件</option>
-                                <option value="結案">結案</option>
-                                <option value="廢件區">廢件區</option>
-                                <option value="土地變更">土地變更</option>
+                                <option value="已簽約">已簽約</option>
+                                <option value="優先處理">優先處理</option>
+                                <option value="總有一天">總有一天</option>
+                                <option value="租客案件">租客案件</option>
+                                <option value="同業案件">同業案件</option>
+                                <option value="已被斬件">已被斬件</option>
+                                <option value="無法領證">無法領證</option>
                             </select>
                         </div>
 
@@ -1541,7 +1542,7 @@
         }
 
         function renderCaseRow(c) {
-            const landChangeOnlyStatuses = ['優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證'];
+            const landChangeOnlyStatuses = ['優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證', '土地變更'];
             if (!landChangeOnlyStatuses.includes(c.status)) {
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-slate-50 transition cursor-pointer';
@@ -1775,11 +1776,8 @@
             const statusSelect = document.getElementById('select-case-status');
             if (c.status) {
                 let matchedStatus = c.status;
-                const validOptions = ['案件評估', '簽約案件', '歷年簽約案件', '結案', '廢件區', '土地變更'];
-                if (matchedStatus === '優先處理' || matchedStatus === '總有一天' || matchedStatus === '租客案件' || matchedStatus === '同業案件' || matchedStatus === '已被斬件' || matchedStatus === '無法領證') {
-                    matchedStatus = '土地變更';
-                }
-                statusSelect.value = validOptions.includes(matchedStatus) ? matchedStatus : '案件評估';
+                if (matchedStatus === '土地變更') matchedStatus = '優先處理';
+                statusSelect.value = matchedStatus;
             } else {
                 statusSelect.value = '案件評估';
             }
