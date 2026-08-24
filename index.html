@@ -67,9 +67,9 @@
           if (data && data.length > 0) {
             let cloudData = data[0].data;
             casesData = typeof cloudData === 'string' ? JSON.parse(cloudData) : cloudData;
-
+            
             localStorage.setItem(STORAGE_KEY, JSON.stringify(casesData));
-
+            
             if (typeof updateDashboard === 'function') updateDashboard();
             if (typeof loadCasesFromStorage === 'function') loadCasesFromStorage();
             console.log('已自動同步雲端最新案件！');
@@ -172,7 +172,7 @@
                         <i class="fa-solid fa-chart-line text-sky-600 text-sm"></i>
                         <h3 class="font-bold text-slate-800 text-sm">2026戰情室數據中心</h3>
                     </div>
-
+                    
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
                         <div class="p-4 bg-slate-50 rounded-xl border border-slate-200/80 flex items-center justify-between">
                             <div>
@@ -307,7 +307,7 @@
                         </div>
                         <span class="text-xs text-slate-400">土地變更專屬指標</span>
                     </div>
-
+                    
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                         <div class="p-4 bg-amber-50/60 rounded-xl border border-amber-200/80 space-y-2 flex flex-col justify-between">
                             <div class="flex justify-between items-start">
@@ -581,7 +581,7 @@
             <form id="add-case-form" onsubmit="handleSaveCase(event)" class="flex flex-col flex-1 min-h-0 overflow-hidden">
                 <div class="p-4 md:p-6 space-y-4 overflow-y-auto flex-1 text-xs">
                     <input type="hidden" id="input-case-id">
-
+                    
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">
@@ -758,7 +758,7 @@
                                 <i class="fa-solid fa-plus text-xs"></i> 新增案件成本
                             </button>
                         </div>
-
+                        
                         <div class="overflow-x-auto border border-slate-200 rounded-xl bg-white p-3 shadow-sm">
                             <div class="min-w-[500px] space-y-2">
                                 <div class="grid grid-cols-[1.2fr_1.2fr_1fr_1fr_1fr_32px] gap-2 bg-slate-100 p-2 rounded-lg font-bold text-slate-700 text-xs text-center border border-slate-200">
@@ -943,7 +943,7 @@
                     <h4 class="font-bold text-emerald-900 text-sm border-b border-emerald-200 pb-2 flex items-center gap-1.5">
                         <i class="fa-solid fa-sliders text-emerald-600"></i> 三、精算試算
                     </h4>
-
+                    
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">模組數量 (片)</label>
@@ -1565,12 +1565,12 @@
 
                 const displayService = c.serviceDetail || c.serviceItem || '-';
                 const displayWorkProgress = c.workProgress || '未設定';
-
+                
                 const contractVal = parseFloat(c.contractAmount);
                 const quoteVal = parseFloat(c.quoteAmount || 0);
                 const displayAmount = (!isNaN(contractVal) && contractVal > 0) ? contractVal : quoteVal;
                 const amountFormatted = `NT$ ${parseInt(displayAmount).toLocaleString()}`;
-
+                
                 // 案件即時說明顯示字數 18 字
                 const noteText = truncateText(c.salesNote, 18);
 
@@ -1594,16 +1594,10 @@
 
         function renderSpecialFactoryRow(c) {
             const categories = ['已簽約', '優先處理', '總有一天', '租客案件', '同業案件', '已被斬件', '無法領證'];
-
-            let statusToMatch = c.status;
             
-            // 關鍵修改：如果是來自土地變更的案件，即使後面在右側被改為結案或廢件，土地變更頁面永遠保留在「已簽約」
-            if (c.isLandChange) {
-                statusToMatch = (c.status === '結案' || c.status === '已結案' || c.status === '廢件區' || c.status === '簽約案件') ? '已簽約' : c.status;
-            } else {
-                if (statusToMatch === '土地變更') statusToMatch = '優先處理';
-                if (statusToMatch === '簽約案件') statusToMatch = '已簽約';
-            }
+            let statusToMatch = c.status;
+            if (statusToMatch === '土地變更') statusToMatch = '優先處理';
+            if (statusToMatch === '簽約案件') statusToMatch = '已簽約';
 
             const categoryIndex = categories.indexOf(statusToMatch);
             if (categoryIndex === -1) return;
@@ -1679,8 +1673,6 @@
             let count = 0;
             casesData.forEach(c => {
                 if (idsToTransfer.includes(c.id)) {
-                    // 關鍵修改：從土地變更拋轉時，打上記號 isLandChange = true
-                    c.isLandChange = true;
                     if (targetStatus === '已簽約') {
                         c.status = '簽約案件';
                         c.workProgress = '已簽約';
@@ -2395,8 +2387,8 @@
             }
 
             const landPriorityCases = casesData.filter(c => c.status === '優先處理' || c.status === '土地變更');
-            const landSignedCases = casesData.filter(c => (c.status === '已簽約' || c.status === '簽約案件') && (c.serviceItem === '土地變更' || c.isLandChange));
-
+            const landSignedCases = casesData.filter(c => (c.status === '已簽約' || c.status === '簽約案件') && c.serviceItem === '土地變更');
+            
             const pCount = landPriorityCases.length;
             const sCount = landSignedCases.length;
             const landTotal = pCount + sCount;
@@ -2404,7 +2396,7 @@
 
             const landRateEl = document.getElementById('stat-land-conversion-rate');
             if (landRateEl) landRateEl.textContent = `${landConversionRate}%`;
-
+            
             const landSignedCntEl = document.getElementById('stat-land-signed-cnt');
             if (landSignedCntEl) landSignedCntEl.textContent = sCount;
 
@@ -2486,13 +2478,6 @@
             let selectedStatus = document.getElementById('select-case-status').value;
             const workProgress = document.getElementById('select-work-progress').value;
 
-            // 檢查是否維持原本的土地變更記號
-            let existingCase = casesData.find(c => c.id === existingId);
-            let isLandChange = existingCase ? (existingCase.isLandChange || false) : false;
-            if (selectedStatus === '土地變更') {
-                isLandChange = true;
-            }
-
             const caseCosts = [];
             document.querySelectorAll('#case-cost-container > div').forEach(row => {
                 caseCosts.push({
@@ -2572,7 +2557,6 @@
             const caseObj = {
                 id: existingId || ('case_' + Date.now()),
                 status: selectedStatus,
-                isLandChange: isLandChange,
                 createdAt: document.getElementById('input-created-at').value,
                 clientName: document.getElementById('input-client-name').value,
                 workProgress: workProgress,
@@ -2595,7 +2579,7 @@
                 pay3Date: document.getElementById('input-pay3-date').value,
                 pay4Amount: document.getElementById('input-pay4-amount').value,
                 pay4Date: document.getElementById('input-pay4-date').value,
-
+                
                 caseCosts: caseCosts,
                 landMaster: landMaster,
                 landDetails: landDetails,
