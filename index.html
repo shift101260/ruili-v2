@@ -1587,9 +1587,9 @@
 
                 const tbody = document.getElementById(targetTbodyId);
                 if (tbody) tbody.appendChild(tr);
+            } else {
+                renderSpecialFactoryRow(c);
             }
-
-            renderSpecialFactoryRow(c);
         }
 
         function renderSpecialFactoryRow(c) {
